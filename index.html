@@ -579,6 +579,23 @@
       margin: 12px 20px;
     }
 
+    .sidebar-nav-item {
+      background: var(--bg-elevated);
+      margin: 4px 16px;
+      border-radius: 12px;
+      padding: 14px 20px;
+      width: calc(100% - 32px);
+    }
+
+    .sidebar-nav-item:hover,
+    .sidebar-nav-item:active {
+      background: rgba(212, 168, 83, 0.15);
+    }
+
+    .sidebar-nav-item i {
+      font-size: 18px;
+    }
+
     .sidebar-close {
       position: absolute;
       top: 16px;
@@ -1514,14 +1531,23 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       gap: 4px;
-      padding: 8px 16px;
+      padding: 12px 20px;
+      min-width: 70px;
+      min-height: 56px;
       background: none;
       border: none;
       color: var(--text-muted);
       cursor: pointer;
       transition: all 0.2s;
       border-radius: 12px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+      position: relative;
+      z-index: 1;
     }
 
     .nav-item.active {
@@ -1530,15 +1556,18 @@
 
     .nav-item:active {
       background: var(--bg-elevated);
+      transform: scale(0.95);
     }
 
     .nav-item i {
       font-size: 22px;
+      pointer-events: none;
     }
 
     .nav-item span {
       font-size: 11px;
       font-weight: 500;
+      pointer-events: none;
     }
 
     /* Modal */
@@ -2006,8 +2035,8 @@
           <div class="sidebar-user-email" id="sidebarEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="daafa9afbba8b3b59abdb7bbb3b6f4b9b5b7">[email&#160;protected]</a></div>
           <div class="sidebar-user-status">Online</div>
         </div>
-        <nav class="sidebar-menu">
-          <button class="sidebar-menu-item" onclick="openProfilePage()">
+        <nav class="sidebar-menu">                    
+           <button class="sidebar-menu-item" onclick="openProfilePage()">
             <i class="fas fa-user"></i>
             <span>Perfil</span>
           </button>
@@ -2356,6 +2385,7 @@
     let vaultUnsubscribe = null;
     let transactionsUnsubscribe = null;
     let messagesUnsubscribe = null;
+    let galleryUnsubscribe = null;
 
     // Post image file
     let postImageFile = null;
@@ -2803,7 +2833,7 @@
         subscribeToVault();
         subscribeToTransactions();
         subscribeToMessages();
-        renderGallery();
+        subscribeToGallery();
         updateProfileStats();
       } else {
         currentUser = null;
@@ -2824,6 +2854,11 @@
           messagesUnsubscribe();
           messagesUnsubscribe = null;
         }
+        if (galleryUnsubscribe) {
+          galleryUnsubscribe();
+          galleryUnsubscribe = null;
+        }
+        galleryPhotos = [];
         showScreen('login');
       }
     });
@@ -2855,24 +2890,82 @@
         });
     }
 
-    // Subscribe to vault balance from Firestore
+    // Subscribe to vault balance - calculado a partir das transações
     function subscribeToVault() {
-      vaultUnsubscribe = db.collection('vault').doc('balance')
-        .onSnapshot((doc) => {
-          if (doc.exists) {
-            vaultBalance = doc.data().amount || 0;
-          } else {
-            vaultBalance = 0;
-            // Initialize vault document if it doesn't exist
-            db.collection('vault').doc('balance').set({
-              amount: 0,
-              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-          }
-          updateVaultBalance();
-        }, (error) => {
-          console.error('Error loading vault:', JSON.stringify(error));
-        });
+      // Cancelar inscrição anterior se existir
+      if (vaultUnsubscribe && typeof vaultUnsubscribe === 'function') {
+        vaultUnsubscribe();
+        vaultUnsubscribe = null;
+      }
+
+      // Mostrar estado de carregamento
+      const balanceEl = document.getElementById('vaultBalance');
+      if (balanceEl) {
+        balanceEl.innerHTML = '<i class="fas fa-spinner fa-spin" style="font-size: 14px;"></i>';
+      }
+
+      try {
+        // Escutar TODAS as transações para calcular o saldo real
+        const unsubscribeFn = db.collection('transactions')
+          .onSnapshot(
+            { includeMetadataChanges: true },
+            (snapshot) => {
+              // Calcular saldo baseado nas transações: entradas - saídas
+              let totalIncome = 0;
+              let totalExpense = 0;
+
+              snapshot.forEach(doc => {
+                const data = doc.data();
+                const amount = typeof data.amount === 'number' ? data.amount : 0;
+
+                if (data.type === 'income') {
+                  totalIncome += amount;
+                } else if (data.type === 'expense') {
+                  totalExpense += amount;
+                }
+              });
+
+              // Saldo = entradas - saídas
+              vaultBalance = totalIncome - totalExpense;
+
+              console.log('Vault calculated - Income:', totalIncome, 'Expense:', totalExpense, 'Balance:', vaultBalance);
+
+              updateVaultBalance();
+
+              // Indicar visualmente se está sincronizando
+              if (snapshot.metadata.hasPendingWrites) {
+                if (balanceEl) {
+                  balanceEl.style.opacity = '0.7';
+                }
+              } else {
+                if (balanceEl) {
+                  balanceEl.style.opacity = '1';
+                }
+              }
+            },
+            (error) => {
+              console.error('Error loading vault from transactions:', JSON.stringify(error));
+
+              // Mostrar erro visual
+              if (balanceEl) {
+                balanceEl.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>';
+              }
+
+              // Fallback: mostrar 0
+              vaultBalance = 0;
+              updateVaultBalance();
+            }
+          );
+
+        // Guardar referência correta da função de unsubscribe
+        vaultUnsubscribe = unsubscribeFn;
+
+      } catch (err) {
+        console.error('Error setting up vault subscription:', JSON.stringify(err));
+        if (balanceEl) {
+          balanceEl.innerHTML = '<i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i>';
+        }
+      }
     }
 
     // Subscribe to transactions from Firestore
@@ -3376,14 +3469,81 @@
     }
 
     // Data
-    let galleryPhotos = [
-      { id: 1, color: '#D4A853' },
-      { id: 2, color: '#4ADE80' },
-      { id: 3, color: '#60A5FA' },
-      { id: 4, color: '#F472B6' },
-      { id: 5, color: '#A78BFA' },
-      { id: 6, color: '#FB923C' }
-    ];
+    let galleryPhotos = [];
+
+    // Subscribe to gallery photos from Realtime Database
+    function subscribeToGallery() {
+      if (galleryUnsubscribe) {
+        galleryUnsubscribe();
+      }
+
+      const galleryRef = rtdb.ref('gallery');
+
+      const onValueChange = galleryRef.orderByChild('createdAt').on('value', (snapshot) => {
+        galleryPhotos = [];
+        if (snapshot.exists()) {
+          snapshot.forEach((childSnapshot) => {
+            const photo = childSnapshot.val();
+            galleryPhotos.push({
+              id: childSnapshot.key,
+              url: photo.url,
+              color: photo.color || '#D4A853',
+              userId: photo.userId,
+              userName: photo.userName,
+              createdAt: photo.createdAt
+            });
+          });
+          // Ordenar por data (mais recentes primeiro)
+          galleryPhotos.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+        }
+        renderGallery();
+      }, (error) => {
+        console.error('Gallery subscription error:', JSON.stringify(error));
+        showToast('Erro ao carregar galeria', 'error');
+      });
+
+      galleryUnsubscribe = () => galleryRef.off('value', onValueChange);
+    }
+
+    // Upload photo to gallery in Realtime Database
+    async function savePhotoToGallery(url) {
+      if (!currentUser || !currentUserData) {
+        showToast('Faça login para enviar fotos', 'error');
+        return false;
+      }
+
+      try {
+        const newPhotoRef = rtdb.ref('gallery').push();
+        await newPhotoRef.set({
+          url: url,
+          color: '#D4A853',
+          userId: currentUser.uid,
+          userName: currentUserData.name || 'Usuário',
+          userPhotoURL: currentUserData.photoURL || null,
+          createdAt: Date.now()
+        });
+        return true;
+      } catch (error) {
+        console.error('Error saving photo:', JSON.stringify(error));
+        return false;
+      }
+    }
+
+    // Delete photo from gallery
+    async function deleteGalleryPhoto(photoId) {
+      if (!currentUser) {
+        showToast('Faça login para excluir fotos', 'error');
+        return;
+      }
+
+      try {
+        await rtdb.ref('gallery/' + photoId).remove();
+        showToast('Foto excluída!');
+      } catch (error) {
+        console.error('Error deleting photo:', JSON.stringify(error));
+        showToast('Erro ao excluir foto', 'error');
+      }
+    }
 
     // Navigation - usando Event Delegation para melhor captura de cliques
     // Isso resolve o problema de cliques em elementos filhos (ícones, spans) não serem capturados
@@ -3391,7 +3551,10 @@
     const pages = document.querySelectorAll('.page');
     const chatInputContainer = document.getElementById('chatInputContainer');
 
-    footerNav.addEventListener('click', (e) => {
+    function handleNavigation(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
       // Usa closest() para encontrar o botão .nav-item, não importa onde o clique ocorreu
       const navItem = e.target.closest('.nav-item');
       if (!navItem) return;
@@ -3410,11 +3573,61 @@
 
       // Mostra/esconde input do chat
       chatInputContainer.style.display = page === 'chat' ? 'block' : 'none';
+    }
+
+    // Adiciona listeners para touch e click
+    footerNav.addEventListener('click', handleNavigation);
+
+    // Para dispositivos touch, usar touchend para resposta mais rápida
+    let touchHandled = false;
+    footerNav.addEventListener('touchend', (e) => {
+      touchHandled = true;
+      handleNavigation(e);
+      // Reset após um curto delay
+      setTimeout(() => { touchHandled = false; }, 300);
+    }, { passive: false });
+
+    // Navegação via Sidebar
+    function navigateFromSidebar(page) {
+      // Atualiza estado ativo dos nav items do footer
+      const footerNavItems = footerNav.querySelectorAll('.nav-item');
+      footerNavItems.forEach(nav => nav.classList.remove('active'));
+      const targetNavItem = footerNav.querySelector('[data-page="' + page + '"]');
+      if (targetNavItem) targetNavItem.classList.add('active');
+
+      // Atualiza página visível
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById(page + 'Page').classList.add('active');
+
+      // Mostra/esconde input do chat
+      chatInputContainer.style.display = page === 'chat' ? 'block' : 'none';
+
+      // Fecha o sidebar
+      closeSidebar();
+    }
+
+    // Adiciona listeners para os botões de navegação do sidebar
+    document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const page = item.dataset.page;
+        if (page) navigateFromSidebar(page);
+      });
     });
 
     // Render functions
     function renderGallery() {
       const grid = document.getElementById('galleryGrid');
+
+      if (galleryPhotos.length === 0) {
+        grid.innerHTML = '<div class="gallery-empty" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">' +
+          '<i class="fas fa-images" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>' +
+          '<p>Nenhuma foto na galeria.<br>Clique acima para adicionar!</p>' +
+        '</div>';
+        return;
+      }
+
       grid.innerHTML = galleryPhotos.map((photo, index) => {
         const imgPart = photo.url
           ? '<img src="' + photo.url + '" alt="Foto ' + (index + 1) + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">'
@@ -3446,16 +3659,21 @@
 
     async function uploadGalleryPhoto(input) {
       if (input.files && input.files[0]) {
+        if (!currentUser) {
+          showToast('Faça login para enviar fotos', 'error');
+          input.value = '';
+          return;
+        }
+
         showToast('Enviando foto...');
         const url = await uploadToImgBB(input.files[0]);
         if (url) {
-          galleryPhotos.unshift({
-            id: Date.now(),
-            url: url,
-            color: '#D4A853'
-          });
-          renderGallery();
-          showToast('Foto adicionada!');
+          const saved = await savePhotoToGallery(url);
+          if (saved) {
+            showToast('Foto adicionada!');
+          } else {
+            showToast('Erro ao salvar foto no banco', 'error');
+          }
         } else {
           showToast('Erro ao enviar foto', 'error');
         }
@@ -3522,9 +3740,8 @@
 
       try {
         const transactionType = currentModalType === 'add' ? 'income' : 'expense';
-        const amountChange = currentModalType === 'add' ? amount : -amount;
 
-        // Create transaction record with user info
+        // Criar registro da transação - o saldo é calculado automaticamente
         await db.collection('transactions').add({
           type: transactionType,
           description: description,
@@ -3535,12 +3752,7 @@
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Update vault balance
-        await db.collection('vault').doc('balance').set({
-          amount: firebase.firestore.FieldValue.increment(amountChange),
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true });
-
+        // O saldo será atualizado automaticamente pelo listener em subscribeToVault()
         showToast(currentModalType === 'add' ? 'Fundos adicionados!' : 'Retirada realizada!');
         closeModal();
       } catch (error) {
