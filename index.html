@@ -410,8 +410,23 @@
       font-size: 11px;
       color: rgba(13,13,13,0.7);
       font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .online-dot {
+      width: 8px;
+      height: 8px;
+      background: #4ADE80;
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse-online 2s infinite;
+    }
+
+    @keyframes pulse-online {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.1); }
     }
 
     .header-actions {
@@ -1018,6 +1033,17 @@
       color: #0D0D0D;
       flex-shrink: 0;
       overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .chat-avatar-small:hover {
+      transform: scale(1.08);
+      box-shadow: 0 2px 12px rgba(212, 168, 83, 0.4);
+    }
+
+    .chat-avatar-small:active {
+      transform: scale(0.98);
     }
 
     .chat-avatar-small img {
@@ -1895,6 +1921,296 @@
       color: var(--danger);
     }
 
+    /* Upload Progress Modal */
+    .upload-progress-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 2500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    .upload-progress-modal.active {
+      display: flex;
+    }
+
+    .upload-progress-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 300px;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .upload-progress-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      animation: pulse-upload 1.5s ease-in-out infinite;
+    }
+
+    .upload-progress-icon i {
+      font-size: 28px;
+      color: #0D0D0D;
+    }
+
+    @keyframes pulse-upload {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 168, 83, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(212, 168, 83, 0); }
+    }
+
+    .upload-progress-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .upload-progress-status {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      min-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .upload-progress-bar-container {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-elevated);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .upload-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .upload-progress-count {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* User Profile Modal */
+    .user-profile-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .user-profile-modal.active {
+      display: flex;
+    }
+
+    .user-profile-card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 30px 24px;
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .user-profile-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 36px;
+      height: 36px;
+      background: var(--bg-elevated);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-secondary);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .user-profile-close:hover,
+    .user-profile-close:active {
+      background: var(--primary);
+      color: #0D0D0D;
+    }
+
+    .user-profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      color: #0D0D0D;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(212, 168, 83, 0.3);
+    }
+
+    .user-profile-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-profile-name {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .user-profile-username {
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .user-profile-email {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .user-profile-birth {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .user-profile-birth i {
+      color: var(--primary);
+      font-size: 12px;
+    }
+
+    .user-profile-avatar {
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .user-profile-avatar:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 40px rgba(212, 168, 83, 0.4);
+    }
+
+    .user-profile-avatar:active {
+      transform: scale(0.98);
+    }
+
+    .user-profile-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--success);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .user-profile-status.offline {
+      background: rgba(160, 160, 160, 0.15);
+      color: var(--text-muted);
+    }
+
+    .user-profile-status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse-online 2s infinite;
+    }
+
+    .user-profile-status.offline .user-profile-status-dot {
+      background: var(--text-muted);
+      animation: none;
+    }
+
+    .user-profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .user-profile-stat {
+      text-align: center;
+    }
+
+    .user-profile-stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .user-profile-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .user-profile-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 40px 0;
+      color: var(--text-muted);
+    }
+
+    .user-profile-loading i {
+      font-size: 32px;
+      animation: spin 1s linear infinite;
+    }
+
   </style>
 </head>
 <body>
@@ -2035,8 +2351,25 @@
           <div class="sidebar-user-email" id="sidebarEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="daafa9afbba8b3b59abdb7bbb3b6f4b9b5b7">[email&#160;protected]</a></div>
           <div class="sidebar-user-status">Online</div>
         </div>
-        <nav class="sidebar-menu">                    
-           <button class="sidebar-menu-item" onclick="openProfilePage()">
+        <nav class="sidebar-menu">
+          <button class="sidebar-menu-item sidebar-nav-item" data-page="posts">
+            <i class="fas fa-newspaper"></i>
+            <span>Postagens</span>
+          </button>
+          <button class="sidebar-menu-item sidebar-nav-item" data-page="gallery">
+            <i class="fas fa-images"></i>
+            <span>Galeria</span>
+          </button>
+          <button class="sidebar-menu-item sidebar-nav-item" data-page="chat">
+            <i class="fas fa-comments"></i>
+            <span>Conversas</span>
+          </button>
+          <button class="sidebar-menu-item sidebar-nav-item" data-page="vault">
+            <i class="fas fa-vault"></i>
+            <span>Cofre</span>
+          </button>
+          <div class="sidebar-menu-divider"></div>
+          <button class="sidebar-menu-item" onclick="openProfilePage()">
             <i class="fas fa-user"></i>
             <span>Perfil</span>
           </button>
@@ -2071,7 +2404,7 @@
             
             <div>
               <h1>ÊXODO</h1>
-              <div class="header-subtitle">Grupo Oficial</div>
+              <div class="header-subtitle" id="headerSubtitle"><span class="online-dot"></span> <span id="onlineCount">0</span> online</div>
             </div>
           </div>
         </div>
@@ -2126,7 +2459,7 @@
             <i class="fas fa-cloud-upload-alt"></i>
             <p>Toque para adicionar fotos</p>
           </div>
-          <input type="file" id="galleryImageInput" accept="image/*" hidden onchange="uploadGalleryPhoto(this)">
+          <input type="file" id="galleryImageInput" accept="image/*" multiple hidden onchange="uploadGalleryPhotos(this)">
           <div class="gallery-grid" id="galleryGrid"></div>
         </div>
 
@@ -2349,6 +2682,21 @@
       </div>
     </div>
 
+    <!-- User Profile Modal -->
+    <div class="user-profile-modal" id="userProfileModal">
+      <div class="user-profile-card">
+        <button class="user-profile-close" onclick="closeUserProfileModal()">
+          <i class="fas fa-times"></i>
+        </button>
+        <div id="userProfileContent">
+          <div class="user-profile-loading">
+            <i class="fas fa-spinner"></i>
+            <span>Carregando perfil...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Toast -->
     <div class="toast" id="toast">
       <i class="fas fa-check-circle"></i>
@@ -2386,6 +2734,8 @@
     let transactionsUnsubscribe = null;
     let messagesUnsubscribe = null;
     let galleryUnsubscribe = null;
+    let presenceUnsubscribe = null;
+    let onlineUsersCount = 0;
 
     // Post image file
     let postImageFile = null;
@@ -2419,6 +2769,95 @@
       const isLight = document.documentElement.classList.contains('light');
       document.getElementById('themeIcon').className = isLight ? 'fas fa-sun' : 'fas fa-moon';
     }
+
+    // ==================== PRESENCE SYSTEM ====================
+
+    // Setup presence for current user
+    function setupPresence(user) {
+      if (!user) return;
+
+      const userPresenceRef = rtdb.ref('presence/' + user.uid);
+      const connectedRef = rtdb.ref('.info/connected');
+
+      connectedRef.on('value', (snapshot) => {
+        if (snapshot.val() === true) {
+          // User is connected
+          const presenceData = {
+            online: true,
+            lastSeen: firebase.database.ServerValue.TIMESTAMP,
+            displayName: currentUserData?.name || user.displayName || 'Usuário',
+            photoURL: currentUserData?.photoURL || user.photoURL || null
+          };
+
+          // Set presence as online
+          userPresenceRef.set(presenceData);
+
+          // When user disconnects, update presence
+          userPresenceRef.onDisconnect().set({
+            online: false,
+            lastSeen: firebase.database.ServerValue.TIMESTAMP,
+            displayName: currentUserData?.name || user.displayName || 'Usuário',
+            photoURL: currentUserData?.photoURL || user.photoURL || null
+          });
+        }
+      });
+    }
+
+    // Remove presence when logging out
+    async function removePresence() {
+      if (currentUser) {
+        const userPresenceRef = rtdb.ref('presence/' + currentUser.uid);
+        try {
+          await userPresenceRef.set({
+            online: false,
+            lastSeen: firebase.database.ServerValue.TIMESTAMP,
+            displayName: currentUserData?.name || 'Usuário',
+            photoURL: currentUserData?.photoURL || null
+          });
+        } catch (err) {
+          console.error('Error removing presence:', err);
+        }
+      }
+    }
+
+    // Subscribe to online users count
+    function subscribeToPresence() {
+      const presenceRef = rtdb.ref('presence');
+
+      presenceUnsubscribe = presenceRef.on('value', (snapshot) => {
+        let count = 0;
+        const data = snapshot.val();
+
+        if (data) {
+          Object.keys(data).forEach(uid => {
+            if (data[uid].online === true) {
+              count++;
+            }
+          });
+        }
+
+        onlineUsersCount = count;
+        updateOnlineCount(count);
+      });
+    }
+
+    // Update online count in UI
+    function updateOnlineCount(count) {
+      const countEl = document.getElementById('onlineCount');
+      if (countEl) {
+        countEl.textContent = count;
+      }
+    }
+
+    // Unsubscribe from presence
+    function unsubscribeFromPresence() {
+      if (presenceUnsubscribe) {
+        rtdb.ref('presence').off('value', presenceUnsubscribe);
+        presenceUnsubscribe = null;
+      }
+    }
+
+    // ==================== END PRESENCE SYSTEM ====================
 
     // Toast notification
     function showToast(message, type = 'success') {
@@ -2523,6 +2962,24 @@
       const navContainer = document.getElementById('viewerNav');
 
       slidesContainer.innerHTML = '<div class="viewer-slide"><img class="viewer-image" src="' + imageURL + '" alt="Imagem da conversa"></div>';
+      navContainer.innerHTML = '';
+      document.getElementById('viewerCounter').textContent = '1 / 1';
+      document.getElementById('prevBtn').style.display = 'none';
+      document.getElementById('nextBtn').style.display = 'none';
+
+      viewer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Open profile image in full screen viewer
+    function openProfileImage(imageURL) {
+      if (!imageURL) return;
+
+      const viewer = document.getElementById('imageViewer');
+      const slidesContainer = document.getElementById('viewerSlides');
+      const navContainer = document.getElementById('viewerNav');
+
+      slidesContainer.innerHTML = '<div class="viewer-slide"><img class="viewer-image" src="' + imageURL + '" alt="Foto do perfil"></div>';
       navContainer.innerHTML = '';
       document.getElementById('viewerCounter').textContent = '1 / 1';
       document.getElementById('prevBtn').style.display = 'none';
@@ -2740,6 +3197,10 @@
     // Handle Logout
     async function handleLogout() {
       try {
+        // Remove presence before logout
+        await removePresence();
+        unsubscribeFromPresence();
+
         if (postsUnsubscribe) {
           postsUnsubscribe();
           postsUnsubscribe = null;
@@ -2835,7 +3296,15 @@
         subscribeToMessages();
         subscribeToGallery();
         updateProfileStats();
+
+        // Setup presence system
+        setupPresence(user);
+        subscribeToPresence();
       } else {
+        // Remove presence before logging out
+        removePresence();
+        unsubscribeFromPresence();
+
         currentUser = null;
         currentUserData = null;
         if (postsUnsubscribe) {
@@ -2859,6 +3328,7 @@
           galleryUnsubscribe = null;
         }
         galleryPhotos = [];
+        updateOnlineCount(0);
         showScreen('login');
       }
     });
@@ -3041,6 +3511,7 @@
         const longPressAttr = isSent
           ? 'data-deletable="true" data-msg-id="' + msg.id + '"'
           : '';
+        const senderAttr = 'data-sender-id="' + escapeHtml(msg.senderId) + '"';
         const imageHtml = msg.imageURL
           ? '<img class="chat-message-image" src="' + escapeHtml(msg.imageURL) + '" alt="Imagem" onclick="openChatImage(\'' + escapeHtml(msg.imageURL) + '\')">'
           : '';
@@ -3049,7 +3520,7 @@
           : '';
 
         return '<div class="chat-message ' + (isSent ? 'sent' : '') + '" data-message-id="' + msg.id + '">' +
-          '<div class="chat-avatar-small" ' + longPressAttr + '>' + avatarContent + '</div>' +
+          '<div class="chat-avatar-small" ' + longPressAttr + ' ' + senderAttr + '>' + avatarContent + '</div>' +
           '<div class="chat-bubble-wrapper">' +
             '<div class="chat-bubble">' +
               '<div class="chat-sender">' + escapeHtml(msg.senderName || 'Usuário') + '</div>' +
@@ -3063,6 +3534,9 @@
 
       // Setup long-press handlers for deletable avatars
       setupLongPressHandlers();
+
+      // Setup click handlers for avatar profile view
+      setupAvatarClickHandlers();
     }
 
     // Long-press handler for deleting messages
@@ -3106,6 +3580,134 @@
         longPressTimer = null;
       }
     }
+
+    // Setup click handlers for avatar profile view
+    function setupAvatarClickHandlers() {
+      const avatars = document.querySelectorAll('.chat-avatar-small[data-sender-id]');
+
+      avatars.forEach(avatar => {
+        avatar.addEventListener('click', handleAvatarClick);
+      });
+    }
+
+    function handleAvatarClick(e) {
+      const avatar = e.currentTarget;
+      const senderId = avatar.dataset.senderId;
+
+      // If long press is in progress, don't show profile
+      if (longPressTimer) return;
+
+      if (senderId) {
+        showUserProfile(senderId);
+      }
+    }
+
+    // Show user profile modal
+    async function showUserProfile(userId) {
+      const modal = document.getElementById('userProfileModal');
+      const content = document.getElementById('userProfileContent');
+
+      // Show loading state
+      content.innerHTML = '<div class="user-profile-loading"><i class="fas fa-spinner"></i><span>Carregando perfil...</span></div>';
+      modal.classList.add('active');
+
+      try {
+        // Fetch user data from Firestore
+        const userDoc = await db.collection('users').doc(userId).get();
+
+        if (!userDoc.exists) {
+          content.innerHTML = '<div class="user-profile-loading"><i class="fas fa-user-slash"></i><span>Usuário não encontrado</span></div>';
+          return;
+        }
+
+        const userData = userDoc.data();
+
+        // Check if user is online from presence
+        let isOnline = false;
+        try {
+          const presenceSnapshot = await rtdb.ref('presence/' + userId).once('value');
+          const presenceData = presenceSnapshot.val();
+          isOnline = presenceData && presenceData.online === true;
+        } catch (err) {
+          console.error('Error checking presence:', JSON.stringify(err));
+        }
+
+        // Count user posts
+        let postsCount = 0;
+        try {
+          const postsSnapshot = await db.collection('posts').where('authorId', '==', userId).get();
+          postsCount = postsSnapshot.size;
+        } catch (err) {
+          console.error('Error counting posts:', JSON.stringify(err));
+        }
+
+        // Count user likes received
+        let likesCount = 0;
+        try {
+          const userPostsSnapshot = await db.collection('posts').where('authorId', '==', userId).get();
+          userPostsSnapshot.forEach(doc => {
+            const postData = doc.data();
+            likesCount += postData.likes || 0;
+          });
+        } catch (err) {
+          console.error('Error counting likes:', JSON.stringify(err));
+        }
+
+        // Build profile HTML
+        const hasPhoto = userData.photoURL ? true : false;
+        const avatarClickAttr = hasPhoto ? 'onclick="openProfileImage(\'' + escapeHtml(userData.photoURL) + '\')"' : '';
+        const avatarContent = hasPhoto
+          ? '<img src="' + escapeHtml(userData.photoURL) + '" alt="Avatar">'
+          : getInitials(userData.name);
+
+        const statusClass = isOnline ? '' : 'offline';
+        const statusText = isOnline ? 'Online' : 'Offline';
+
+        // Build birthdate HTML if exists
+        let birthdateHtml = '';
+        if (userData.birthdate) {
+          const age = calculateAge(userData.birthdate);
+          birthdateHtml = '<p class="user-profile-birth"><i class="fas fa-birthday-cake"></i>' + formatDate(userData.birthdate) + ' • ' + age + ' Anos</p>';
+        }
+
+        content.innerHTML =
+          '<div class="user-profile-avatar" ' + avatarClickAttr + '>' + avatarContent + '</div>' +
+          '<h2 class="user-profile-name">' + escapeHtml(userData.name || 'Usuário') + '</h2>' +
+          '<p class="user-profile-username">@' + escapeHtml(userData.username || userData.email?.split('@')[0] || 'usuario') + '</p>' +
+          '<p class="user-profile-email">' + escapeHtml(userData.email || '') + '</p>' +
+          birthdateHtml +
+          '<div class="user-profile-status ' + statusClass + '">' +
+            '<span class="user-profile-status-dot"></span>' +
+            '<span>' + statusText + '</span>' +
+          '</div>' +
+          '<div class="user-profile-stats">' +
+            '<div class="user-profile-stat">' +
+              '<div class="user-profile-stat-value">' + postsCount + '</div>' +
+              '<div class="user-profile-stat-label">Postagens</div>' +
+            '</div>' +
+            '<div class="user-profile-stat">' +
+              '<div class="user-profile-stat-value">' + likesCount + '</div>' +
+              '<div class="user-profile-stat-label">Curtidas</div>' +
+            '</div>' +
+          '</div>';
+
+      } catch (error) {
+        console.error('Error fetching user profile:', JSON.stringify(error));
+        content.innerHTML = '<div class="user-profile-loading"><i class="fas fa-exclamation-triangle"></i><span>Erro ao carregar perfil</span></div>';
+      }
+    }
+
+    // Close user profile modal
+    function closeUserProfileModal() {
+      document.getElementById('userProfileModal').classList.remove('active');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('userProfileModal').addEventListener('click', (e) => {
+      if (e.target.id === 'userProfileModal') {
+        closeUserProfileModal();
+      }
+    });
 
     // Send message to Realtime Database
     async function sendMessage() {
@@ -3657,27 +4259,98 @@
       chatInputEl.style.height = Math.min(chatInputEl.scrollHeight, 120) + 'px';
     });
 
-    async function uploadGalleryPhoto(input) {
-      if (input.files && input.files[0]) {
+    async function uploadGalleryPhotos(input) {
+      if (input.files && input.files.length > 0) {
         if (!currentUser) {
           showToast('Faça login para enviar fotos', 'error');
           input.value = '';
           return;
         }
 
-        showToast('Enviando foto...');
-        const url = await uploadToImgBB(input.files[0]);
-        if (url) {
-          const saved = await savePhotoToGallery(url);
-          if (saved) {
-            showToast('Foto adicionada!');
-          } else {
-            showToast('Erro ao salvar foto no banco', 'error');
+        const files = Array.from(input.files);
+        const total = files.length;
+        let uploaded = 0;
+        let errors = 0;
+
+        // Mostrar modal de progresso
+        showUploadProgressModal(total);
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          updateUploadProgress(i + 1, total, file.name);
+
+          try {
+            const url = await uploadToImgBB(file);
+            if (url) {
+              const saved = await savePhotoToGallery(url);
+              if (saved) {
+                uploaded++;
+              } else {
+                errors++;
+              }
+            } else {
+              errors++;
+            }
+          } catch (e) {
+            console.error('Erro ao enviar foto:', JSON.stringify(e));
+            errors++;
           }
-        } else {
-          showToast('Erro ao enviar foto', 'error');
         }
+
+        closeUploadProgressModal();
+
+        if (errors === 0) {
+          showToast(`${uploaded} foto${uploaded > 1 ? 's' : ''} adicionada${uploaded > 1 ? 's' : ''}!`);
+        } else if (uploaded > 0) {
+          showToast(`${uploaded} enviada${uploaded > 1 ? 's' : ''}, ${errors} com erro`, 'error');
+        } else {
+          showToast('Erro ao enviar as fotos', 'error');
+        }
+
         input.value = '';
+      }
+    }
+
+    // Modal de progresso de upload
+    function showUploadProgressModal(total) {
+      const existingModal = document.getElementById('uploadProgressModal');
+      if (existingModal) existingModal.remove();
+
+      const modal = document.createElement('div');
+      modal.id = 'uploadProgressModal';
+      modal.className = 'upload-progress-modal active';
+      modal.innerHTML = `
+        <div class="upload-progress-card">
+          <div class="upload-progress-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <h3 class="upload-progress-title">Enviando fotos</h3>
+          <p class="upload-progress-status" id="uploadProgressStatus">Preparando...</p>
+          <div class="upload-progress-bar-container">
+            <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%"></div>
+          </div>
+          <p class="upload-progress-count" id="uploadProgressCount">0 de ${total}</p>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    function updateUploadProgress(current, total, fileName) {
+      const percent = Math.round((current / total) * 100);
+      const progressBar = document.getElementById('uploadProgressBar');
+      const progressStatus = document.getElementById('uploadProgressStatus');
+      const progressCount = document.getElementById('uploadProgressCount');
+
+      if (progressBar) progressBar.style.width = percent + '%';
+      if (progressStatus) progressStatus.textContent = `Enviando: ${fileName.substring(0, 20)}${fileName.length > 20 ? '...' : ''}`;
+      if (progressCount) progressCount.textContent = `${current} de ${total}`;
+    }
+
+    function closeUploadProgressModal() {
+      const modal = document.getElementById('uploadProgressModal');
+      if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.remove(), 300);
       }
     }
 
