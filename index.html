@@ -511,6 +511,16 @@
       font-weight: 700;
       border: 3px solid rgba(255,255,255,0.4);
       overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .sidebar-avatar:hover {
+      border-color: rgba(255,255,255,0.7);
+    }
+
+    .sidebar-avatar:active {
+      transform: scale(0.95);
     }
 
     .sidebar-avatar img {
@@ -760,6 +770,82 @@
       object-fit: cover;
     }
 
+    /* Post Images Grid */
+    .post-images-grid {
+      display: grid;
+      gap: 4px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .post-images-grid.grid-1 {
+      grid-template-columns: 1fr;
+    }
+
+    .post-images-grid.grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .post-images-grid.grid-3 {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .post-images-grid.grid-3 .post-grid-item:first-child {
+      grid-row: span 2;
+    }
+
+    .post-images-grid.grid-more {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .post-grid-item {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .post-images-grid.grid-1 .post-grid-item {
+      aspect-ratio: 16/9;
+    }
+
+    .post-images-grid.grid-2 .post-grid-item {
+      aspect-ratio: 1;
+    }
+
+    .post-images-grid.grid-3 .post-grid-item:first-child {
+      aspect-ratio: auto;
+    }
+
+    .post-grid-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+    }
+
+    .post-grid-item:active img {
+      transform: scale(1.02);
+    }
+
+    .post-grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
     .post-actions {
       display: flex;
       gap: 12px;
@@ -787,6 +873,257 @@
 
     .post-action.liked {
       color: var(--danger);
+    }
+
+    /* Comments Section */
+    .comments-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .comments-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+      width: 100%;
+      text-align: left;
+    }
+
+    .comments-toggle:hover,
+    .comments-toggle:active {
+      background: var(--bg-elevated);
+      color: var(--primary);
+    }
+
+    .comments-toggle i {
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    .comments-toggle.expanded i {
+      transform: rotate(180deg);
+    }
+
+    .comments-list {
+      display: none;
+      margin-top: 12px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .comments-list.show {
+      display: block;
+    }
+
+    .comment-item {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .comment-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .comment-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0D0D0D;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .comment-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .comment-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .comment-author {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .comment-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .comment-text {
+      font-size: 14px;
+      line-height: 1.4;
+      color: var(--text-primary);
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .comment-delete {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    .comment-delete:hover,
+    .comment-delete:active {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--danger);
+    }
+
+    .comment-input-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      align-items: flex-end;
+    }
+
+    .comment-input-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0D0D0D;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .comment-input-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .comment-input-wrapper {
+      flex: 1;
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .comment-input {
+      flex: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-size: 14px;
+      color: var(--text-primary);
+      font-family: inherit;
+      resize: none;
+      min-height: 40px;
+      max-height: 100px;
+      overflow-y: auto;
+      line-height: 1.4;
+    }
+
+    .comment-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .comment-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .comment-send-btn {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border: none;
+      border-radius: 50%;
+      color: #0D0D0D;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .comment-send-btn:active {
+      transform: scale(0.95);
+    }
+
+    .comment-send-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .comments-empty {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .comments-empty i {
+      font-size: 24px;
+      margin-bottom: 8px;
+      display: block;
+      opacity: 0.5;
+    }
+
+    /* Delete Comment Confirm Modal */
+    .delete-comment-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .delete-comment-modal-overlay.active {
+      display: flex;
     }
 
     /* New Post */
@@ -823,6 +1160,47 @@
 
     .new-post-preview.show {
       display: block;
+    }
+
+    .new-post-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+    }
+
+    .new-post-preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .new-post-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .new-post-preview-item-remove {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 24px;
+      height: 24px;
+      background: rgba(0, 0, 0, 0.7);
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .new-post-preview-item-remove:hover {
+      background: var(--danger);
     }
 
     .new-post-preview img {
@@ -939,67 +1317,6 @@
       opacity: 0.5;
     }
 
-    /* Gallery Page */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-    }
-
-    .gallery-item {
-      aspect-ratio: 1;
-      background: var(--bg-card);
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .gallery-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
-      color: var(--text-muted);
-      font-size: 24px;
-    }
-
-    .gallery-upload {
-      background: var(--bg-card);
-      border: 2px dashed var(--border);
-      border-radius: 16px;
-      padding: 40px 20px;
-      text-align: center;
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .gallery-upload:active {
-      border-color: var(--primary);
-      background: var(--bg-elevated);
-    }
-
-    .gallery-upload i {
-      font-size: 40px;
-      color: var(--primary);
-      margin-bottom: 12px;
-    }
-
-    .gallery-upload p {
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
-
     /* Chat Page */
     .chat-container {
       display: flex;
@@ -1033,17 +1350,7 @@
       color: #0D0D0D;
       flex-shrink: 0;
       overflow: hidden;
-      cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .chat-avatar-small:hover {
-      transform: scale(1.08);
-      box-shadow: 0 2px 12px rgba(212, 168, 83, 0.4);
-    }
-
-    .chat-avatar-small:active {
-      transform: scale(0.98);
     }
 
     .chat-avatar-small img {
@@ -1080,6 +1387,17 @@
       font-weight: 600;
       color: var(--primary);
       margin-bottom: 4px;
+      cursor: pointer;
+      display: inline-block;
+      transition: opacity 0.2s;
+    }
+
+    .chat-sender:hover {
+      opacity: 0.8;
+    }
+
+    .chat-sender:active {
+      opacity: 0.6;
     }
 
     .chat-message.sent .chat-sender {
@@ -1488,12 +1806,226 @@
       color: #0D0D0D;
       overflow: hidden;
       position: relative;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .profile-avatar-large:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(212, 168, 83, 0.4);
+    }
+
+    .profile-avatar-large:active {
+      transform: scale(0.98);
     }
 
     .profile-avatar-large img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+    }
+
+    /* Profile Avatar Options Menu */
+    .avatar-options-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1500;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .avatar-options-overlay.active {
+      display: flex;
+    }
+
+    .avatar-options-menu {
+      background: var(--bg-card);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+      box-shadow: 0 -10px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .avatar-options-header {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .avatar-options-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .avatar-options-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .avatar-option-btn {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 18px 24px;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 16px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    .avatar-option-btn:hover,
+    .avatar-option-btn:active {
+      background: var(--bg-elevated);
+    }
+
+    .avatar-option-btn i {
+      width: 40px;
+      height: 40px;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--primary);
+    }
+
+    .avatar-option-btn:hover i,
+    .avatar-option-btn:active i {
+      background: var(--primary);
+      color: #0D0D0D;
+    }
+
+    .avatar-option-text {
+      flex: 1;
+    }
+
+    .avatar-option-text span {
+      display: block;
+      font-weight: 500;
+    }
+
+    .avatar-option-text small {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .avatar-options-cancel {
+      display: block;
+      width: 100%;
+      padding: 18px;
+      background: none;
+      border: none;
+      border-top: 1px solid var(--border);
+      color: var(--danger);
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .avatar-options-cancel:hover,
+    .avatar-options-cancel:active {
+      background: rgba(248, 113, 113, 0.1);
+    }
+
+    /* Profile Image Viewer */
+    .profile-image-viewer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 2000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-image-viewer.active {
+      display: flex;
+    }
+
+    .profile-image-viewer-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+      z-index: 10;
+    }
+
+    .profile-image-viewer-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .profile-image-viewer-close {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .profile-image-viewer-close:active {
+      background: rgba(255,255,255,0.3);
+      transform: scale(0.95);
+    }
+
+    .profile-image-viewer img {
+      max-width: 90vw;
+      max-height: 80vh;
+      border-radius: 12px;
+      object-fit: contain;
+    }
+
+    .profile-image-viewer-placeholder {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+      font-weight: 700;
+      color: #0D0D0D;
     }
 
     .profile-name {
@@ -1534,6 +2066,189 @@
     .profile-stat-label {
       font-size: 12px;
       color: var(--text-muted);
+    }
+
+    /* My Profile Posts Section */
+    .my-profile-posts-section {
+      margin-top: 20px;
+    }
+
+    .my-profile-posts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .my-profile-posts-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .my-profile-posts-title i {
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+    .my-profile-posts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .my-profile-post-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .my-profile-post-card:hover {
+      border-color: var(--primary);
+    }
+
+    .my-profile-post-content {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .my-profile-post-images {
+      display: grid;
+      gap: 4px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .my-profile-post-images.grid-1 {
+      grid-template-columns: 1fr;
+    }
+
+    .my-profile-post-images.grid-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .my-profile-post-images.grid-3 {
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .my-profile-post-images.grid-3 .my-profile-post-img:first-child {
+      grid-row: span 2;
+    }
+
+    .my-profile-post-images.grid-more {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .my-profile-post-img {
+      position: relative;
+      aspect-ratio: 1;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .my-profile-post-images.grid-1 .my-profile-post-img {
+      aspect-ratio: 16/9;
+    }
+
+    .my-profile-post-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.2s;
+    }
+
+    .my-profile-post-img:active img {
+      transform: scale(1.02);
+    }
+
+    .my-profile-post-img-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .my-profile-post-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .my-profile-post-meta span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .my-profile-post-meta i {
+      font-size: 14px;
+    }
+
+    .my-profile-post-meta .fa-heart {
+      color: var(--danger);
+    }
+
+    .my-profile-posts-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    .my-profile-posts-empty i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--primary);
+      opacity: 0.5;
+    }
+
+    .my-profile-posts-empty p {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .my-profile-posts-empty small {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .my-profile-posts-loading {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--text-muted);
+    }
+
+    .my-profile-posts-loading i {
+      font-size: 28px;
+      margin-bottom: 12px;
+      animation: spin 1s linear infinite;
+      color: var(--primary);
     }
 
     /* Footer Navigation */
@@ -1591,6 +2306,64 @@
     }
 
     .nav-item span {
+      font-size: 11px;
+      font-weight: 500;
+      pointer-events: none;
+    }
+
+    .nav-avatar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 16px;
+      min-width: 60px;
+      min-height: 56px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 12px;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .nav-avatar:active {
+      transform: scale(0.95);
+    }
+
+    .nav-avatar-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0D0D0D;
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .nav-avatar:hover .nav-avatar-img,
+    .nav-avatar:active .nav-avatar-img {
+      border-color: var(--primary);
+    }
+
+    .nav-avatar-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .nav-avatar span {
       font-size: 11px;
       font-weight: 500;
       pointer-events: none;
@@ -2039,7 +2812,9 @@
       border-radius: 24px;
       padding: 30px 24px;
       width: 100%;
-      max-width: 320px;
+      max-width: 400px;
+      max-height: 85vh;
+      overflow-y: auto;
       text-align: center;
       animation: modalIn 0.3s ease;
       border: 1px solid var(--border);
@@ -2175,7 +2950,7 @@
     .user-profile-stats {
       display: flex;
       justify-content: center;
-      gap: 24px;
+      gap: 20px;
       padding-top: 16px;
       border-top: 1px solid var(--border);
     }
@@ -2211,9 +2986,721 @@
       animation: spin 1s linear infinite;
     }
 
+    /* User Profile Posts Section */
+    .user-profile-posts-section {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .user-profile-posts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .user-profile-posts-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .user-profile-posts-title i {
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .user-profile-posts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .user-profile-posts-container::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .user-profile-posts-container::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 2px;
+    }
+
+    .user-profile-post-card {
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .user-profile-post-card:hover {
+      background: var(--bg-main);
+    }
+
+    .user-profile-post-content {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .user-profile-post-images {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 4px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .user-profile-post-images img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .user-profile-post-images img:hover {
+      transform: scale(1.05);
+    }
+
+    .user-profile-post-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .user-profile-post-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .user-profile-post-meta i {
+      font-size: 12px;
+    }
+
+    .user-profile-posts-empty {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .user-profile-posts-empty i {
+      font-size: 32px;
+      margin-bottom: 8px;
+      opacity: 0.5;
+      display: block;
+    }
+
+    /* Absences User Cards */
+    .absence-user-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .absence-user-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .absence-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+      color: #0D0D0D;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .absence-user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .absence-user-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .absence-user-name {
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .absence-user-username {
+      font-size: 13px;
+      color: var(--primary);
+    }
+
+    .absence-count-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 14px;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      min-width: 60px;
+    }
+
+    .absence-count-badge.has-absences {
+      background: rgba(248, 113, 113, 0.15);
+    }
+
+    .absence-count-number {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .absence-count-badge.has-absences .absence-count-number {
+      color: var(--danger);
+    }
+
+    .absence-count-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .absence-actions {
+      display: flex;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .absence-action-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .absence-action-btn.add {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--danger);
+    }
+
+    .absence-action-btn.add:active {
+      background: rgba(248, 113, 113, 0.25);
+      transform: scale(0.98);
+    }
+
+    .absence-action-btn.remove {
+      background: rgba(74, 222, 128, 0.15);
+      color: var(--success);
+    }
+
+    .absence-action-btn.remove:active {
+      background: rgba(74, 222, 128, 0.25);
+      transform: scale(0.98);
+    }
+
+    .absence-action-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .absence-action-btn i {
+      font-size: 16px;
+    }
+
+    /* Absence History List */
+    .absence-history-section {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .absence-history-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 10px 0;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .absence-history-toggle:hover {
+      color: var(--primary);
+    }
+
+    .absence-history-toggle i {
+      transition: transform 0.3s;
+    }
+
+    .absence-history-toggle.expanded i {
+      transform: rotate(180deg);
+    }
+
+    .absence-history-list {
+      display: none;
+      margin-top: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .absence-history-list.show {
+      display: block;
+    }
+
+    .absence-history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--bg-elevated);
+      border-radius: 10px;
+      margin-bottom: 6px;
+    }
+
+    .absence-history-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .absence-history-date {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .absence-history-date i {
+      color: var(--danger);
+      font-size: 14px;
+    }
+
+    .absence-history-date-text {
+      font-size: 14px;
+      color: var(--text-primary);
+    }
+
+    .absence-history-reason {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .absence-history-delete {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .absence-history-delete:hover,
+    .absence-history-delete:active {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--danger);
+    }
+
+    /* Add Absence Modal for specific user */
+    .modal-user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      margin-bottom: 16px;
+    }
+
+    .modal-user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 16px;
+      color: #0D0D0D;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .modal-user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-user-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-primary);
+    }
+
+    .modal-user-username {
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    /* Posts Filter */
+    .posts-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 4px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .filter-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .filter-btn:active {
+      transform: scale(0.97);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #0D0D0D;
+      box-shadow: 0 4px 12px rgba(212, 168, 83, 0.3);
+    }
+
+    .filter-btn i {
+      font-size: 16px;
+    }
+
+    .filter-btn span {
+      white-space: nowrap;
+    }
+
+    /* Posts Gallery Grid (for images filter) */
+    .posts-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+    }
+
+    .posts-gallery-item {
+      aspect-ratio: 1;
+      background: var(--bg-card);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .posts-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.2s;
+    }
+
+    .posts-gallery-item:active img {
+      transform: scale(1.05);
+    }
+
+    .posts-gallery-count {
+      text-align: center;
+      padding: 16px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 12px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .posts-gallery-count i {
+      color: var(--primary);
+      margin-right: 8px;
+    }
+
+    /* PIN Security Modal */
+    .pin-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .pin-modal-overlay.active {
+      display: flex;
+    }
+
+    .pin-modal {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 32px 24px;
+      width: 90%;
+      max-width: 340px;
+      text-align: center;
+      animation: pinModalIn 0.3s ease;
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    }
+
+    @keyframes pinModalIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .pin-modal-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+      color: #0D0D0D;
+      box-shadow: 0 8px 24px rgba(212, 168, 83, 0.3);
+    }
+
+    .pin-modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .pin-modal-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+    }
+
+    .pin-display {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .pin-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .pin-dot.filled {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 12px rgba(212, 168, 83, 0.5);
+      transform: scale(1.1);
+    }
+
+    .pin-dot.error {
+      background: var(--danger);
+      border-color: var(--danger);
+      box-shadow: 0 0 12px rgba(248, 113, 113, 0.5);
+      animation: pinShake 0.4s ease;
+    }
+
+    @keyframes pinShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .pin-key {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: none;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      font-size: 28px;
+      font-weight: 600;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      margin: 0 auto;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .pin-key:active {
+      transform: scale(0.92);
+      background: var(--primary);
+      color: #0D0D0D;
+    }
+
+    .pin-key.action {
+      background: transparent;
+      font-size: 20px;
+      color: var(--text-secondary);
+    }
+
+    .pin-key.action:active {
+      background: rgba(212, 168, 83, 0.1);
+      color: var(--primary);
+    }
+
+    .pin-key.empty {
+      visibility: hidden;
+      cursor: default;
+    }
+
+    .pin-error-msg {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 16px;
+      min-height: 20px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .pin-error-msg.show {
+      opacity: 1;
+    }
+
+    .pin-modal-cancel {
+      margin-top: 20px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-family: 'Outfit', sans-serif;
+      cursor: pointer;
+      padding: 10px 20px;
+      transition: color 0.2s;
+    }
+
+    .pin-modal-cancel:hover,
+    .pin-modal-cancel:active {
+      color: var(--text-secondary);
+    }
+
   </style>
 </head>
 <body>
+  <!-- PIN Security Modal -->
+  <div class="pin-modal-overlay" id="pinModal">
+    <div class="pin-modal">
+      <div class="pin-modal-icon">
+        <i class="fas fa-lock" id="pinModalIcon"></i>
+      </div>
+      <h2 class="pin-modal-title" id="pinModalTitle">Acesso Restrito</h2>
+      <p class="pin-modal-subtitle" id="pinModalSubtitle">Digite o PIN para acessar</p>
+
+      <div class="pin-display">
+        <div class="pin-dot" id="pinDot1"></div>
+        <div class="pin-dot" id="pinDot2"></div>
+        <div class="pin-dot" id="pinDot3"></div>
+        <div class="pin-dot" id="pinDot4"></div>
+      </div>
+
+      <div class="pin-keypad">
+        <button class="pin-key" data-key="1">1</button>
+        <button class="pin-key" data-key="2">2</button>
+        <button class="pin-key" data-key="3">3</button>
+        <button class="pin-key" data-key="4">4</button>
+        <button class="pin-key" data-key="5">5</button>
+        <button class="pin-key" data-key="6">6</button>
+        <button class="pin-key" data-key="7">7</button>
+        <button class="pin-key" data-key="8">8</button>
+        <button class="pin-key" data-key="9">9</button>
+        <button class="pin-key empty"></button>
+        <button class="pin-key" data-key="0">0</button>
+        <button class="pin-key action" data-key="delete"><i class="fas fa-backspace"></i></button>
+      </div>
+
+      <p class="pin-error-msg" id="pinErrorMsg">PIN incorreto. Tente novamente.</p>
+
+      <button class="pin-modal-cancel" onclick="closePinModal()">Cancelar</button>
+    </div>
+  </div>
+
   <div class="app-container">
     <!-- Login Screen -->
     <div class="auth-screen active" id="loginScreen">
@@ -2346,7 +3833,7 @@
           <i class="fas fa-times"></i>
         </button>
         <div class="sidebar-header">
-          <div class="sidebar-avatar" id="sidebarAvatar">EU</div>
+          <div class="sidebar-avatar" id="sidebarAvatar" onclick="openCurrentUserProfileModal()">EU</div>
           <div class="sidebar-user-name" id="sidebarName">Usuário</div>
           <div class="sidebar-user-email" id="sidebarEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="daafa9afbba8b3b59abdb7bbb3b6f4b9b5b7">[email&#160;protected]</a></div>
           <div class="sidebar-user-status">Online</div>
@@ -2355,10 +3842,6 @@
           <button class="sidebar-menu-item sidebar-nav-item" data-page="posts">
             <i class="fas fa-newspaper"></i>
             <span>Postagens</span>
-          </button>
-          <button class="sidebar-menu-item sidebar-nav-item" data-page="gallery">
-            <i class="fas fa-images"></i>
-            <span>Galeria</span>
           </button>
           <button class="sidebar-menu-item sidebar-nav-item" data-page="chat">
             <i class="fas fa-comments"></i>
@@ -2373,9 +3856,9 @@
             <i class="fas fa-user"></i>
             <span>Perfil</span>
           </button>
-          <button class="sidebar-menu-item" onclick="openGiftsPage()">
-            <i class="fas fa-gift"></i>
-            <span>Presentes</span>
+          <button class="sidebar-menu-item" onclick="openAbsencesPage()">
+            <i class="fas fa-calendar-xmark"></i>
+            <span>Faltas</span>
           </button>
           <div class="sidebar-menu-divider"></div>
           <button class="sidebar-menu-item" onclick="closeSidebar()">
@@ -2422,17 +3905,14 @@
           <div class="new-post-card">
             <textarea class="new-post-input" id="newPostInput" placeholder="O que você quer compartilhar com o grupo?"></textarea>
             <div class="new-post-preview" id="newPostPreview">
-              <img id="newPostPreviewImg" src="" alt="Preview">
-              <button class="new-post-preview-remove" onclick="removePostImage()">
-                <i class="fas fa-times"></i>
-              </button>
+              <div class="new-post-preview-grid" id="newPostPreviewGrid"></div>
             </div>
             <div class="new-post-actions">
               <div class="new-post-icons">
                 <button class="new-post-icon" onclick="document.getElementById('postImageInput').click()">
-                  <i class="fas fa-image"></i>
+                  <i class="fas fa-images"></i>
                 </button>
-                <input type="file" id="postImageInput" accept="image/*" hidden onchange="previewPostImage(this)">
+                <input type="file" id="postImageInput" accept="image/*" multiple hidden onchange="previewPostImages(this)">
               </div>
               <button class="btn-primary" id="publishBtn" onclick="createPost()">
                 <span class="btn-text">Publicar</span>
@@ -2441,26 +3921,33 @@
             </div>
           </div>
 
+          <!-- Posts Filter -->
+          <div class="posts-filter">
+            <button class="filter-btn active" id="filterAll" onclick="setPostsFilter('all')">
+              <i class="fas fa-layer-group"></i>
+              <span>Todas</span>
+            </button>
+            <button class="filter-btn" id="filterImages" onclick="setPostsFilter('images')">
+              <i class="fas fa-images"></i>
+              <span>Galeria</span>
+            </button>
+          </div>
+
           <div id="postsContainer">
             <div class="posts-loading">
               <i class="fas fa-spinner"></i>
               <span>Carregando postagens...</span>
             </div>
           </div>
-        </div>
 
-        <!-- Gallery Page -->
-        <div class="page" id="galleryPage">
-          <div class="section-title">
-            <i class="fas fa-images"></i>
-            Galeria do Grupo
+          <!-- Posts Gallery Grid (hidden by default, shown when filtering by images) -->
+          <div id="postsGalleryContainer" style="display: none;">
+            <div class="posts-gallery-count" id="postsGalleryCount">
+              <i class="fas fa-images"></i>
+              <span>0 fotos nas postagens</span>
+            </div>
+            <div class="posts-gallery-grid" id="postsGalleryGrid"></div>
           </div>
-          <div class="gallery-upload" onclick="document.getElementById('galleryImageInput').click()">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>Toque para adicionar fotos</p>
-          </div>
-          <input type="file" id="galleryImageInput" accept="image/*" multiple hidden onchange="uploadGalleryPhotos(this)">
-          <div class="gallery-grid" id="galleryGrid"></div>
         </div>
 
         <!-- Chat Page -->
@@ -2522,7 +4009,8 @@
             Meu Perfil
           </div>
           <div class="profile-header-card">
-            <div class="profile-avatar-large" id="profileAvatar">EU</div>
+            <div class="profile-avatar-large" id="profileAvatar" onclick="openAvatarOptions()">EU</div>
+            <input type="file" id="profileAvatarInput" accept="image/*" hidden onchange="handleProfileAvatarChange(this)">
             <h2 class="profile-name" id="profileName">Usuário</h2>
             <p class="profile-username" id="profileUsername">@usuario</p>
             <p class="profile-birth" id="profileBirth">26/04/2002 • 23 Anos</p>
@@ -2536,46 +4024,39 @@
                 <div class="profile-stat-label">Curtidas</div>
               </div>
               <div class="profile-stat">
-                <div class="profile-stat-value">6</div>
-                <div class="profile-stat-label">Presentes</div>
+                <div class="profile-stat-value" id="profileAbsences">0</div>
+                <div class="profile-stat-label">Faltas</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- My Posts Section -->
+          <div class="my-profile-posts-section">
+            <div class="my-profile-posts-header">
+              <div class="my-profile-posts-title">
+                <i class="fas fa-newspaper"></i>
+                Minhas Publicações
+              </div>
+            </div>
+            <div class="my-profile-posts-container" id="myProfilePostsContainer">
+              <div class="my-profile-posts-loading">
+                <i class="fas fa-spinner"></i>
+                <p>Carregando publicações...</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Gifts Page -->
-        <div class="page" id="giftsPage">
+        <!-- Absences Page -->
+        <div class="page" id="absencesPage">
           <div class="section-title">
-            <i class="fas fa-gift"></i>
-            Presentes
+            <i class="fas fa-calendar-xmark"></i>
+            Controle de Faltas
           </div>
-          <div class="post-card">
-            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #FF6B6B, #FF8E8E); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-heart" style="color: white; font-size: 20px;"></i>
-              </div>
-              <div style="flex: 1;">
-                <div style="font-weight: 600;">Coração de Ouro</div>
-                <div style="font-size: 12px; color: var(--text-muted);">De: Lucas Martins</div>
-              </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
-              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-star" style="color: white; font-size: 20px;"></i>
-              </div>
-              <div style="flex: 1;">
-                <div style="font-weight: 600;">Estrela Brilhante</div>
-                <div style="font-size: 12px; color: var(--text-muted);">De: Ana Paula</div>
-              </div>
-            </div>
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #A78BFA, #8B5CF6); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-gem" style="color: white; font-size: 20px;"></i>
-              </div>
-              <div style="flex: 1;">
-                <div style="font-weight: 600;">Diamante Raro</div>
-                <div style="font-size: 12px; color: var(--text-muted);">De: Carlos Eduardo</div>
-              </div>
+          <div id="absencesUsersContainer">
+            <div class="posts-loading">
+              <i class="fas fa-spinner"></i>
+              <span>Carregando usuários...</span>
             </div>
           </div>
         </div>
@@ -2587,17 +4068,19 @@
           <i class="fas fa-newspaper"></i>
           <span>Postagens</span>
         </button>
-        <button class="nav-item" data-page="gallery">
-          <i class="fas fa-images"></i>
-          <span>Galeria</span>
-        </button>
         <button class="nav-item" data-page="chat">
-          <i class="fas fa-comments"></i>
-          <span>Conversas</span>
+          <i class="fas fa-comments" data-page="chat"></i>
+          <span data-page="chat">Conversas</span>
         </button>
         <button class="nav-item" data-page="vault">
           <i class="fas fa-vault"></i>
           <span>Cofre</span>
+        </button>
+        <button class="nav-avatar" id="navUserAvatar" onclick="openProfilePage()">
+          <div class="nav-avatar-img" id="navAvatarImg">
+            <i class="fas fa-user"></i>
+          </div>
+          <span>Perfil</span>
         </button>
       </nav>
 
@@ -2659,6 +4142,50 @@
         </div>
       </div>
 
+      <!-- Delete Comment Confirm Modal -->
+      <div class="modal-overlay" id="deleteCommentModalOverlay">
+        <div class="modal">
+          <div class="modal-title">Excluir Comentário</div>
+          <p class="modal-text" style="display: block;">Tem certeza que deseja excluir este comentário?</p>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeDeleteCommentModal()">Cancelar</button>
+            <button class="modal-btn danger" id="deleteCommentConfirmBtn">Excluir</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Absence Modal -->
+      <div class="modal-overlay" id="absenceModalOverlay">
+        <div class="modal">
+          <div class="modal-title">Registrar Falta</div>
+          <div class="modal-user-info" id="absenceModalUserInfo" style="display: none;">
+            <div class="modal-user-avatar" id="absenceModalUserAvatar"></div>
+            <div>
+              <div class="modal-user-name" id="absenceModalUserName"></div>
+              <div class="modal-user-username" id="absenceModalUserUsername"></div>
+            </div>
+          </div>
+          <input type="date" class="modal-input" id="absenceDate" style="color-scheme: dark;">
+          <input type="text" class="modal-input" id="absenceReason" placeholder="Motivo (opcional)">
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeAbsenceModal()">Cancelar</button>
+            <button class="modal-btn confirm" onclick="saveAbsenceForUser()">Registrar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Delete Absence Confirm Modal -->
+      <div class="modal-overlay" id="deleteAbsenceModalOverlay">
+        <div class="modal">
+          <div class="modal-title">Remover Falta</div>
+          <p class="modal-text" style="display: block;">Tem certeza que deseja remover este registro de falta?</p>
+          <div class="modal-actions">
+            <button class="modal-btn cancel" onclick="closeDeleteAbsenceModal()">Cancelar</button>
+            <button class="modal-btn danger" id="deleteAbsenceConfirmBtn">Remover</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Image Viewer -->
       <div class="image-viewer" id="imageViewer">
         <div class="viewer-header">
@@ -2702,6 +4229,42 @@
       <i class="fas fa-check-circle"></i>
       <span id="toastText">Mensagem</span>
     </div>
+
+    <!-- Avatar Options Menu -->
+    <div class="avatar-options-overlay" id="avatarOptionsOverlay" onclick="closeAvatarOptions(event)">
+      <div class="avatar-options-menu" onclick="event.stopPropagation()">
+        <div class="avatar-options-header">
+          <div class="avatar-options-title">Foto do Perfil</div>
+          <div class="avatar-options-subtitle">O que você deseja fazer?</div>
+        </div>
+        <button class="avatar-option-btn" onclick="viewProfilePhoto()">
+          <i class="fas fa-eye"></i>
+          <div class="avatar-option-text">
+            <span>Visualizar foto</span>
+            <small>Ver sua foto de perfil em tela cheia</small>
+          </div>
+        </button>
+        <button class="avatar-option-btn" onclick="updateProfilePhoto()">
+          <i class="fas fa-camera"></i>
+          <div class="avatar-option-text">
+            <span>Atualizar foto</span>
+            <small>Escolher uma nova foto de perfil</small>
+          </div>
+        </button>
+        <button class="avatar-options-cancel" onclick="closeAvatarOptions()">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Profile Image Viewer -->
+    <div class="profile-image-viewer" id="profileImageViewer">
+      <div class="profile-image-viewer-header">
+        <span class="profile-image-viewer-title">Minha Foto</span>
+        <button class="profile-image-viewer-close" onclick="closeProfileImageViewer()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="profileImageViewerContent"></div>
+    </div>
   </div>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -2731,14 +4294,19 @@
     let currentUserData = null;
     let postsUnsubscribe = null;
     let vaultUnsubscribe = null;
+
+    // Vault PIN Security
+    let vaultAuthenticated = false;
+    const VAULT_PIN = '5665';
+    let currentPinInput = '';
+    let pendingVaultNavigation = null;
     let transactionsUnsubscribe = null;
     let messagesUnsubscribe = null;
-    let galleryUnsubscribe = null;
     let presenceUnsubscribe = null;
     let onlineUsersCount = 0;
 
-    // Post image file
-    let postImageFile = null;
+    // Post image files (multiple)
+    let postImageFiles = [];
 
     // Vault data
     let vaultBalance = 0;
@@ -2915,22 +4483,54 @@
       }
     }
 
-    // Post image preview
-    function previewPostImage(input) {
-      if (input.files && input.files[0]) {
-        postImageFile = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('newPostPreviewImg').src = e.target.result;
-          document.getElementById('newPostPreview').classList.add('show');
-        };
-        reader.readAsDataURL(input.files[0]);
+    // Post images preview (multiple)
+    function previewPostImages(input) {
+      if (input.files && input.files.length > 0) {
+        const newFiles = Array.from(input.files);
+        postImageFiles = [...postImageFiles, ...newFiles];
+        renderPostPreviewGrid();
       }
     }
 
-    function removePostImage() {
-      postImageFile = null;
+    function renderPostPreviewGrid() {
+      const grid = document.getElementById('newPostPreviewGrid');
+      const preview = document.getElementById('newPostPreview');
+
+      if (postImageFiles.length === 0) {
+        preview.classList.remove('show');
+        grid.innerHTML = '';
+        return;
+      }
+
+      preview.classList.add('show');
+      grid.innerHTML = '';
+
+      postImageFiles.forEach((file, index) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const item = document.createElement('div');
+          item.className = 'new-post-preview-item';
+          item.innerHTML = '<img src="' + e.target.result + '" alt="Preview">' +
+            '<button class="new-post-preview-item-remove" onclick="removePostImageAt(' + index + ')">' +
+            '<i class="fas fa-times"></i></button>';
+          grid.appendChild(item);
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function removePostImageAt(index) {
+      postImageFiles.splice(index, 1);
+      renderPostPreviewGrid();
+      if (postImageFiles.length === 0) {
+        document.getElementById('postImageInput').value = '';
+      }
+    }
+
+    function removeAllPostImages() {
+      postImageFiles = [];
       document.getElementById('newPostPreview').classList.remove('show');
+      document.getElementById('newPostPreviewGrid').innerHTML = '';
       document.getElementById('postImageInput').value = '';
     }
 
@@ -3217,6 +4817,8 @@
           messagesUnsubscribe();
           messagesUnsubscribe = null;
         }
+        // Reset vault authentication on logout
+        vaultAuthenticated = false;
         await auth.signOut();
         closeSidebar();
         showToast('Você saiu da conta');
@@ -3254,6 +4856,16 @@
       }
       document.getElementById('profileName').textContent = name;
       document.getElementById('profileUsername').textContent = '@' + (userData.username || email);
+
+      // Footer Nav Avatar
+      const navAvatarImg = document.getElementById('navAvatarImg');
+      if (navAvatarImg) {
+        if (photoURL) {
+          navAvatarImg.innerHTML = '<img src="' + photoURL + '" alt="Avatar">';
+        } else {
+          navAvatarImg.innerHTML = initials;
+        }
+      }
 
       if (birthdate) {
         const age = calculateAge(birthdate);
@@ -3294,7 +4906,6 @@
         subscribeToVault();
         subscribeToTransactions();
         subscribeToMessages();
-        subscribeToGallery();
         updateProfileStats();
 
         // Setup presence system
@@ -3323,11 +4934,6 @@
           messagesUnsubscribe();
           messagesUnsubscribe = null;
         }
-        if (galleryUnsubscribe) {
-          galleryUnsubscribe();
-          galleryUnsubscribe = null;
-        }
-        galleryPhotos = [];
         updateOnlineCount(0);
         showScreen('login');
       }
@@ -3352,7 +4958,8 @@
             posts.push({ id: doc.id, ...doc.data() });
           });
 
-          renderPostsFromFirestore(posts);
+          postsCache = posts;
+          applyPostsFilter();
           updateProfileStats();
         }, (error) => {
           console.error('Error loading posts:', JSON.stringify(error));
@@ -3511,7 +5118,6 @@
         const longPressAttr = isSent
           ? 'data-deletable="true" data-msg-id="' + msg.id + '"'
           : '';
-        const senderAttr = 'data-sender-id="' + escapeHtml(msg.senderId) + '"';
         const imageHtml = msg.imageURL
           ? '<img class="chat-message-image" src="' + escapeHtml(msg.imageURL) + '" alt="Imagem" onclick="openChatImage(\'' + escapeHtml(msg.imageURL) + '\')">'
           : '';
@@ -3520,10 +5126,10 @@
           : '';
 
         return '<div class="chat-message ' + (isSent ? 'sent' : '') + '" data-message-id="' + msg.id + '">' +
-          '<div class="chat-avatar-small" ' + longPressAttr + ' ' + senderAttr + '>' + avatarContent + '</div>' +
+          '<div class="chat-avatar-small" ' + longPressAttr + '>' + avatarContent + '</div>' +
           '<div class="chat-bubble-wrapper">' +
             '<div class="chat-bubble">' +
-              '<div class="chat-sender">' + escapeHtml(msg.senderName || 'Usuário') + '</div>' +
+              '<div class="chat-sender" data-sender-id="' + escapeHtml(msg.senderId) + '">' + escapeHtml(msg.senderName || 'Usuário') + '</div>' +
               textHtml +
               imageHtml +
               '<div class="chat-time">' + formatChatTime(msg.timestamp) + '</div>' +
@@ -3535,8 +5141,8 @@
       // Setup long-press handlers for deletable avatars
       setupLongPressHandlers();
 
-      // Setup click handlers for avatar profile view
-      setupAvatarClickHandlers();
+      // Setup click handlers for sender name profile view
+      setupSenderNameClickHandlers();
     }
 
     // Long-press handler for deleting messages
@@ -3581,24 +5187,31 @@
       }
     }
 
-    // Setup click handlers for avatar profile view
-    function setupAvatarClickHandlers() {
-      const avatars = document.querySelectorAll('.chat-avatar-small[data-sender-id]');
+    // Setup click handlers for sender name profile view
+    function setupSenderNameClickHandlers() {
+      const senderNames = document.querySelectorAll('.chat-sender[data-sender-id]');
 
-      avatars.forEach(avatar => {
-        avatar.addEventListener('click', handleAvatarClick);
+      senderNames.forEach(senderName => {
+        senderName.addEventListener('click', handleSenderNameClick);
       });
     }
 
-    function handleAvatarClick(e) {
-      const avatar = e.currentTarget;
-      const senderId = avatar.dataset.senderId;
-
-      // If long press is in progress, don't show profile
-      if (longPressTimer) return;
+    function handleSenderNameClick(e) {
+      const senderElement = e.currentTarget;
+      const senderId = senderElement.dataset.senderId;
 
       if (senderId) {
         showUserProfile(senderId);
+      }
+    }
+
+    // Open current user profile modal (from sidebar/profile page avatar)
+    function openCurrentUserProfileModal() {
+      if (currentUser && currentUser.uid) {
+        closeSidebar();
+        showUserProfile(currentUser.uid);
+      } else {
+        showToast('Faça login para ver seu perfil', 'error');
       }
     }
 
@@ -3653,6 +5266,15 @@
           console.error('Error counting likes:', JSON.stringify(err));
         }
 
+        // Count user absences
+        let absencesCount = 0;
+        try {
+          const absencesSnapshot = await db.collection('absences').where('userId', '==', userId).get();
+          absencesCount = absencesSnapshot.size;
+        } catch (err) {
+          console.error('Error counting absences:', JSON.stringify(err));
+        }
+
         // Build profile HTML
         const hasPhoto = userData.photoURL ? true : false;
         const avatarClickAttr = hasPhoto ? 'onclick="openProfileImage(\'' + escapeHtml(userData.photoURL) + '\')"' : '';
@@ -3668,6 +5290,83 @@
         if (userData.birthdate) {
           const age = calculateAge(userData.birthdate);
           birthdateHtml = '<p class="user-profile-birth"><i class="fas fa-birthday-cake"></i>' + formatDate(userData.birthdate) + ' • ' + age + ' Anos</p>';
+        }
+
+        // Fetch user posts
+        let userPosts = [];
+        try {
+          const userPostsSnapshot = await db.collection('posts')
+            .where('authorId', '==', userId)
+            .get();
+
+          userPostsSnapshot.forEach(doc => {
+            userPosts.push({ id: doc.id, ...doc.data() });
+          });
+
+          // Sort by createdAt desc on client side (avoids needing composite index)
+          userPosts.sort((a, b) => {
+            const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt || 0);
+            const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt || 0);
+            return timeB - timeA;
+          });
+
+          // Limit to 10 posts after sorting
+          userPosts = userPosts.slice(0, 10);
+        } catch (err) {
+          console.error('Error fetching user posts:', JSON.stringify(err));
+        }
+
+        // Build posts HTML
+        let postsHtml = '';
+        if (userPosts.length > 0) {
+          const postsListHtml = userPosts.map(post => {
+            let imagesHtml = '';
+            let images = [];
+
+            if (post.imageURLs && Array.isArray(post.imageURLs) && post.imageURLs.length > 0) {
+              images = post.imageURLs;
+            } else if (post.imageURL) {
+              images = [post.imageURL];
+            }
+
+            if (images.length > 0) {
+              imagesHtml = '<div class="user-profile-post-images">' +
+                images.slice(0, 4).map(function(url) {
+                  return '<img src="' + escapeHtml(url) + '" alt="Foto" onclick="openProfileImage(\'' + escapeHtml(url) + '\')">';
+                }).join('') +
+              '</div>';
+            }
+
+            const postContent = post.content ? escapeHtml(post.content) : '';
+            const postTime = post.createdAt ? timeAgo(post.createdAt) : '';
+            const postLikes = post.likes || 0;
+
+            return '<div class="user-profile-post-card">' +
+              (postContent ? '<div class="user-profile-post-content">' + postContent + '</div>' : '') +
+              imagesHtml +
+              '<div class="user-profile-post-meta">' +
+                '<span><i class="fas fa-clock"></i>' + postTime + '</span>' +
+                '<span><i class="fas fa-heart"></i>' + postLikes + '</span>' +
+              '</div>' +
+            '</div>';
+          }).join('');
+
+          postsHtml = '<div class="user-profile-posts-section">' +
+            '<div class="user-profile-posts-header">' +
+              '<div class="user-profile-posts-title"><i class="fas fa-newspaper"></i>Publicações</div>' +
+            '</div>' +
+            '<div class="user-profile-posts-container">' + postsListHtml + '</div>' +
+          '</div>';
+        } else {
+          postsHtml = '<div class="user-profile-posts-section">' +
+            '<div class="user-profile-posts-header">' +
+              '<div class="user-profile-posts-title"><i class="fas fa-newspaper"></i>Publicações</div>' +
+            '</div>' +
+            '<div class="user-profile-posts-empty">' +
+              '<i class="fas fa-file-alt"></i>' +
+              '<span>Nenhuma publicação ainda</span>' +
+            '</div>' +
+          '</div>';
         }
 
         content.innerHTML =
@@ -3689,7 +5388,12 @@
               '<div class="user-profile-stat-value">' + likesCount + '</div>' +
               '<div class="user-profile-stat-label">Curtidas</div>' +
             '</div>' +
-          '</div>';
+            '<div class="user-profile-stat">' +
+              '<div class="user-profile-stat-value">' + absencesCount + '</div>' +
+              '<div class="user-profile-stat-label">Faltas</div>' +
+            '</div>' +
+          '</div>' +
+          postsHtml;
 
       } catch (error) {
         console.error('Error fetching user profile:', JSON.stringify(error));
@@ -3788,7 +5492,11 @@
       const container = document.getElementById('postsContainer');
 
       if (posts.length === 0) {
-        container.innerHTML = '<div class="posts-empty"><i class="fas fa-newspaper"></i><p>Nenhuma postagem ainda.<br>Seja o primeiro a compartilhar!</p></div>';
+        if (currentPostsFilter === 'images') {
+          container.innerHTML = '<div class="posts-empty"><i class="fas fa-images"></i><p>Nenhuma postagem com fotos ainda.<br>Compartilhe uma foto!</p></div>';
+        } else {
+          container.innerHTML = '<div class="posts-empty"><i class="fas fa-newspaper"></i><p>Nenhuma postagem ainda.<br>Seja o primeiro a compartilhar!</p></div>';
+        }
         return;
       }
 
@@ -3797,18 +5505,24 @@
         const avatarContent = post.authorPhotoURL
           ? '<img src="' + post.authorPhotoURL + '" alt="">'
           : getInitials(post.authorName);
-        const imageHtml = post.imageURL
-          ? '<img class="post-image" src="' + post.imageURL + '" alt="Imagem do post">'
+
+        const avatarClickAttr = post.authorPhotoURL
+          ? 'onclick="openProfileImage(\'' + escapeHtml(post.authorPhotoURL) + '\')" style="cursor:pointer"'
           : '';
+
+        const imageHtml = buildPostImagesHtml(post);
         const deleteBtn = isAuthor
           ? '<button class="post-menu-btn" onclick="confirmDeletePost(\'' + post.id + '\')"><i class="fas fa-trash-alt"></i></button>'
           : '';
 
+        // Build comments section HTML
+        const commentsHtml = buildCommentsSection(post.id);
+
         return '<div class="post-card" data-post-id="' + post.id + '">' +
           '<div class="post-header">' +
-            '<div class="post-avatar">' + avatarContent + '</div>' +
+            '<div class="post-avatar" ' + avatarClickAttr + '>' + avatarContent + '</div>' +
             '<div class="post-author">' +
-              '<div class="post-author-name">' + (post.authorName || 'Usuário') + '</div>' +
+              '<div class="post-author-name" onclick="showUserProfile(\'' + escapeHtml(post.authorId) + '\')" style="cursor:pointer">' + (post.authorName || 'Usuário') + '</div>' +
               '<div class="post-time">' + timeAgo(post.createdAt) + '</div>' +
             '</div>' +
             deleteBtn +
@@ -3820,13 +5534,246 @@
               '<i class="fas fa-heart"></i>' +
               '<span>' + (post.likes || 0) + '</span>' +
             '</button>' +
+            '<button class="post-action" onclick="toggleCommentsSection(\'' + post.id + '\')">' +
+              '<i class="fas fa-comment"></i>' +
+              '<span id="commentsCount-' + post.id + '">' + getCommentsCount(post.id) + '</span>' +
+            '</button>' +
             '<button class="post-action" onclick="sharePost(\'' + post.id + '\')">' +
               '<i class="fas fa-share"></i>' +
               '<span>Compartilhar</span>' +
             '</button>' +
           '</div>' +
+          commentsHtml +
         '</div>';
       }).join('');
+    }
+
+    // Build post images HTML with grid support
+    function buildPostImagesHtml(post) {
+      let images = [];
+
+      if (post.imageURLs && Array.isArray(post.imageURLs) && post.imageURLs.length > 0) {
+        images = post.imageURLs;
+      } else if (post.imageURL) {
+        images = [post.imageURL];
+      }
+
+      if (images.length === 0) return '';
+
+      const postId = post.id;
+      const totalImages = images.length;
+
+      if (totalImages === 1) {
+        return '<div class="post-images-grid grid-1">' +
+          '<div class="post-grid-item" onclick="openPostImages(\'' + postId + '\', 0)">' +
+            '<img src="' + images[0] + '" alt="Foto">' +
+          '</div>' +
+        '</div>';
+      }
+
+      if (totalImages === 2) {
+        return '<div class="post-images-grid grid-2">' +
+          images.map(function(url, idx) {
+            return '<div class="post-grid-item" onclick="openPostImages(\'' + postId + '\', ' + idx + ')">' +
+              '<img src="' + url + '" alt="Foto">' +
+            '</div>';
+          }).join('') +
+        '</div>';
+      }
+
+      if (totalImages === 3) {
+        return '<div class="post-images-grid grid-3">' +
+          images.map(function(url, idx) {
+            return '<div class="post-grid-item" onclick="openPostImages(\'' + postId + '\', ' + idx + ')">' +
+              '<img src="' + url + '" alt="Foto">' +
+            '</div>';
+          }).join('') +
+        '</div>';
+      }
+
+      const visibleImages = images.slice(0, 4);
+      const remaining = totalImages - 4;
+
+      return '<div class="post-images-grid grid-more">' +
+        visibleImages.map(function(url, idx) {
+          const isLast = idx === 3 && remaining > 0;
+          return '<div class="post-grid-item" onclick="openPostImages(\'' + postId + '\', ' + idx + ')">' +
+            '<img src="' + url + '" alt="Foto">' +
+            (isLast ? '<div class="post-grid-overlay">+' + remaining + '</div>' : '') +
+          '</div>';
+        }).join('') +
+      '</div>';
+    }
+
+    // Store post images for viewer
+    let currentPostImages = [];
+    let currentPostImageIndex = 0;
+
+    function openPostImages(postId, startIndex) {
+      const postCard = document.querySelector('[data-post-id="' + postId + '"]');
+      if (!postCard) return;
+
+      const post = postsCache.find(function(p) { return p.id === postId; });
+      if (!post) return;
+
+      let images = [];
+      if (post.imageURLs && Array.isArray(post.imageURLs) && post.imageURLs.length > 0) {
+        images = post.imageURLs;
+      } else if (post.imageURL) {
+        images = [post.imageURL];
+      }
+
+      if (images.length === 0) return;
+
+      currentPostImages = images;
+      currentPostImageIndex = startIndex || 0;
+
+      const viewer = document.getElementById('imageViewer');
+      const slidesContainer = document.getElementById('viewerSlides');
+      const navContainer = document.getElementById('viewerNav');
+
+      slidesContainer.innerHTML = images.map(function(url) {
+        return '<div class="viewer-slide">' +
+          '<img class="viewer-image" src="' + url + '" alt="Foto">' +
+        '</div>';
+      }).join('');
+
+      navContainer.innerHTML = images.map(function(url, idx) {
+        return '<div class="viewer-dot ' + (idx === currentPostImageIndex ? 'active' : '') + '"></div>';
+      }).join('');
+
+      document.getElementById('viewerCounter').textContent = (currentPostImageIndex + 1) + ' / ' + images.length;
+      document.getElementById('prevBtn').style.display = images.length > 1 ? 'block' : 'none';
+      document.getElementById('nextBtn').style.display = images.length > 1 ? 'block' : 'none';
+
+      const slideWidth = window.innerWidth;
+      slidesContainer.style.transform = 'translateX(-' + (currentPostImageIndex * slideWidth) + 'px)';
+
+      viewer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      galleryPhotos = images.map(function(url) { return { url: url }; });
+      currentImageIndex = currentPostImageIndex;
+    }
+
+    let postsCache = [];
+    let currentPostsFilter = 'all'; // 'all' or 'images'
+
+    // Set posts filter
+    function setPostsFilter(filter) {
+      currentPostsFilter = filter;
+
+      // Update button states
+      document.getElementById('filterAll').classList.toggle('active', filter === 'all');
+      document.getElementById('filterImages').classList.toggle('active', filter === 'images');
+
+      // Re-render posts with filter
+      applyPostsFilter();
+    }
+
+    // Apply posts filter
+    function applyPostsFilter() {
+      if (postsCache.length === 0) return;
+
+      const postsContainer = document.getElementById('postsContainer');
+      const galleryContainer = document.getElementById('postsGalleryContainer');
+
+      if (currentPostsFilter === 'images') {
+        // Show gallery view, hide posts view
+        postsContainer.style.display = 'none';
+        galleryContainer.style.display = 'block';
+        renderPostsGallery();
+      } else {
+        // Show posts view, hide gallery view
+        postsContainer.style.display = 'block';
+        galleryContainer.style.display = 'none';
+        renderPostsFromFirestore(postsCache);
+      }
+    }
+
+    // Collect all images from posts for gallery view
+    let postsGalleryImages = [];
+
+    function collectAllPostsImages() {
+      postsGalleryImages = [];
+
+      postsCache.forEach(function(post) {
+        let images = [];
+        if (post.imageURLs && Array.isArray(post.imageURLs) && post.imageURLs.length > 0) {
+          images = post.imageURLs;
+        } else if (post.imageURL) {
+          images = [post.imageURL];
+        }
+
+        images.forEach(function(url) {
+          postsGalleryImages.push({
+            url: url,
+            postId: post.id,
+            authorName: post.authorName,
+            createdAt: post.createdAt
+          });
+        });
+      });
+
+      return postsGalleryImages;
+    }
+
+    // Render posts gallery (grid view of all images)
+    function renderPostsGallery() {
+      const grid = document.getElementById('postsGalleryGrid');
+      const countEl = document.getElementById('postsGalleryCount');
+
+      collectAllPostsImages();
+
+      if (postsGalleryImages.length === 0) {
+        countEl.innerHTML = '<i class="fas fa-images"></i><span>Nenhuma foto nas postagens</span>';
+        grid.innerHTML = '<div class="posts-empty" style="grid-column: 1 / -1;"><i class="fas fa-images"></i><p>Nenhuma postagem com fotos ainda.<br>Compartilhe uma foto!</p></div>';
+        return;
+      }
+
+      countEl.innerHTML = '<i class="fas fa-images"></i><span>' + postsGalleryImages.length + ' foto' + (postsGalleryImages.length !== 1 ? 's' : '') + ' nas postagens</span>';
+
+      grid.innerHTML = postsGalleryImages.map(function(photo, index) {
+        return '<div class="posts-gallery-item" onclick="openPostsGalleryViewer(' + index + ')">' +
+          '<img src="' + photo.url + '" alt="Foto" onerror="this.parentElement.style.display=\'none\'">' +
+        '</div>';
+      }).join('');
+    }
+
+    // Open viewer for posts gallery
+    function openPostsGalleryViewer(startIndex) {
+      if (postsGalleryImages.length === 0) return;
+
+      const viewer = document.getElementById('imageViewer');
+      const slidesContainer = document.getElementById('viewerSlides');
+      const navContainer = document.getElementById('viewerNav');
+
+      currentImageIndex = startIndex;
+
+      slidesContainer.innerHTML = postsGalleryImages.map(function(photo) {
+        return '<div class="viewer-slide">' +
+          '<img class="viewer-image" src="' + photo.url + '" alt="Foto">' +
+        '</div>';
+      }).join('');
+
+      navContainer.innerHTML = postsGalleryImages.map(function(photo, idx) {
+        return '<div class="viewer-dot ' + (idx === startIndex ? 'active' : '') + '"></div>';
+      }).join('');
+
+      document.getElementById('viewerCounter').textContent = (startIndex + 1) + ' / ' + postsGalleryImages.length;
+      document.getElementById('prevBtn').style.display = postsGalleryImages.length > 1 ? 'block' : 'none';
+      document.getElementById('nextBtn').style.display = postsGalleryImages.length > 1 ? 'block' : 'none';
+      document.getElementById('prevBtn').disabled = startIndex === 0;
+      document.getElementById('nextBtn').disabled = startIndex === postsGalleryImages.length - 1;
+
+      const slideWidth = window.innerWidth;
+      slidesContainer.style.transform = 'translateX(-' + (startIndex * slideWidth) + 'px)';
+
+      viewer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Update galleryPhotos for viewer navigation
+      galleryPhotos = postsGalleryImages.map(function(photo) { return { url: photo.url }; });
     }
 
     // Render transactions from Firestore
@@ -3874,7 +5821,7 @@
       const spinner = btn.querySelector('.spinner-small');
       const btnText = btn.querySelector('.btn-text');
 
-      if (!content && !postImageFile) {
+      if (!content && postImageFiles.length === 0) {
         showToast('Escreva algo para publicar', 'error');
         return;
       }
@@ -3889,14 +5836,22 @@
       spinner.style.display = 'block';
 
       try {
-        let imageURL = null;
-        if (postImageFile) {
-          imageURL = await uploadToImgBB(postImageFile);
+        let imageURLs = [];
+
+        if (postImageFiles.length > 0) {
+          showToast('Enviando ' + postImageFiles.length + ' foto(s)...');
+          for (let i = 0; i < postImageFiles.length; i++) {
+            const url = await uploadToImgBB(postImageFiles[i]);
+            if (url) {
+              imageURLs.push(url);
+            }
+          }
         }
 
         await db.collection('posts').add({
           content: content,
-          imageURL: imageURL,
+          imageURL: imageURLs.length === 1 ? imageURLs[0] : null,
+          imageURLs: imageURLs.length > 0 ? imageURLs : null,
           authorId: currentUser.uid,
           authorName: currentUserData.name || 'Usuário',
           authorPhotoURL: currentUserData.photoURL || null,
@@ -3906,7 +5861,7 @@
         });
 
         input.value = '';
-        removePostImage();
+        removeAllPostImages();
         showToast('Postagem publicada!');
       } catch (error) {
         console.error('Error creating post:', JSON.stringify(error));
@@ -3985,6 +5940,291 @@
       }
     }
 
+    // ==================== COMMENTS SYSTEM (FIRESTORE INTEGRATED) ====================
+
+    // In-memory comments cache (loaded from Firestore)
+    let commentsData = {};
+    let commentsLoaded = {}; // Track which posts have loaded comments
+    let commentToDelete = null;
+    let commentPostIdToDelete = null;
+
+    // Get comments count for a post (from cache or placeholder)
+    function getCommentsCount(postId) {
+      if (!commentsData[postId] || commentsData[postId].length === 0) {
+        return 'Comentar';
+      }
+      return commentsData[postId].length;
+    }
+
+    // Build comments section HTML
+    function buildCommentsSection(postId) {
+      const userAvatarContent = currentUser && currentUserData && currentUserData.photoURL
+        ? '<img src="' + currentUserData.photoURL + '" alt="">'
+        : getInitials(currentUserData?.name || 'EU');
+
+      return '<div class="comments-section" id="commentsSection-' + postId + '" style="display: none;">' +
+        '<div class="comments-list show" id="commentsList-' + postId + '">' +
+          '<div class="comments-empty"><i class="fas fa-spinner fa-spin"></i><br>Carregando comentários...</div>' +
+        '</div>' +
+        '<div class="comment-input-container">' +
+          '<div class="comment-input-avatar">' + userAvatarContent + '</div>' +
+          '<div class="comment-input-wrapper">' +
+            '<textarea class="comment-input" id="commentInput-' + postId + '" placeholder="Escreva um comentário..." rows="1" oninput="autoResizeCommentInput(this)"></textarea>' +
+            '<button class="comment-send-btn" onclick="addComment(\'' + postId + '\')">' +
+              '<i class="fas fa-paper-plane"></i>' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    // Load comments from Firestore for a specific post
+    async function loadCommentsFromFirestore(postId) {
+      try {
+        const snapshot = await db.collection('posts').doc(postId)
+          .collection('comments')
+          .orderBy('createdAt', 'asc')
+          .get();
+
+        const comments = [];
+        snapshot.forEach(doc => {
+          comments.push({ id: doc.id, ...doc.data() });
+        });
+
+        commentsData[postId] = comments;
+        commentsLoaded[postId] = true;
+
+        return comments;
+      } catch (error) {
+        console.error('Error loading comments:', JSON.stringify(error));
+        commentsData[postId] = [];
+        commentsLoaded[postId] = true;
+        return [];
+      }
+    }
+
+    // Render comments HTML
+    function renderCommentsHtml(postId) {
+      const comments = commentsData[postId] || [];
+
+      if (comments.length === 0) {
+        return '<div class="comments-empty">' +
+          '<i class="fas fa-comments"></i>' +
+          'Nenhum comentário ainda.<br>Seja o primeiro a comentar!' +
+        '</div>';
+      }
+
+      return comments.map(function(comment) {
+        const isAuthor = currentUser && comment.authorId === currentUser.uid;
+        const avatarContent = comment.authorPhotoURL
+          ? '<img src="' + comment.authorPhotoURL + '" alt="">'
+          : getInitials(comment.authorName);
+        const deleteBtn = isAuthor
+          ? '<button class="comment-delete" onclick="confirmDeleteComment(\'' + postId + '\', \'' + comment.id + '\')">' +
+              '<i class="fas fa-trash-alt"></i>' +
+            '</button>'
+          : '';
+
+        return '<div class="comment-item" data-comment-id="' + comment.id + '">' +
+          '<div class="comment-avatar">' + avatarContent + '</div>' +
+          '<div class="comment-content">' +
+            '<div class="comment-header">' +
+              '<span class="comment-author">' + escapeHtml(comment.authorName) + '</span>' +
+              '<span class="comment-time">' + commentTimeAgo(comment.createdAt) + '</span>' +
+            '</div>' +
+            '<div class="comment-text">' + escapeHtml(comment.text) + '</div>' +
+          '</div>' +
+          deleteBtn +
+        '</div>';
+      }).join('');
+    }
+
+    // Time ago for comments (handles Firestore timestamps)
+    function commentTimeAgo(timestamp) {
+      if (!timestamp) return 'Agora';
+
+      const now = new Date();
+      // Handle Firestore timestamp objects
+      const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+      const diffMs = now - date;
+      const diffSec = Math.floor(diffMs / 1000);
+      const diffMin = Math.floor(diffSec / 60);
+      const diffHours = Math.floor(diffMin / 60);
+      const diffDays = Math.floor(diffHours / 24);
+
+      if (diffSec < 60) return 'Agora';
+      if (diffMin < 60) return diffMin + ' min';
+      if (diffHours < 24) return diffHours + 'h';
+      if (diffDays < 7) return diffDays + 'd';
+
+      return date.toLocaleDateString('pt-BR');
+    }
+
+    // Toggle comments section visibility
+    async function toggleCommentsSection(postId) {
+      const section = document.getElementById('commentsSection-' + postId);
+      if (!section) return;
+
+      const isVisible = section.style.display !== 'none';
+      section.style.display = isVisible ? 'none' : 'block';
+
+      // Load comments from Firestore when opening (if not already loaded)
+      if (!isVisible) {
+        if (!commentsLoaded[postId]) {
+          await loadCommentsFromFirestore(postId);
+          updateCommentsUI(postId);
+        }
+
+        // Focus on input when opening
+        const input = document.getElementById('commentInput-' + postId);
+        if (input) {
+          setTimeout(function() { input.focus(); }, 100);
+        }
+      }
+    }
+
+    // Auto resize comment input
+    function autoResizeCommentInput(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+    }
+
+    // Add a new comment (saves to Firestore)
+    async function addComment(postId) {
+      const input = document.getElementById('commentInput-' + postId);
+      if (!input) return;
+
+      const text = input.value.trim();
+      if (!text) return;
+
+      if (!currentUser) {
+        showToast('Faça login para comentar', 'error');
+        return;
+      }
+
+      // Disable button while saving
+      const btn = input.parentElement.querySelector('.comment-send-btn');
+      if (btn) btn.disabled = true;
+
+      try {
+        // Save comment to Firestore (as subcollection of the post)
+        const commentRef = await db.collection('posts').doc(postId)
+          .collection('comments')
+          .add({
+            postId: postId,
+            authorId: currentUser.uid,
+            authorName: currentUserData?.name || 'Usuário',
+            authorPhotoURL: currentUserData?.photoURL || null,
+            text: text,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+        // Create local comment object for immediate UI update
+        const comment = {
+          id: commentRef.id,
+          postId: postId,
+          authorId: currentUser.uid,
+          authorName: currentUserData?.name || 'Usuário',
+          authorPhotoURL: currentUserData?.photoURL || null,
+          text: text,
+          createdAt: new Date() // Use local date for immediate display
+        };
+
+        // Add to local cache
+        if (!commentsData[postId]) {
+          commentsData[postId] = [];
+        }
+        commentsData[postId].push(comment);
+
+        // Clear input
+        input.value = '';
+        input.style.height = 'auto';
+
+        // Update UI
+        updateCommentsUI(postId);
+        showToast('Comentário adicionado');
+
+      } catch (error) {
+        console.error('Error adding comment:', JSON.stringify(error));
+        showToast('Erro ao adicionar comentário', 'error');
+      }
+
+      // Re-enable button
+      if (btn) btn.disabled = false;
+    }
+
+    // Update comments UI for a specific post
+    function updateCommentsUI(postId) {
+      // Update comments list
+      const commentsList = document.getElementById('commentsList-' + postId);
+      if (commentsList) {
+        commentsList.innerHTML = renderCommentsHtml(postId);
+      }
+
+      // Update comments count
+      const countEl = document.getElementById('commentsCount-' + postId);
+      if (countEl) {
+        countEl.textContent = getCommentsCount(postId);
+      }
+    }
+
+    // Confirm delete comment
+    function confirmDeleteComment(postId, commentId) {
+      commentToDelete = commentId;
+      commentPostIdToDelete = postId;
+      document.getElementById('deleteCommentModalOverlay').classList.add('active');
+    }
+
+    // Close delete comment modal
+    function closeDeleteCommentModal() {
+      commentToDelete = null;
+      commentPostIdToDelete = null;
+      document.getElementById('deleteCommentModalOverlay').classList.remove('active');
+    }
+
+    // Delete comment confirm button listener
+    document.getElementById('deleteCommentConfirmBtn').addEventListener('click', async function() {
+      if (!commentToDelete || !commentPostIdToDelete) return;
+
+      const postId = commentPostIdToDelete;
+      const commentId = commentToDelete;
+
+      try {
+        // Delete from Firestore
+        await db.collection('posts').doc(postId)
+          .collection('comments')
+          .doc(commentId)
+          .delete();
+
+        // Remove from local cache
+        if (commentsData[postId]) {
+          commentsData[postId] = commentsData[postId].filter(function(c) {
+            return c.id !== commentId;
+          });
+        }
+
+        // Update UI
+        updateCommentsUI(postId);
+        showToast('Comentário excluído');
+      } catch (error) {
+        console.error('Error deleting comment:', JSON.stringify(error));
+        showToast('Erro ao excluir comentário', 'error');
+      }
+
+      closeDeleteCommentModal();
+    });
+
+    // Allow sending comment with Enter key (Shift+Enter for new line)
+    document.addEventListener('keydown', function(e) {
+      if (e.target.classList.contains('comment-input') && e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        const postId = e.target.id.replace('commentInput-', '');
+        addComment(postId);
+      }
+    });
+
+    // ==================== END COMMENTS SYSTEM ====================
+
     // Delete post
     let postToDelete = null;
 
@@ -4029,8 +6269,103 @@
           totalLikes += doc.data().likes || 0;
         });
         document.getElementById('profileLikesCount').textContent = totalLikes;
+
+        // Count user's absences
+        const absencesSnapshot = await db.collection('absences')
+          .where('userId', '==', currentUser.uid)
+          .get();
+        document.getElementById('profileAbsences').textContent = absencesSnapshot.size;
       } catch (error) {
         console.error('Error updating profile stats:', JSON.stringify(error));
+      }
+    }
+
+    // Load my profile posts
+    async function loadMyProfilePosts() {
+      if (!currentUser) return;
+
+      const container = document.getElementById('myProfilePostsContainer');
+      if (!container) return;
+
+      container.innerHTML = '<div class="my-profile-posts-loading"><i class="fas fa-spinner"></i><p>Carregando publicações...</p></div>';
+
+      try {
+        const postsSnapshot = await db.collection('posts')
+          .where('authorId', '==', currentUser.uid)
+          .get();
+
+        if (postsSnapshot.empty) {
+          container.innerHTML = '<div class="my-profile-posts-empty"><i class="fas fa-file-alt"></i><p>Nenhuma publicação ainda</p><small>Suas publicações aparecerão aqui</small></div>';
+          return;
+        }
+
+        // Collect posts and sort on client side (avoids needing composite index)
+        let postsArray = [];
+        postsSnapshot.forEach(doc => {
+          postsArray.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Sort by createdAt desc
+        postsArray.sort((a, b) => {
+          const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt || 0);
+          const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt || 0);
+          return timeB - timeA;
+        });
+
+        // Limit to 20 posts
+        postsArray = postsArray.slice(0, 20);
+
+        let postsHtml = '';
+        postsArray.forEach(post => {
+          const postId = post.id;
+
+          // Handle images
+          let images = [];
+          if (post.imageURLs && Array.isArray(post.imageURLs) && post.imageURLs.length > 0) {
+            images = post.imageURLs;
+          } else if (post.imageURL) {
+            images = [post.imageURL];
+          }
+
+          let imagesHtml = '';
+          if (images.length > 0) {
+            const gridClass = images.length === 1 ? 'grid-1' :
+                              images.length === 2 ? 'grid-2' :
+                              images.length === 3 ? 'grid-3' : 'grid-more';
+
+            const displayImages = images.slice(0, 4);
+            const remaining = images.length - 4;
+
+            imagesHtml = '<div class="my-profile-post-images ' + gridClass + '">';
+            displayImages.forEach((url, index) => {
+              if (index === 3 && remaining > 0) {
+                imagesHtml += '<div class="my-profile-post-img" onclick="openGallery(\'' + postId + '\', 3)"><img src="' + escapeHtml(url) + '" alt="Foto"><div class="my-profile-post-img-overlay">+' + remaining + '</div></div>';
+              } else {
+                imagesHtml += '<div class="my-profile-post-img" onclick="openGallery(\'' + postId + '\', ' + index + ')"><img src="' + escapeHtml(url) + '" alt="Foto"></div>';
+              }
+            });
+            imagesHtml += '</div>';
+          }
+
+          const postContent = post.content ? escapeHtml(post.content) : '';
+          const postTime = post.createdAt ? timeAgo(post.createdAt) : '';
+          const postLikes = post.likes || 0;
+
+          postsHtml += '<div class="my-profile-post-card">';
+          if (postContent) {
+            postsHtml += '<div class="my-profile-post-content">' + postContent + '</div>';
+          }
+          postsHtml += imagesHtml;
+          postsHtml += '<div class="my-profile-post-meta">' +
+            '<span><i class="fas fa-clock"></i>' + postTime + '</span>' +
+            '<span><i class="fas fa-heart"></i>' + postLikes + '</span>' +
+          '</div></div>';
+        });
+
+        container.innerHTML = postsHtml;
+      } catch (error) {
+        console.error('Error loading my profile posts:', JSON.stringify(error));
+        container.innerHTML = '<div class="my-profile-posts-empty"><i class="fas fa-exclamation-triangle"></i><p>Erro ao carregar</p><small>Tente novamente mais tarde</small></div>';
       }
     }
 
@@ -4050,11 +6385,13 @@
     function openProfilePage() {
       closeSidebar();
       showPage('profile');
+      loadMyProfilePosts();
     }
 
-    function openGiftsPage() {
+    function openAbsencesPage() {
       closeSidebar();
-      showPage('gifts');
+      showPage('absences');
+      loadAllUsersWithAbsences();
     }
 
     function showPage(pageName) {
@@ -4070,82 +6407,8 @@
       chatInputContainer.style.display = pageName === 'chat' ? 'block' : 'none';
     }
 
-    // Data
+    // Data for image viewer
     let galleryPhotos = [];
-
-    // Subscribe to gallery photos from Realtime Database
-    function subscribeToGallery() {
-      if (galleryUnsubscribe) {
-        galleryUnsubscribe();
-      }
-
-      const galleryRef = rtdb.ref('gallery');
-
-      const onValueChange = galleryRef.orderByChild('createdAt').on('value', (snapshot) => {
-        galleryPhotos = [];
-        if (snapshot.exists()) {
-          snapshot.forEach((childSnapshot) => {
-            const photo = childSnapshot.val();
-            galleryPhotos.push({
-              id: childSnapshot.key,
-              url: photo.url,
-              color: photo.color || '#D4A853',
-              userId: photo.userId,
-              userName: photo.userName,
-              createdAt: photo.createdAt
-            });
-          });
-          // Ordenar por data (mais recentes primeiro)
-          galleryPhotos.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-        }
-        renderGallery();
-      }, (error) => {
-        console.error('Gallery subscription error:', JSON.stringify(error));
-        showToast('Erro ao carregar galeria', 'error');
-      });
-
-      galleryUnsubscribe = () => galleryRef.off('value', onValueChange);
-    }
-
-    // Upload photo to gallery in Realtime Database
-    async function savePhotoToGallery(url) {
-      if (!currentUser || !currentUserData) {
-        showToast('Faça login para enviar fotos', 'error');
-        return false;
-      }
-
-      try {
-        const newPhotoRef = rtdb.ref('gallery').push();
-        await newPhotoRef.set({
-          url: url,
-          color: '#D4A853',
-          userId: currentUser.uid,
-          userName: currentUserData.name || 'Usuário',
-          userPhotoURL: currentUserData.photoURL || null,
-          createdAt: Date.now()
-        });
-        return true;
-      } catch (error) {
-        console.error('Error saving photo:', JSON.stringify(error));
-        return false;
-      }
-    }
-
-    // Delete photo from gallery
-    async function deleteGalleryPhoto(photoId) {
-      if (!currentUser) {
-        showToast('Faça login para excluir fotos', 'error');
-        return;
-      }
-
-      try {
-        await rtdb.ref('gallery/' + photoId).remove();
-        showToast('Foto excluída!');
-      } catch (error) {
-        console.error('Error deleting photo:', JSON.stringify(error));
-        showToast('Erro ao excluir foto', 'error');
-      }
-    }
 
     // Navigation - usando Event Delegation para melhor captura de cliques
     // Isso resolve o problema de cliques em elementos filhos (ícones, spans) não serem capturados
@@ -4154,6 +6417,10 @@
     const chatInputContainer = document.getElementById('chatInputContainer');
 
     function handleNavigation(e) {
+      // Verifica se o clique foi no avatar do usuário - não interceptar
+      const navAvatar = e.target.closest('.nav-avatar');
+      if (navAvatar) return; // Deixa o onclick do avatar funcionar
+
       e.preventDefault();
       e.stopPropagation();
 
@@ -4163,6 +6430,13 @@
 
       const page = navItem.dataset.page;
       if (!page) return;
+
+      // Intercepta navegação para áreas protegidas - requer PIN
+      if ((page === 'vault' || page === 'chat') && !vaultAuthenticated) {
+        pendingVaultNavigation = { source: 'footer', page: page };
+        showPinModal(page);
+        return;
+      }
 
       // Atualiza estado ativo dos nav items
       const navItems = footerNav.querySelectorAll('.nav-item');
@@ -4191,6 +6465,14 @@
 
     // Navegação via Sidebar
     function navigateFromSidebar(page) {
+      // Intercepta navegação para áreas protegidas - requer PIN
+      if ((page === 'vault' || page === 'chat') && !vaultAuthenticated) {
+        closeSidebar();
+        pendingVaultNavigation = { source: 'sidebar', page: page };
+        showPinModal(page);
+        return;
+      }
+
       // Atualiza estado ativo dos nav items do footer
       const footerNavItems = footerNav.querySelectorAll('.nav-item');
       footerNavItems.forEach(nav => nav.classList.remove('active'));
@@ -4218,32 +6500,6 @@
       });
     });
 
-    // Render functions
-    function renderGallery() {
-      const grid = document.getElementById('galleryGrid');
-
-      if (galleryPhotos.length === 0) {
-        grid.innerHTML = '<div class="gallery-empty" style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted);">' +
-          '<i class="fas fa-images" style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;"></i>' +
-          '<p>Nenhuma foto na galeria.<br>Clique acima para adicionar!</p>' +
-        '</div>';
-        return;
-      }
-
-      grid.innerHTML = galleryPhotos.map((photo, index) => {
-        const imgPart = photo.url
-          ? '<img src="' + photo.url + '" alt="Foto ' + (index + 1) + '" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">'
-          : '';
-        const placeholderStyle = photo.url ? 'display: none;' : '';
-        return '<div class="gallery-item" onclick="openViewer(' + index + ')">' +
-          imgPart +
-          '<div class="gallery-placeholder" style="' + placeholderStyle + 'background: linear-gradient(135deg, ' + photo.color + '40, ' + photo.color + '20)">' +
-            '<i class="fas fa-image" style="color: ' + photo.color + '"></i>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-    }
-
     function formatKwanza(value) {
       return value.toLocaleString('pt-AO').replace(',', '.');
     }
@@ -4258,58 +6514,6 @@
       chatInputEl.style.height = 'auto';
       chatInputEl.style.height = Math.min(chatInputEl.scrollHeight, 120) + 'px';
     });
-
-    async function uploadGalleryPhotos(input) {
-      if (input.files && input.files.length > 0) {
-        if (!currentUser) {
-          showToast('Faça login para enviar fotos', 'error');
-          input.value = '';
-          return;
-        }
-
-        const files = Array.from(input.files);
-        const total = files.length;
-        let uploaded = 0;
-        let errors = 0;
-
-        // Mostrar modal de progresso
-        showUploadProgressModal(total);
-
-        for (let i = 0; i < files.length; i++) {
-          const file = files[i];
-          updateUploadProgress(i + 1, total, file.name);
-
-          try {
-            const url = await uploadToImgBB(file);
-            if (url) {
-              const saved = await savePhotoToGallery(url);
-              if (saved) {
-                uploaded++;
-              } else {
-                errors++;
-              }
-            } else {
-              errors++;
-            }
-          } catch (e) {
-            console.error('Erro ao enviar foto:', JSON.stringify(e));
-            errors++;
-          }
-        }
-
-        closeUploadProgressModal();
-
-        if (errors === 0) {
-          showToast(`${uploaded} foto${uploaded > 1 ? 's' : ''} adicionada${uploaded > 1 ? 's' : ''}!`);
-        } else if (uploaded > 0) {
-          showToast(`${uploaded} enviada${uploaded > 1 ? 's' : ''}, ${errors} com erro`, 'error');
-        } else {
-          showToast('Erro ao enviar as fotos', 'error');
-        }
-
-        input.value = '';
-      }
-    }
 
     // Modal de progresso de upload
     function showUploadProgressModal(total) {
@@ -4610,6 +6814,531 @@
       sidebarTouchStartX = 0;
       sidebarTouchEndX = 0;
     }, { passive: true });
+
+    // =====================
+    // ABSENCE SYSTEM
+    // =====================
+
+    let selectedUserForAbsence = null;
+    let absenceToDelete = null;
+    let allUsersCache = [];
+    let allAbsencesCache = {};
+
+    async function loadAllUsersWithAbsences() {
+      const container = document.getElementById('absencesUsersContainer');
+      container.innerHTML = '<div class="posts-loading"><i class="fas fa-spinner"></i><span>Carregando usuários...</span></div>';
+
+      try {
+        // Load all users
+        const usersSnapshot = await db.collection('users').get();
+        allUsersCache = [];
+        usersSnapshot.forEach(doc => {
+          allUsersCache.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Sort users by name
+        allUsersCache.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+
+        // Load all absences
+        const absencesSnapshot = await db.collection('absences').orderBy('date', 'desc').get();
+        allAbsencesCache = {};
+        absencesSnapshot.forEach(doc => {
+          const data = doc.data();
+          if (!allAbsencesCache[data.userId]) {
+            allAbsencesCache[data.userId] = [];
+          }
+          allAbsencesCache[data.userId].push({ id: doc.id, ...data });
+        });
+
+        renderUsersWithAbsences();
+      } catch (err) {
+        console.error('Error loading users and absences:', err);
+        container.innerHTML = '<div class="posts-empty"><i class="fas fa-exclamation-circle"></i><p>Erro ao carregar usuários</p></div>';
+      }
+    }
+
+    function renderUsersWithAbsences() {
+      const container = document.getElementById('absencesUsersContainer');
+
+      if (allUsersCache.length === 0) {
+        container.innerHTML = '<div class="posts-empty"><i class="fas fa-users"></i><p>Nenhum usuário encontrado</p></div>';
+        return;
+      }
+
+      container.innerHTML = allUsersCache.map(user => {
+        const userAbsences = allAbsencesCache[user.id] || [];
+        const absenceCount = userAbsences.length;
+        const initials = getInitials(user.name || 'Usuário');
+        const hasAbsences = absenceCount > 0;
+
+        let avatarHtml = initials;
+        if (user.photoURL) {
+          avatarHtml = '<img src="' + escapeHtml(user.photoURL) + '" alt="Avatar">';
+        }
+
+        let historyHtml = '';
+        if (hasAbsences) {
+          historyHtml = '<div class="absence-history-section">' +
+            '<button class="absence-history-toggle" onclick="toggleAbsenceHistory(this, \'' + user.id + '\')">' +
+              '<span><i class="fas fa-history"></i> Ver histórico de faltas</span>' +
+              '<i class="fas fa-chevron-down"></i>' +
+            '</button>' +
+            '<div class="absence-history-list" id="absenceHistory_' + user.id + '">' +
+              userAbsences.map(absence => {
+                const dateFormatted = formatAbsenceDate(absence.date);
+                return '<div class="absence-history-item">' +
+                  '<div class="absence-history-date">' +
+                    '<i class="fas fa-calendar-xmark"></i>' +
+                    '<div>' +
+                      '<div class="absence-history-date-text">' + dateFormatted + '</div>' +
+                      '<div class="absence-history-reason">' + (absence.reason ? escapeHtml(absence.reason) : 'Sem motivo') + '</div>' +
+                    '</div>' +
+                  '</div>' +
+                  '<button class="absence-history-delete" onclick="confirmDeleteAbsenceForUser(\'' + absence.id + '\', \'' + user.id + '\')">' +
+                    '<i class="fas fa-trash-alt"></i>' +
+                  '</button>' +
+                '</div>';
+              }).join('') +
+            '</div>' +
+          '</div>';
+        }
+
+        return '<div class="absence-user-card" id="userCard_' + user.id + '">' +
+          '<div class="absence-user-header">' +
+            '<div class="absence-user-avatar">' + avatarHtml + '</div>' +
+            '<div class="absence-user-info">' +
+              '<div class="absence-user-name">' + escapeHtml(user.name || 'Usuário') + '</div>' +
+              '<div class="absence-user-username">@' + escapeHtml(user.username || user.email || '') + '</div>' +
+            '</div>' +
+            '<div class="absence-count-badge' + (hasAbsences ? ' has-absences' : '') + '">' +
+              '<div class="absence-count-number">' + absenceCount + '</div>' +
+              '<div class="absence-count-label">Faltas</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="absence-actions">' +
+            '<button class="absence-action-btn add" onclick="openAddAbsenceModalForUser(\'' + user.id + '\')">' +
+              '<i class="fas fa-plus"></i>' +
+              '<span>Adicionar Falta</span>' +
+            '</button>' +
+            '<button class="absence-action-btn remove" onclick="removeLastAbsenceForUser(\'' + user.id + '\')"' + (hasAbsences ? '' : ' disabled') + '>' +
+              '<i class="fas fa-minus"></i>' +
+              '<span>Remover Falta</span>' +
+            '</button>' +
+          '</div>' +
+          historyHtml +
+        '</div>';
+      }).join('');
+    }
+
+    function toggleAbsenceHistory(btn, odId) {
+      const historyList = document.getElementById('absenceHistory_' + odId);
+      if (historyList) {
+        btn.classList.toggle('expanded');
+        historyList.classList.toggle('show');
+      }
+    }
+
+    function openAddAbsenceModalForUser(odId) {
+      const user = allUsersCache.find(u => u.id === odId);
+      if (!user) {
+        showToast('Usuário não encontrado');
+        return;
+      }
+
+      selectedUserForAbsence = user;
+
+      // Update modal with user info
+      const userInfoDiv = document.getElementById('absenceModalUserInfo');
+      const avatarDiv = document.getElementById('absenceModalUserAvatar');
+      const nameDiv = document.getElementById('absenceModalUserName');
+      const usernameDiv = document.getElementById('absenceModalUserUsername');
+
+      userInfoDiv.style.display = 'flex';
+
+      const initials = getInitials(user.name || 'Usuário');
+      if (user.photoURL) {
+        avatarDiv.innerHTML = '<img src="' + escapeHtml(user.photoURL) + '" alt="Avatar">';
+      } else {
+        avatarDiv.innerHTML = initials;
+      }
+
+      nameDiv.textContent = user.name || 'Usuário';
+      usernameDiv.textContent = '@' + (user.username || user.email || '');
+
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('absenceDate').value = today;
+      document.getElementById('absenceReason').value = '';
+      document.getElementById('absenceModalOverlay').classList.add('active');
+    }
+
+    function closeAbsenceModal() {
+      document.getElementById('absenceModalOverlay').classList.remove('active');
+      selectedUserForAbsence = null;
+    }
+
+    async function saveAbsenceForUser() {
+      if (!selectedUserForAbsence) {
+        showToast('Nenhum usuário selecionado');
+        return;
+      }
+
+      const dateInput = document.getElementById('absenceDate').value;
+      const reason = document.getElementById('absenceReason').value.trim();
+
+      if (!dateInput) {
+        showToast('Selecione uma data');
+        return;
+      }
+
+      try {
+        await db.collection('absences').add({
+          userId: selectedUserForAbsence.id,
+          date: dateInput,
+          reason: reason || null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        closeAbsenceModal();
+        showToast('Falta registrada para ' + (selectedUserForAbsence.name || 'usuário'));
+
+        // Reload the absences page
+        await loadAllUsersWithAbsences();
+        updateProfileAbsenceCount();
+      } catch (err) {
+        console.error('Error saving absence:', err);
+        showToast('Erro ao registrar falta');
+      }
+    }
+
+    async function removeLastAbsenceForUser(odId) {
+      const userAbsences = allAbsencesCache[odId];
+      if (!userAbsences || userAbsences.length === 0) {
+        showToast('Este usuário não tem faltas');
+        return;
+      }
+
+      const user = allUsersCache.find(u => u.id === odId);
+      const lastAbsence = userAbsences[0]; // Already sorted by date desc
+
+      try {
+        await db.collection('absences').doc(lastAbsence.id).delete();
+        showToast('Falta removida de ' + (user ? user.name : 'usuário'));
+
+        // Reload the absences page
+        await loadAllUsersWithAbsences();
+        updateProfileAbsenceCount();
+      } catch (err) {
+        console.error('Error removing absence:', err);
+        showToast('Erro ao remover falta');
+      }
+    }
+
+    function confirmDeleteAbsenceForUser(absenceId, odId) {
+      absenceToDelete = { absenceId, odId };
+      document.getElementById('deleteAbsenceModalOverlay').classList.add('active');
+    }
+
+    function closeDeleteAbsenceModal() {
+      document.getElementById('deleteAbsenceModalOverlay').classList.remove('active');
+      absenceToDelete = null;
+    }
+
+    document.getElementById('deleteAbsenceConfirmBtn').addEventListener('click', async () => {
+      if (!absenceToDelete) return;
+
+      try {
+        await db.collection('absences').doc(absenceToDelete.absenceId).delete();
+        closeDeleteAbsenceModal();
+        showToast('Falta removida');
+
+        // Reload the absences page
+        await loadAllUsersWithAbsences();
+        updateProfileAbsenceCount();
+      } catch (err) {
+        console.error('Error deleting absence:', err);
+        showToast('Erro ao remover falta');
+      }
+    });
+
+    function formatAbsenceDate(dateStr) {
+      const [year, month, day] = dateStr.split('-');
+      const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      return day + ' de ' + months[parseInt(month) - 1] + ' de ' + year;
+    }
+
+    async function updateProfileAbsenceCount() {
+      if (!currentUser) return;
+
+      try {
+        const snapshot = await db.collection('absences')
+          .where('userId', '==', currentUser.uid)
+          .get();
+
+        const count = snapshot.size;
+        const el = document.getElementById('profileAbsences');
+        if (el) el.textContent = count;
+      } catch (err) {
+        console.error('Error updating absence count:', err);
+      }
+    }
+
+    // ========== Profile Avatar Options Functions ==========
+
+    // Open avatar options menu
+    function openAvatarOptions() {
+      document.getElementById('avatarOptionsOverlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close avatar options menu
+    function closeAvatarOptions(event) {
+      if (event && event.target !== event.currentTarget) return;
+      document.getElementById('avatarOptionsOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // View profile photo in fullscreen
+    function viewProfilePhoto() {
+      closeAvatarOptions();
+
+      const viewer = document.getElementById('profileImageViewer');
+      const content = document.getElementById('profileImageViewerContent');
+
+      if (currentUserData && currentUserData.photoURL) {
+        content.innerHTML = '<img src="' + currentUserData.photoURL + '" alt="Foto de perfil">';
+      } else {
+        const initials = getInitials(currentUserData ? currentUserData.name : 'Usuário');
+        content.innerHTML = '<div class="profile-image-viewer-placeholder">' + initials + '</div>';
+      }
+
+      viewer.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close profile image viewer
+    function closeProfileImageViewer() {
+      document.getElementById('profileImageViewer').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Trigger file input to update profile photo
+    function updateProfilePhoto() {
+      closeAvatarOptions();
+      document.getElementById('profileAvatarInput').click();
+    }
+
+    // Handle profile avatar file change
+    async function handleProfileAvatarChange(input) {
+      if (!input.files || !input.files[0]) return;
+
+      const file = input.files[0];
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        showToast('Por favor, selecione uma imagem válida', 'error');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        showToast('A imagem deve ter no máximo 5MB', 'error');
+        return;
+      }
+
+      showToast('Atualizando foto...');
+
+      try {
+        // Upload to ImgBB
+        const photoURL = await uploadToImgBB(file);
+
+        if (!photoURL) {
+          showToast('Erro ao fazer upload da imagem', 'error');
+          return;
+        }
+
+        // Update in Firestore
+        await db.collection('users').doc(currentUser.uid).update({
+          photoURL: photoURL
+        });
+
+        // Update local data
+        currentUserData.photoURL = photoURL;
+
+        // Update UI elements
+        updateAvatarUI(photoURL);
+
+        showToast('Foto atualizada com sucesso!');
+      } catch (error) {
+        console.error('Error updating avatar:', JSON.stringify(error));
+        showToast('Erro ao atualizar foto', 'error');
+      }
+
+      // Clear input
+      input.value = '';
+    }
+
+    // Update all avatar UI elements
+    function updateAvatarUI(photoURL) {
+      const avatarHtml = '<img src="' + photoURL + '" alt="Avatar">';
+
+      // Profile page avatar
+      const profileAvatar = document.getElementById('profileAvatar');
+      if (profileAvatar) {
+        profileAvatar.innerHTML = avatarHtml;
+      }
+
+      // Sidebar avatar
+      const sidebarAvatar = document.getElementById('sidebarAvatar');
+      if (sidebarAvatar) {
+        sidebarAvatar.innerHTML = avatarHtml;
+      }
+    }
+
+    // Close profile image viewer on escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        if (document.getElementById('profileImageViewer').classList.contains('active')) {
+          closeProfileImageViewer();
+        }
+        if (document.getElementById('avatarOptionsOverlay').classList.contains('active')) {
+          closeAvatarOptions();
+        }
+      }
+    });
+
+    // ==================== PIN SECURITY MODAL ====================
+
+    const pinModalTexts = {
+      vault: {
+        title: 'Acesso ao Cofre',
+        subtitle: 'Digite o PIN para acessar o Cofre',
+        icon: 'fa-vault'
+      },
+      chat: {
+        title: 'Conversas Privadas',
+        subtitle: 'Digite o PIN para acessar as Conversas',
+        icon: 'fa-comments'
+      }
+    };
+
+    function showPinModal(page) {
+      currentPinInput = '';
+      updatePinDisplay();
+      document.getElementById('pinErrorMsg').classList.remove('show');
+
+      // Atualiza textos e ícone do modal baseado na página
+      const texts = pinModalTexts[page] || pinModalTexts.vault;
+      document.getElementById('pinModalTitle').textContent = texts.title;
+      document.getElementById('pinModalSubtitle').textContent = texts.subtitle;
+      document.getElementById('pinModalIcon').className = 'fas ' + texts.icon;
+
+      document.getElementById('pinModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePinModal() {
+      document.getElementById('pinModal').classList.remove('active');
+      document.body.style.overflow = '';
+      currentPinInput = '';
+      pendingVaultNavigation = null;
+      updatePinDisplay();
+    }
+
+    function updatePinDisplay() {
+      for (let i = 1; i <= 4; i++) {
+        const dot = document.getElementById('pinDot' + i);
+        dot.classList.remove('filled', 'error');
+        if (i <= currentPinInput.length) {
+          dot.classList.add('filled');
+        }
+      }
+    }
+
+    function showPinError() {
+      const dots = document.querySelectorAll('.pin-dot');
+      dots.forEach(dot => {
+        dot.classList.remove('filled');
+        dot.classList.add('error');
+      });
+      document.getElementById('pinErrorMsg').classList.add('show');
+
+      setTimeout(() => {
+        currentPinInput = '';
+        updatePinDisplay();
+        document.getElementById('pinErrorMsg').classList.remove('show');
+      }, 1200);
+    }
+
+    function handlePinInput(key) {
+      if (key === 'delete') {
+        currentPinInput = currentPinInput.slice(0, -1);
+        updatePinDisplay();
+        return;
+      }
+
+      if (currentPinInput.length >= 4) return;
+
+      currentPinInput += key;
+      updatePinDisplay();
+
+      // Verifica o PIN quando 4 dígitos são inseridos
+      if (currentPinInput.length === 4) {
+        setTimeout(() => {
+          if (currentPinInput === VAULT_PIN) {
+            // PIN correto - autenticar e navegar para a página protegida
+            vaultAuthenticated = true;
+            const targetPage = pendingVaultNavigation ? pendingVaultNavigation.page : 'vault';
+            closePinModal();
+            navigateToProtectedPage(targetPage);
+          } else {
+            // PIN incorreto
+            showPinError();
+          }
+        }, 150);
+      }
+    }
+
+    function navigateToProtectedPage(page) {
+      // Atualiza estado ativo dos nav items do footer
+      const footerNavItems = footerNav.querySelectorAll('.nav-item');
+      footerNavItems.forEach(nav => nav.classList.remove('active'));
+      const targetNavItem = footerNav.querySelector('[data-page="' + page + '"]');
+      if (targetNavItem) targetNavItem.classList.add('active');
+
+      // Atualiza página visível
+      pages.forEach(p => p.classList.remove('active'));
+      document.getElementById(page + 'Page').classList.add('active');
+
+      // Mostra/esconde input do chat
+      chatInputContainer.style.display = page === 'chat' ? 'block' : 'none';
+    }
+
+    // Event listeners para o teclado numérico
+    document.querySelectorAll('.pin-key').forEach(key => {
+      key.addEventListener('click', (e) => {
+        e.preventDefault();
+        const keyValue = key.dataset.key;
+        if (keyValue) {
+          handlePinInput(keyValue);
+        }
+      });
+    });
+
+    // Suporte ao teclado físico no modal PIN
+    document.addEventListener('keydown', (e) => {
+      const pinModal = document.getElementById('pinModal');
+      if (!pinModal.classList.contains('active')) return;
+
+      if (e.key >= '0' && e.key <= '9') {
+        handlePinInput(e.key);
+      } else if (e.key === 'Backspace') {
+        handlePinInput('delete');
+      } else if (e.key === 'Escape') {
+        closePinModal();
+      }
+    });
+
+    // ==================== END PIN SECURITY MODAL ====================
 
     // Initialize
     initTheme();
