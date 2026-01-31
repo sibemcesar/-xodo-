@@ -39,6 +39,129 @@
       --border: #E5E5E5;
     }
 
+    /* Birthday Theme - Dark Mode */
+    .birthday-mode {
+      --primary: #FF6B9D;
+      --primary-dark: #E84A7F;
+      --accent: #FFD93D;
+      --bg-main: #1A0A1A;
+      --bg-card: #2D1A2D;
+      --bg-elevated: #3D2A3D;
+      --text-primary: #FFF5F8;
+      --text-secondary: #D4A0B8;
+      --text-muted: #8A6078;
+      --success: #4ADE80;
+      --danger: #F87171;
+      --border: #4D2A4D;
+    }
+
+    /* Birthday Theme - Light Mode */
+    .light.birthday-mode {
+      --primary: #FF4081;
+      --primary-dark: #E91E63;
+      --accent: #FFD700;
+      --bg-main: #FFF5F8;
+      --bg-card: #FFFFFF;
+      --bg-elevated: #FFF0F5;
+      --text-primary: #4A1A2D;
+      --text-secondary: #8A4A68;
+      --text-muted: #B888A0;
+      --border: #FFD0E0;
+    }
+
+    /* Birthday banner */
+    .birthday-banner {
+      display: none;
+      background: linear-gradient(135deg, #FF6B9D, #FFD93D, #FF6B9D);
+      background-size: 200% 200%;
+      animation: birthdayGradient 3s ease infinite;
+      padding: 12px 16px;
+      text-align: center;
+      color: #1A0A1A;
+      font-weight: 600;
+      font-size: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .birthday-banner.active {
+      display: block;
+    }
+
+    .birthday-banner::before {
+      content: '🎂 ';
+    }
+
+    .birthday-banner::after {
+      content: ' 🎉';
+    }
+
+    .birthday-banner-text {
+      display: inline-block;
+      animation: birthdayBounce 1s ease infinite;
+    }
+
+    @keyframes birthdayGradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes birthdayBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    /* Confetti animation for birthday */
+    .birthday-confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -10px;
+      animation: confettiFall 4s linear infinite;
+    }
+
+    .confetti-piece:nth-child(odd) {
+      background: #FF6B9D;
+      border-radius: 50%;
+    }
+
+    .confetti-piece:nth-child(even) {
+      background: #FFD93D;
+      clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+
+    .confetti-piece:nth-child(3n) {
+      background: #4ADE80;
+      border-radius: 2px;
+    }
+
+    .confetti-piece:nth-child(4n) {
+      background: #60A5FA;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -3347,6 +3470,246 @@
       color: var(--danger);
     }
 
+    /* Profile Absences History Modal */
+    .profile-absences-modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .profile-absences-modal-overlay.active {
+      display: flex;
+    }
+
+    .profile-absences-modal {
+      background: var(--bg-card);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .profile-absences-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-absences-modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile-absences-modal-title i {
+      color: var(--danger);
+    }
+
+    .profile-absences-modal-close {
+      width: 36px;
+      height: 36px;
+      background: var(--bg-elevated);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-secondary);
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-absences-modal-close:hover,
+    .profile-absences-modal-close:active {
+      background: var(--danger);
+      color: white;
+    }
+
+    .profile-absences-modal-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px;
+    }
+
+    .profile-absences-summary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(248, 113, 113, 0.1), rgba(248, 113, 113, 0.05));
+      border-radius: 14px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(248, 113, 113, 0.2);
+    }
+
+    .profile-absences-summary-number {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--danger);
+    }
+
+    .profile-absences-summary-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .profile-absences-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .profile-absence-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+
+    .profile-absence-item:hover {
+      border-color: var(--primary);
+    }
+
+    .profile-absence-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(248, 113, 113, 0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--danger);
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .profile-absence-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .profile-absence-date {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .profile-absence-reason {
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .profile-absences-empty {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .profile-absences-empty i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--success);
+    }
+
+    .profile-absences-empty p {
+      font-size: 15px;
+    }
+
+    .profile-absences-loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-secondary);
+    }
+
+    .profile-absences-loading i {
+      font-size: 32px;
+      color: var(--primary);
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    /* Clickable stat for absences */
+    .profile-stat.clickable {
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin: -8px -12px;
+    }
+
+    .profile-stat.clickable:hover,
+    .profile-stat.clickable:active {
+      background: rgba(212, 168, 83, 0.1);
+    }
+
+    .profile-stat.clickable .profile-stat-value {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 4px;
+    }
+
+    /* User profile modal clickable stat */
+    .user-profile-stat.clickable {
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: 8px 12px;
+      border-radius: 10px;
+      margin: -8px -12px;
+    }
+
+    .user-profile-stat.clickable:hover,
+    .user-profile-stat.clickable:active {
+      background: rgba(212, 168, 83, 0.1);
+    }
+
+    .user-profile-stat.clickable .user-profile-stat-value {
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 4px;
+    }
+
     /* Add Absence Modal for specific user */
     .modal-user-info {
       display: flex;
@@ -3898,6 +4261,14 @@
         </div>
       </header>
 
+      <!-- Birthday Banner -->
+      <div class="birthday-banner" id="birthdayBanner">
+        <span class="birthday-banner-text">Feliz Aniversário! Hoje é o seu dia especial!</span>
+      </div>
+
+      <!-- Birthday Confetti Container -->
+      <div class="birthday-confetti" id="birthdayConfetti"></div>
+
       <!-- Main Content -->
       <main class="main-content">
         <!-- Posts Page -->
@@ -4023,7 +4394,7 @@
                 <div class="profile-stat-value" id="profileLikesCount">0</div>
                 <div class="profile-stat-label">Curtidas</div>
               </div>
-              <div class="profile-stat">
+              <div class="profile-stat clickable" onclick="openProfileAbsencesModal()">
                 <div class="profile-stat-value" id="profileAbsences">0</div>
                 <div class="profile-stat-label">Faltas</div>
               </div>
@@ -4182,6 +4553,27 @@
           <div class="modal-actions">
             <button class="modal-btn cancel" onclick="closeDeleteAbsenceModal()">Cancelar</button>
             <button class="modal-btn danger" id="deleteAbsenceConfirmBtn">Remover</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Absences History Modal -->
+      <div class="profile-absences-modal-overlay" id="profileAbsencesModalOverlay" onclick="closeProfileAbsencesModal(event)">
+        <div class="profile-absences-modal" onclick="event.stopPropagation()">
+          <div class="profile-absences-modal-header">
+            <div class="profile-absences-modal-title">
+              <i class="fas fa-calendar-xmark"></i>
+              <span>Histórico de Faltas</span>
+            </div>
+            <button class="profile-absences-modal-close" onclick="closeProfileAbsencesModal()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="profile-absences-modal-body" id="profileAbsencesModalBody">
+            <div class="profile-absences-loading">
+              <i class="fas fa-spinner"></i>
+              <p>Carregando...</p>
+            </div>
           </div>
         </div>
       </div>
@@ -4561,6 +4953,14 @@
       const slidesContainer = document.getElementById('viewerSlides');
       const navContainer = document.getElementById('viewerNav');
 
+      // Reset state before opening
+      currentTranslate = 0;
+      prevTranslate = 0;
+      currentImageIndex = 0;
+      galleryPhotos = [{ url: imageURL }];
+
+      slidesContainer.style.transition = 'none';
+      slidesContainer.style.transform = 'translateX(0)';
       slidesContainer.innerHTML = '<div class="viewer-slide"><img class="viewer-image" src="' + imageURL + '" alt="Imagem da conversa"></div>';
       navContainer.innerHTML = '';
       document.getElementById('viewerCounter').textContent = '1 / 1';
@@ -4579,6 +4979,14 @@
       const slidesContainer = document.getElementById('viewerSlides');
       const navContainer = document.getElementById('viewerNav');
 
+      // Reset state before opening
+      currentTranslate = 0;
+      prevTranslate = 0;
+      currentImageIndex = 0;
+      galleryPhotos = [{ url: imageURL }];
+
+      slidesContainer.style.transition = 'none';
+      slidesContainer.style.transform = 'translateX(0)';
       slidesContainer.innerHTML = '<div class="viewer-slide"><img class="viewer-image" src="' + imageURL + '" alt="Foto do perfil"></div>';
       navContainer.innerHTML = '';
       document.getElementById('viewerCounter').textContent = '1 / 1';
@@ -4620,6 +5028,88 @@
         age--;
       }
       return age;
+    }
+
+    // Check if today is user's birthday
+    function isTodayBirthday(birthdate) {
+      if (!birthdate) return false;
+      const today = new Date();
+      const birth = new Date(birthdate);
+      return today.getDate() === birth.getDate() && today.getMonth() === birth.getMonth();
+    }
+
+    // Activate birthday mode
+    let birthdayConfettiInterval = null;
+
+    function activateBirthdayMode(userName) {
+      // Add birthday class to html
+      document.documentElement.classList.add('birthday-mode');
+
+      // Show birthday banner
+      const banner = document.getElementById('birthdayBanner');
+      const bannerText = banner.querySelector('.birthday-banner-text');
+      if (userName) {
+        bannerText.textContent = 'Feliz Aniversário, ' + userName.split(' ')[0] + '! Hoje é o seu dia especial!';
+      }
+      banner.classList.add('active');
+
+      // Start confetti
+      startBirthdayConfetti();
+
+      // Show confetti for 10 seconds then stop (but keep theme)
+      setTimeout(stopBirthdayConfetti, 10000);
+    }
+
+    function deactivateBirthdayMode() {
+      document.documentElement.classList.remove('birthday-mode');
+      document.getElementById('birthdayBanner').classList.remove('active');
+      stopBirthdayConfetti();
+    }
+
+    function startBirthdayConfetti() {
+      const container = document.getElementById('birthdayConfetti');
+      container.innerHTML = '';
+
+      // Create confetti pieces
+      function createConfetti() {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.animationDuration = (3 + Math.random() * 2) + 's';
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        container.appendChild(piece);
+
+        // Remove after animation
+        setTimeout(() => piece.remove(), 5000);
+      }
+
+      // Initial burst
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => createConfetti(), i * 50);
+      }
+
+      // Continuous confetti
+      birthdayConfettiInterval = setInterval(() => {
+        for (let i = 0; i < 5; i++) {
+          createConfetti();
+        }
+      }, 500);
+    }
+
+    function stopBirthdayConfetti() {
+      if (birthdayConfettiInterval) {
+        clearInterval(birthdayConfettiInterval);
+        birthdayConfettiInterval = null;
+      }
+    }
+
+    // Check and apply birthday mode for current user
+    function checkBirthday(userData) {
+      if (userData && userData.birthdate && isTodayBirthday(userData.birthdate)) {
+        activateBirthdayMode(userData.name);
+      } else {
+        deactivateBirthdayMode();
+      }
     }
 
     // Format date
@@ -4880,7 +5370,10 @@
         try {
           const doc = await db.collection('users').doc(user.uid).get();
           if (doc.exists) {
-            updateUserUI(doc.data());
+            const userData = doc.data();
+            updateUserUI(userData);
+            // Check if today is user's birthday
+            checkBirthday(userData);
           } else {
             // Create user profile if it doesn't exist
             const userData = {
@@ -4892,6 +5385,7 @@
             };
             await db.collection('users').doc(user.uid).set(userData);
             updateUserUI(userData);
+            checkBirthday(userData);
           }
         } catch (err) {
           console.error('Error fetching user data:', JSON.stringify(err));
@@ -4915,6 +5409,9 @@
         // Remove presence before logging out
         removePresence();
         unsubscribeFromPresence();
+
+        // Deactivate birthday mode on logout
+        deactivateBirthdayMode();
 
         currentUser = null;
         currentUserData = null;
@@ -5388,7 +5885,7 @@
               '<div class="user-profile-stat-value">' + likesCount + '</div>' +
               '<div class="user-profile-stat-label">Curtidas</div>' +
             '</div>' +
-            '<div class="user-profile-stat">' +
+            '<div class="user-profile-stat clickable" onclick="openProfileAbsencesModal(\'' + userId + '\')">' +
               '<div class="user-profile-stat-value">' + absencesCount + '</div>' +
               '<div class="user-profile-stat-label">Faltas</div>' +
             '</div>' +
@@ -5632,6 +6129,11 @@
       const slidesContainer = document.getElementById('viewerSlides');
       const navContainer = document.getElementById('viewerNav');
 
+      // Reset state before opening
+      currentTranslate = 0;
+      prevTranslate = 0;
+
+      slidesContainer.style.transition = 'none';
       slidesContainer.innerHTML = images.map(function(url) {
         return '<div class="viewer-slide">' +
           '<img class="viewer-image" src="' + url + '" alt="Foto">' +
@@ -5648,6 +6150,8 @@
 
       const slideWidth = window.innerWidth;
       slidesContainer.style.transform = 'translateX(-' + (currentPostImageIndex * slideWidth) + 'px)';
+      prevTranslate = -(currentPostImageIndex * slideWidth);
+      currentTranslate = prevTranslate;
 
       viewer.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -5750,6 +6254,11 @@
 
       currentImageIndex = startIndex;
 
+      // Reset state before opening
+      currentTranslate = 0;
+      prevTranslate = 0;
+
+      slidesContainer.style.transition = 'none';
       slidesContainer.innerHTML = postsGalleryImages.map(function(photo) {
         return '<div class="viewer-slide">' +
           '<img class="viewer-image" src="' + photo.url + '" alt="Foto">' +
@@ -5768,6 +6277,8 @@
 
       const slideWidth = window.innerWidth;
       slidesContainer.style.transform = 'translateX(-' + (startIndex * slideWidth) + 'px)';
+      prevTranslate = -(startIndex * slideWidth);
+      currentTranslate = prevTranslate;
 
       viewer.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -6664,6 +7175,11 @@
       const slidesContainer = document.getElementById('viewerSlides');
       const navContainer = document.getElementById('viewerNav');
 
+      // Reset state before opening
+      currentTranslate = 0;
+      prevTranslate = 0;
+
+      slidesContainer.style.transition = 'none';
       slidesContainer.innerHTML = galleryPhotos.map(photo => {
         const imgPart = photo.url
           ? '<img class="viewer-image" src="' + photo.url + '" alt="Foto do Grupo" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">'
@@ -6690,8 +7206,27 @@
 
     function closeViewer() {
       const viewer = document.getElementById('imageViewer');
+      const slidesContainer = document.getElementById('viewerSlides');
+      const navContainer = document.getElementById('viewerNav');
+
       viewer.classList.remove('active');
       document.body.style.overflow = '';
+
+      // Reset transform and transitions
+      slidesContainer.style.transition = 'none';
+      slidesContainer.style.transform = 'translateX(0)';
+
+      // Clear slides content after animation
+      setTimeout(function() {
+        slidesContainer.innerHTML = '';
+        navContainer.innerHTML = '';
+      }, 300);
+
+      // Reset state variables
+      currentTranslate = 0;
+      prevTranslate = 0;
+      currentImageIndex = 0;
+
       // Restore arrow buttons visibility
       document.getElementById('prevBtn').style.display = '';
       document.getElementById('nextBtn').style.display = '';
@@ -6839,8 +7374,8 @@
         // Sort users by name
         allUsersCache.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
-        // Load all absences
-        const absencesSnapshot = await db.collection('absences').orderBy('date', 'desc').get();
+        // Load all absences (without orderBy on single field is fine, but we'll sort on client)
+        const absencesSnapshot = await db.collection('absences').get();
         allAbsencesCache = {};
         absencesSnapshot.forEach(doc => {
           const data = doc.data();
@@ -6848,6 +7383,15 @@
             allAbsencesCache[data.userId] = [];
           }
           allAbsencesCache[data.userId].push({ id: doc.id, ...data });
+        });
+
+        // Sort each user's absences by date descending
+        Object.keys(allAbsencesCache).forEach(uid => {
+          allAbsencesCache[uid].sort((a, b) => {
+            const dateA = a.date?.toMillis ? a.date.toMillis() : (typeof a.date === 'number' ? a.date : new Date(a.date).getTime());
+            const dateB = b.date?.toMillis ? b.date.toMillis() : (typeof b.date === 'number' ? b.date : new Date(b.date).getTime());
+            return dateB - dateA;
+          });
         });
 
         renderUsersWithAbsences();
@@ -7082,6 +7626,110 @@
       }
     }
 
+    // ========== Profile Absences History Modal Functions ==========
+
+    // Open the profile absences history modal
+    async function openProfileAbsencesModal(userId) {
+      const overlay = document.getElementById('profileAbsencesModalOverlay');
+      const body = document.getElementById('profileAbsencesModalBody');
+
+      // Show loading state
+      body.innerHTML = '<div class="profile-absences-loading"><i class="fas fa-spinner"></i><p>Carregando...</p></div>';
+
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+
+      // Determine which user to load (current user or specified user)
+      const targetUserId = userId || (currentUser ? currentUser.uid : null);
+
+      if (!targetUserId) {
+        body.innerHTML = '<div class="profile-absences-empty"><i class="fas fa-exclamation-triangle"></i><p>Usuário não encontrado</p></div>';
+        return;
+      }
+
+      await loadProfileAbsences(targetUserId);
+    }
+
+    // Close the profile absences history modal
+    function closeProfileAbsencesModal(event) {
+      if (event && event.target !== event.currentTarget) return;
+
+      const overlay = document.getElementById('profileAbsencesModalOverlay');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Load absences for a specific user
+    async function loadProfileAbsences(userId) {
+      const body = document.getElementById('profileAbsencesModalBody');
+
+      try {
+        // Fetch absences from Firestore (without orderBy to avoid needing composite index)
+        const absencesSnapshot = await db.collection('absences')
+          .where('userId', '==', userId)
+          .get();
+
+        const absences = [];
+        absencesSnapshot.forEach(doc => {
+          absences.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+
+        // Sort by date descending on client side
+        absences.sort((a, b) => {
+          const dateA = a.date?.toMillis ? a.date.toMillis() : (typeof a.date === 'number' ? a.date : new Date(a.date).getTime());
+          const dateB = b.date?.toMillis ? b.date.toMillis() : (typeof b.date === 'number' ? b.date : new Date(b.date).getTime());
+          return dateB - dateA;
+        });
+
+        // If no absences, show empty state
+        if (absences.length === 0) {
+          body.innerHTML =
+            '<div class="profile-absences-empty">' +
+              '<i class="fas fa-check-circle"></i>' +
+              '<p>Nenhuma falta registrada!</p>' +
+            '</div>';
+          return;
+        }
+
+        // Build the absences list HTML
+        let listHtml = absences.map(function(absence) {
+          const dateFormatted = formatAbsenceDate(absence.date);
+          const reason = absence.reason ? escapeHtml(absence.reason) : 'Sem motivo informado';
+
+          return '<div class="profile-absence-item">' +
+            '<div class="profile-absence-icon">' +
+              '<i class="fas fa-calendar-xmark"></i>' +
+            '</div>' +
+            '<div class="profile-absence-info">' +
+              '<div class="profile-absence-date">' + dateFormatted + '</div>' +
+              '<div class="profile-absence-reason">' + reason + '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        // Build summary and list
+        body.innerHTML =
+          '<div class="profile-absences-summary">' +
+            '<div class="profile-absences-summary-number">' + absences.length + '</div>' +
+            '<div class="profile-absences-summary-text">' +
+              (absences.length === 1 ? 'falta registrada' : 'faltas registradas') +
+            '</div>' +
+          '</div>' +
+          '<div class="profile-absences-list">' + listHtml + '</div>';
+
+      } catch (error) {
+        console.error('Error loading profile absences:', JSON.stringify(error));
+        body.innerHTML =
+          '<div class="profile-absences-empty">' +
+            '<i class="fas fa-exclamation-triangle"></i>' +
+            '<p>Erro ao carregar faltas</p>' +
+          '</div>';
+      }
+    }
+
     // ========== Profile Avatar Options Functions ==========
 
     // Open avatar options menu
@@ -7167,6 +7815,9 @@
         // Update UI elements
         updateAvatarUI(photoURL);
 
+        // Create post announcing profile photo update
+        await createProfilePhotoUpdatePost(photoURL);
+
         showToast('Foto atualizada com sucesso!');
       } catch (error) {
         console.error('Error updating avatar:', JSON.stringify(error));
@@ -7175,6 +7826,34 @@
 
       // Clear input
       input.value = '';
+    }
+
+    // Create a post announcing profile photo update
+    async function createProfilePhotoUpdatePost(photoURL) {
+      try {
+        const userName = currentUserData.name || 'Usuário';
+
+        await db.collection('posts').add({
+          content: userName + ' atualizou sua foto de perfil.',
+          imageURL: photoURL,
+          imageURLs: [photoURL],
+          authorId: currentUser.uid,
+          authorName: userName,
+          authorPhotoURL: photoURL,
+          likes: 0,
+          likedBy: [],
+          isProfileUpdate: true,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // Refresh posts if on posts tab
+        if (document.getElementById('postsSection') &&
+            document.getElementById('postsSection').style.display !== 'none') {
+          loadPostsFromFirestore();
+        }
+      } catch (error) {
+        console.error('Error creating profile update post:', JSON.stringify(error));
+      }
     }
 
     // Update all avatar UI elements
