@@ -2646,6 +2646,29 @@
       transform: scale(0.95);
     }
 
+    .viewer-header-buttons {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .viewer-download {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .viewer-download:active {
+      background: rgba(255,255,255,0.3);
+      transform: scale(0.95);
+    }
+
     .viewer-container {
       width: 100vw;
       height: 100%;
@@ -4582,9 +4605,14 @@
       <div class="image-viewer" id="imageViewer">
         <div class="viewer-header">
           <span class="viewer-counter" id="viewerCounter">1 / 6</span>
-          <button class="viewer-close" onclick="closeViewer()">
-            <i class="fas fa-times"></i>
-          </button>
+          <div class="viewer-header-buttons">
+            <button class="viewer-download" onclick="downloadCurrentImage()" title="Abrir no navegador">
+              <i class="fas fa-download"></i>
+            </button>
+            <button class="viewer-close" onclick="closeViewer()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
         <div class="viewer-container" id="viewerContainer">
           <div class="viewer-slides" id="viewerSlides"></div>
@@ -5104,11 +5132,76 @@
     }
 
     // Check and apply birthday mode for current user
-    function checkBirthday(userData) {
+    async function checkBirthday(userData) {
       if (userData && userData.birthdate && isTodayBirthday(userData.birthdate)) {
         activateBirthdayMode(userData.name);
+        // Check and create birthday post automatically
+        await checkAndCreateBirthdayPost(userData);
       } else {
         deactivateBirthdayMode();
+      }
+    }
+
+    // Check if user already posted birthday message today and create if not
+    async function checkAndCreateBirthdayPost(userData) {
+      if (!currentUser || !userData) return;
+
+      try {
+        // Get today's date in YYYY-MM-DD format for comparison
+        const today = new Date();
+        const todayStr = today.getFullYear() + '-' +
+                        String(today.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(today.getDate()).padStart(2, '0');
+
+        // Check if user already posted birthday message today
+        // Using only authorId query to avoid needing composite index
+        const userPostsSnapshot = await db.collection('posts')
+          .where('authorId', '==', currentUser.uid)
+          .get();
+
+        let alreadyPostedToday = false;
+
+        userPostsSnapshot.forEach(doc => {
+          const post = doc.data();
+          // Filter on client side to check for birthday post today
+          if (post.isBirthdayPost === true && post.birthdayPostDate === todayStr) {
+            alreadyPostedToday = true;
+          }
+        });
+
+        if (alreadyPostedToday) {
+          console.log('Birthday post already created today');
+          return;
+        }
+
+        // Create birthday post with profile photo
+        const birthdayMessage = '🎉 Hoje é meu aniversário! 🎉 Estou tão feliz por compartilhar este momento especial com todos vocês. Vamos celebrar juntos? Deixem seus parabéns nos comentários, assim vocês fazem meu dia ainda mais especial! 💖';
+
+        const postData = {
+          content: birthdayMessage,
+          authorId: currentUser.uid,
+          authorName: userData.name || 'Usuário',
+          authorPhotoURL: userData.photoURL || null,
+          likes: 0,
+          likedBy: [],
+          isBirthdayPost: true,
+          birthdayPostDate: todayStr,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        // Add profile photo as post image if user has one
+        if (userData.photoURL) {
+          postData.imageURL = userData.photoURL;
+          postData.imageURLs = [userData.photoURL];
+        }
+
+        await db.collection('posts').add(postData);
+        showToast('🎂 Postagem de aniversário publicada automaticamente!');
+        console.log('Birthday post created successfully');
+
+      } catch (error) {
+        console.error('Error checking/creating birthday post:', JSON.stringify(error));
+        // Don't let birthday post error break the app - just log and continue
       }
     }
 
@@ -5287,33 +5380,78 @@
     // Handle Logout
     async function handleLogout() {
       try {
-        // Remove presence before logout
-        await removePresence();
-        unsubscribeFromPresence();
+        // Try to remove presence, but don't let it block logout
+        try {
+          await removePresence();
+        } catch (presenceErr) {
+          console.error('Error removing presence:', presenceErr);
+        }
 
-        if (postsUnsubscribe) {
-          postsUnsubscribe();
-          postsUnsubscribe = null;
+        // Safely unsubscribe from presence
+        try {
+          unsubscribeFromPresence();
+        } catch (unsubErr) {
+          console.error('Error unsubscribing from presence:', unsubErr);
         }
-        if (vaultUnsubscribe) {
-          vaultUnsubscribe();
-          vaultUnsubscribe = null;
-        }
-        if (transactionsUnsubscribe) {
-          transactionsUnsubscribe();
-          transactionsUnsubscribe = null;
-        }
-        if (messagesUnsubscribe) {
-          messagesUnsubscribe();
-          messagesUnsubscribe = null;
-        }
+
+        // Safely unsubscribe from all listeners
+        try {
+          if (postsUnsubscribe) {
+            postsUnsubscribe();
+            postsUnsubscribe = null;
+          }
+        } catch (e) { console.error('Error unsubscribing posts:', e); }
+
+        try {
+          if (vaultUnsubscribe) {
+            vaultUnsubscribe();
+            vaultUnsubscribe = null;
+          }
+        } catch (e) { console.error('Error unsubscribing vault:', e); }
+
+        try {
+          if (transactionsUnsubscribe) {
+            transactionsUnsubscribe();
+            transactionsUnsubscribe = null;
+          }
+        } catch (e) { console.error('Error unsubscribing transactions:', e); }
+
+        try {
+          if (messagesUnsubscribe) {
+            messagesUnsubscribe();
+            messagesUnsubscribe = null;
+          }
+        } catch (e) { console.error('Error unsubscribing messages:', e); }
+
         // Reset vault authentication on logout
         vaultAuthenticated = false;
-        await auth.signOut();
+
+        // Reset user data
+        currentUser = null;
+        currentUserData = null;
+
+        // Close sidebar before signing out
         closeSidebar();
+
+        // Sign out from Firebase
+        await auth.signOut();
+
+        // Force show login screen immediately after signOut
+        showScreen('login');
         showToast('Você saiu da conta');
       } catch (err) {
-        showToast('Erro ao sair', 'error');
+        console.error('Logout error:', err);
+        // Even if there's an error, try to force sign out and show login
+        try {
+          await auth.signOut();
+          showScreen('login');
+          showToast('Você saiu da conta');
+        } catch (signOutErr) {
+          console.error('Force signout failed:', signOutErr);
+          // Still try to show login screen
+          showScreen('login');
+          showToast('Erro ao sair. Tente novamente.', 'error');
+        }
       }
     }
 
@@ -7232,6 +7370,27 @@
       document.getElementById('nextBtn').style.display = '';
     }
 
+    function downloadCurrentImage() {
+      // Get the current image URL from galleryPhotos
+      if (galleryPhotos.length > 0 && galleryPhotos[currentImageIndex]) {
+        const imageUrl = galleryPhotos[currentImageIndex].url;
+        if (imageUrl) {
+          // Try to call Android interface to open in external browser
+          try {
+            if (typeof Android !== 'undefined' && Android.openApp) {
+              Android.openApp(imageUrl);
+            } else {
+              // Fallback: open in new tab/window if Android interface not available
+              window.open(imageUrl, '_blank');
+            }
+          } catch (e) {
+            // Fallback: open in new tab/window
+            window.open(imageUrl, '_blank');
+          }
+        }
+      }
+    }
+
     function navigateViewer(direction) {
       const newIndex = currentImageIndex + direction;
       if (newIndex >= 0 && newIndex < galleryPhotos.length) {
@@ -7534,23 +7693,49 @@
         return;
       }
 
+      const userId = selectedUserForAbsence.id;
+      const userName = selectedUserForAbsence.name || 'usuário';
+
       try {
-        await db.collection('absences').add({
-          userId: selectedUserForAbsence.id,
+        // Add to Firestore and get the document reference
+        const docRef = await db.collection('absences').add({
+          userId: userId,
           date: dateInput,
           reason: reason || null,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        closeAbsenceModal();
-        showToast('Falta registrada para ' + (selectedUserForAbsence.name || 'usuário'));
+        // Immediately update local cache with the new absence
+        const newAbsence = {
+          id: docRef.id,
+          userId: userId,
+          date: dateInput,
+          reason: reason || null,
+          createdAt: new Date()
+        };
 
-        // Reload the absences page
-        await loadAllUsersWithAbsences();
+        // Initialize array if not exists
+        if (!allAbsencesCache[userId]) {
+          allAbsencesCache[userId] = [];
+        }
+
+        // Add to cache and sort by date descending
+        allAbsencesCache[userId].unshift(newAbsence);
+        allAbsencesCache[userId].sort((a, b) => {
+          const dateA = typeof a.date === 'string' ? new Date(a.date).getTime() : a.date;
+          const dateB = typeof b.date === 'string' ? new Date(b.date).getTime() : b.date;
+          return dateB - dateA;
+        });
+
+        closeAbsenceModal();
+        showToast('Falta registrada para ' + userName);
+
+        // Re-render the UI with updated cache
+        renderUsersWithAbsences();
         updateProfileAbsenceCount();
       } catch (err) {
         console.error('Error saving absence:', err);
-        showToast('Erro ao registrar falta');
+        showToast('Erro ao registrar falta', 'error');
       }
     }
 
@@ -7566,14 +7751,18 @@
 
       try {
         await db.collection('absences').doc(lastAbsence.id).delete();
+
+        // Immediately update local cache by removing the absence
+        allAbsencesCache[odId] = allAbsencesCache[odId].filter(a => a.id !== lastAbsence.id);
+
         showToast('Falta removida de ' + (user ? user.name : 'usuário'));
 
-        // Reload the absences page
-        await loadAllUsersWithAbsences();
+        // Re-render the UI with updated cache
+        renderUsersWithAbsences();
         updateProfileAbsenceCount();
       } catch (err) {
         console.error('Error removing absence:', err);
-        showToast('Erro ao remover falta');
+        showToast('Erro ao remover falta', 'error');
       }
     }
 
@@ -7590,17 +7779,25 @@
     document.getElementById('deleteAbsenceConfirmBtn').addEventListener('click', async () => {
       if (!absenceToDelete) return;
 
+      const { absenceId, odId } = absenceToDelete;
+
       try {
-        await db.collection('absences').doc(absenceToDelete.absenceId).delete();
+        await db.collection('absences').doc(absenceId).delete();
+
+        // Immediately update local cache by removing the absence
+        if (allAbsencesCache[odId]) {
+          allAbsencesCache[odId] = allAbsencesCache[odId].filter(a => a.id !== absenceId);
+        }
+
         closeDeleteAbsenceModal();
         showToast('Falta removida');
 
-        // Reload the absences page
-        await loadAllUsersWithAbsences();
+        // Re-render the UI with updated cache
+        renderUsersWithAbsences();
         updateProfileAbsenceCount();
       } catch (err) {
         console.error('Error deleting absence:', err);
-        showToast('Erro ao remover falta');
+        showToast('Erro ao remover falta', 'error');
       }
     });
 
@@ -8024,5 +8221,6 @@
   </script>
 </body>
 </html>
+
 
 
