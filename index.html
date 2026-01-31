@@ -1256,6 +1256,23 @@
       padding: 16px;
       margin-bottom: 20px;
       border: 1px solid var(--border);
+      display: none;
+    }
+
+    .new-post-card.visible {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .new-post-input {
@@ -3823,6 +3840,139 @@
       white-space: nowrap;
     }
 
+    /* Posts Search */
+    .posts-search-container {
+      margin-bottom: 12px;
+    }
+
+    .posts-search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .posts-search-wrapper i {
+      position: absolute;
+      left: 16px;
+      color: var(--text-muted);
+      font-size: 16px;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    .posts-search-input {
+      width: 100%;
+      padding: 14px 44px 14px 46px;
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      color: var(--text-primary);
+      font-size: 16px;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+
+    .posts-search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: var(--bg-elevated);
+    }
+
+    .posts-search-input:focus + .posts-search-icon,
+    .posts-search-wrapper:focus-within i.posts-search-icon {
+      color: var(--primary);
+    }
+
+    .posts-search-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .posts-search-clear {
+      position: absolute;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      background: var(--bg-elevated);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .posts-search-clear:hover,
+    .posts-search-clear:active {
+      background: var(--primary);
+      color: #0D0D0D;
+    }
+
+    .posts-search-clear.visible {
+      display: flex;
+    }
+
+    .posts-search-results {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      margin-top: 10px;
+      background: var(--bg-card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .posts-search-results i {
+      color: var(--primary);
+      margin-right: 6px;
+    }
+
+    .posts-search-results .highlight-term {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .posts-no-results {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .posts-no-results i {
+      font-size: 48px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .posts-no-results p {
+      color: var(--text-secondary);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .posts-no-results .search-term {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Highlight search matches in posts */
+    .search-highlight {
+      background: linear-gradient(135deg, rgba(212, 168, 83, 0.3), rgba(212, 168, 83, 0.15));
+      color: var(--primary);
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
     /* Posts Gallery Grid (for images filter) */
     .posts-gallery-grid {
       display: grid;
@@ -4045,6 +4195,366 @@
     .pin-modal-cancel:hover,
     .pin-modal-cancel:active {
       color: var(--text-secondary);
+    }
+
+    /* ===================== */
+    /* Notifications System  */
+    /* ===================== */
+
+    /* Notification Badge */
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      min-width: 18px;
+      height: 18px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+      box-shadow: 0 2px 8px rgba(248, 113, 113, 0.4);
+      animation: notificationPulse 2s infinite;
+    }
+
+    .notification-badge.hidden {
+      display: none;
+    }
+
+    @keyframes notificationPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .header-btn {
+      position: relative;
+    }
+
+    /* Notifications Page */
+    .notifications-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .notifications-header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .notifications-header-title i {
+      color: var(--primary);
+    }
+
+    .notifications-mark-all {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .notifications-mark-all:hover,
+    .notifications-mark-all:active {
+      background: rgba(212, 168, 83, 0.15);
+    }
+
+    .notifications-mark-all:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Notifications List */
+    .notifications-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .notification-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .notification-card:hover,
+    .notification-card:active {
+      background: var(--bg-elevated);
+      transform: translateY(-1px);
+    }
+
+    .notification-card.unread {
+      border-left: 3px solid var(--primary);
+      background: rgba(212, 168, 83, 0.05);
+    }
+
+    .notification-card.unread::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .notification-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #0D0D0D;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .notification-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .notification-avatar.type-like {
+      background: linear-gradient(135deg, #F87171, #EF4444);
+    }
+
+    .notification-avatar.type-comment {
+      background: linear-gradient(135deg, #60A5FA, #3B82F6);
+    }
+
+    .notification-avatar.type-mention {
+      background: linear-gradient(135deg, #4ADE80, #22C55E);
+    }
+
+    .notification-avatar.type-system {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+
+    .notification-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .notification-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .notification-text strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .notification-time i {
+      font-size: 10px;
+    }
+
+    .notification-preview {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--bg-elevated);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      border-left: 2px solid var(--border);
+    }
+
+    /* Notification Types Icons */
+    .notification-type-icon {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: #fff;
+      border: 2px solid var(--bg-card);
+    }
+
+    .notification-type-icon.like {
+      background: #EF4444;
+    }
+
+    .notification-type-icon.comment {
+      background: #3B82F6;
+    }
+
+    .notification-type-icon.mention {
+      background: #22C55E;
+    }
+
+    .notification-type-icon.system {
+      background: var(--primary);
+    }
+
+    /* Empty Notifications State */
+    .notifications-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .notifications-empty-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--bg-card);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      border: 2px solid var(--border);
+    }
+
+    .notifications-empty-icon i {
+      font-size: 32px;
+      color: var(--text-muted);
+    }
+
+    .notifications-empty h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .notifications-empty p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 260px;
+    }
+
+    /* Notification Loading */
+    .notifications-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      gap: 16px;
+    }
+
+    .notifications-loading i {
+      font-size: 32px;
+      color: var(--primary);
+      animation: spin 1s linear infinite;
+    }
+
+    .notifications-loading span {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* Notification Filters */
+    .notifications-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .notifications-filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .notification-filter-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .notification-filter-btn:hover,
+    .notification-filter-btn:active {
+      background: var(--bg-elevated);
+      border-color: var(--primary);
+    }
+
+    .notification-filter-btn.active {
+      background: rgba(212, 168, 83, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .notification-filter-btn i {
+      font-size: 14px;
+    }
+
+    /* Notification Swipe Actions (for mobile) */
+    .notification-card-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .notification-swipe-actions {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      background: var(--danger);
+      padding: 0 20px;
+      border-radius: 0 16px 16px 0;
+    }
+
+    .notification-swipe-actions i {
+      color: #fff;
+      font-size: 20px;
     }
 
   </style>
@@ -4278,6 +4788,13 @@
           </div>
         </div>
         <div class="header-actions">
+          <button class="header-btn" id="notificationsBtn" onclick="openNotificationsPage()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge hidden" id="notificationBadge">0</span>
+          </button>
+          <button class="header-btn" id="newPostBtn" onclick="toggleNewPostCard()">
+            <i class="fas fa-plus" id="newPostIcon"></i>
+          </button>
           <button class="header-btn" onclick="toggleTheme()">
             <i class="fas fa-moon" id="themeIcon"></i>
           </button>
@@ -4313,6 +4830,25 @@
                 <div class="spinner-small" style="display: none;"></div>
               </button>
             </div>
+          </div>
+
+          <!-- Posts Search -->
+          <div class="posts-search-container">
+            <div class="posts-search-wrapper">
+              <i class="fas fa-search posts-search-icon"></i>
+              <input
+                type="text"
+                class="posts-search-input"
+                id="postsSearchInput"
+                placeholder="Pesquisar postagens..."
+                oninput="handlePostsSearch(this.value)"
+                autocomplete="off"
+              >
+              <button class="posts-search-clear" id="postsSearchClear" onclick="clearPostsSearch()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="posts-search-results" id="postsSearchResults" style="display: none;"></div>
           </div>
 
           <!-- Posts Filter -->
@@ -4451,6 +4987,41 @@
             <div class="posts-loading">
               <i class="fas fa-spinner"></i>
               <span>Carregando usuários...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications Page -->
+        <div class="page" id="notificationsPage">
+          <div class="notifications-header">
+            <div class="notifications-header-title">
+              <i class="fas fa-bell"></i>
+              Notificações
+            </div>
+            <button class="notifications-mark-all" id="markAllReadBtn" onclick="markAllNotificationsAsRead()">
+              Marcar todas como lidas
+            </button>
+          </div>
+
+          <div class="notifications-filters">
+            <button class="notification-filter-btn active" data-filter="all" onclick="filterNotifications('all')">
+              <i class="fas fa-layer-group"></i>
+              <span>Todas</span>
+            </button>
+            <button class="notification-filter-btn" data-filter="unread" onclick="filterNotifications('unread')">
+              <i class="fas fa-circle"></i>
+              <span>Não lidas</span>
+            </button>
+          </div>
+
+          <div class="notifications-list" id="notificationsList">
+            <!-- Notifications Empty State -->
+            <div class="notifications-empty" id="notificationsEmpty">
+              <div class="notifications-empty-icon">
+                <i class="fas fa-bell-slash"></i>
+              </div>
+              <h3>Nenhuma notificação</h3>
+              <p>Quando você receber curtidas, comentários ou menções, elas aparecerão aqui.</p>
             </div>
           </div>
         </div>
@@ -4756,6 +5327,35 @@
       document.documentElement.classList.toggle('light');
       const isLight = document.documentElement.classList.contains('light');
       document.getElementById('themeIcon').className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    }
+
+    // Toggle new post card visibility
+    function toggleNewPostCard() {
+      const card = document.querySelector('.new-post-card');
+      const icon = document.getElementById('newPostIcon');
+      if (card) {
+        // Se vai abrir o card, navega para a página de postagens primeiro
+        const isCurrentlyVisible = card.classList.contains('visible');
+        if (!isCurrentlyVisible) {
+          showPage('posts');
+        }
+        card.classList.toggle('visible');
+        const isVisible = card.classList.contains('visible');
+        icon.className = isVisible ? 'fas fa-times' : 'fas fa-plus';
+        if (isVisible) {
+          document.getElementById('newPostInput').focus();
+        }
+      }
+    }
+
+    // Hide new post card
+    function hideNewPostCard() {
+      const card = document.querySelector('.new-post-card');
+      const icon = document.getElementById('newPostIcon');
+      if (card) {
+        card.classList.remove('visible');
+        icon.className = 'fas fa-plus';
+      }
     }
 
     // ==================== PRESENCE SYSTEM ====================
@@ -6127,7 +6727,13 @@
       const container = document.getElementById('postsContainer');
 
       if (posts.length === 0) {
-        if (currentPostsFilter === 'images') {
+        // Check if this is a search with no results
+        if (currentSearchQuery && currentSearchQuery.trim() !== '') {
+          container.innerHTML = '<div class="posts-no-results">' +
+            '<i class="fas fa-search"></i>' +
+            '<p>Nenhuma postagem encontrada para<br>"<span class="search-term">' + escapeHtml(currentSearchQuery) + '</span>"</p>' +
+          '</div>';
+        } else if (currentPostsFilter === 'images') {
           container.innerHTML = '<div class="posts-empty"><i class="fas fa-images"></i><p>Nenhuma postagem com fotos ainda.<br>Compartilhe uma foto!</p></div>';
         } else {
           container.innerHTML = '<div class="posts-empty"><i class="fas fa-newspaper"></i><p>Nenhuma postagem ainda.<br>Seja o primeiro a compartilhar!</p></div>';
@@ -6153,16 +6759,20 @@
         // Build comments section HTML
         const commentsHtml = buildCommentsSection(post.id);
 
+        // Highlight search matches in content and author name
+        const highlightedContent = highlightSearchMatches(post.content);
+        const highlightedAuthorName = highlightSearchMatches(post.authorName || 'Usuário');
+
         return '<div class="post-card" data-post-id="' + post.id + '">' +
           '<div class="post-header">' +
             '<div class="post-avatar" ' + avatarClickAttr + '>' + avatarContent + '</div>' +
             '<div class="post-author">' +
-              '<div class="post-author-name" onclick="showUserProfile(\'' + escapeHtml(post.authorId) + '\')" style="cursor:pointer">' + (post.authorName || 'Usuário') + '</div>' +
+              '<div class="post-author-name" onclick="showUserProfile(\'' + escapeHtml(post.authorId) + '\')" style="cursor:pointer">' + highlightedAuthorName + '</div>' +
               '<div class="post-time">' + timeAgo(post.createdAt) + '</div>' +
             '</div>' +
             deleteBtn +
           '</div>' +
-          '<div class="post-content">' + escapeHtml(post.content) + '</div>' +
+          '<div class="post-content">' + highlightedContent + '</div>' +
           imageHtml +
           '<div class="post-actions">' +
             '<button class="post-action ' + (post.likedBy && post.likedBy.includes(currentUser?.uid) ? 'liked' : '') + '" onclick="toggleLike(\'' + post.id + '\')">' +
@@ -6300,6 +6910,8 @@
 
     let postsCache = [];
     let currentPostsFilter = 'all'; // 'all' or 'images'
+    let currentSearchQuery = ''; // Current search query
+    let searchDebounceTimer = null; // Debounce timer for search
 
     // Set posts filter
     function setPostsFilter(filter) {
@@ -6320,26 +6932,124 @@
       const postsContainer = document.getElementById('postsContainer');
       const galleryContainer = document.getElementById('postsGalleryContainer');
 
+      // Apply search filter first
+      const filteredPosts = getFilteredPosts();
+
       if (currentPostsFilter === 'images') {
         // Show gallery view, hide posts view
         postsContainer.style.display = 'none';
         galleryContainer.style.display = 'block';
-        renderPostsGallery();
+        renderPostsGallery(filteredPosts);
       } else {
         // Show posts view, hide gallery view
         postsContainer.style.display = 'block';
         galleryContainer.style.display = 'none';
-        renderPostsFromFirestore(postsCache);
+        renderPostsFromFirestore(filteredPosts);
       }
+
+      // Update search results info
+      updateSearchResultsInfo(filteredPosts.length);
+    }
+
+    // Get filtered posts based on search query
+    function getFilteredPosts() {
+      if (!currentSearchQuery || currentSearchQuery.trim() === '') {
+        return postsCache;
+      }
+
+      const query = currentSearchQuery.toLowerCase().trim();
+      const queryWords = query.split(/\s+/).filter(function(word) { return word.length > 0; });
+
+      return postsCache.filter(function(post) {
+        const content = (post.content || '').toLowerCase();
+        const authorName = (post.authorName || '').toLowerCase();
+
+        // Match if all query words are found in content or author name
+        return queryWords.every(function(word) {
+          return content.includes(word) || authorName.includes(word);
+        });
+      });
+    }
+
+    // Handle posts search input
+    function handlePostsSearch(value) {
+      // Update clear button visibility
+      const clearBtn = document.getElementById('postsSearchClear');
+      if (clearBtn) {
+        clearBtn.classList.toggle('visible', value.length > 0);
+      }
+
+      // Debounce search for performance
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(function() {
+        currentSearchQuery = value;
+        applyPostsFilter();
+      }, 250);
+    }
+
+    // Clear posts search
+    function clearPostsSearch() {
+      const input = document.getElementById('postsSearchInput');
+      const clearBtn = document.getElementById('postsSearchClear');
+      const resultsEl = document.getElementById('postsSearchResults');
+
+      if (input) input.value = '';
+      if (clearBtn) clearBtn.classList.remove('visible');
+      if (resultsEl) resultsEl.style.display = 'none';
+
+      currentSearchQuery = '';
+      applyPostsFilter();
+    }
+
+    // Update search results info
+    function updateSearchResultsInfo(resultCount) {
+      const resultsEl = document.getElementById('postsSearchResults');
+      if (!resultsEl) return;
+
+      if (!currentSearchQuery || currentSearchQuery.trim() === '') {
+        resultsEl.style.display = 'none';
+        return;
+      }
+
+      const totalPosts = postsCache.length;
+      const escapedQuery = escapeHtml(currentSearchQuery);
+
+      resultsEl.innerHTML = '<span><i class="fas fa-filter"></i> ' +
+        resultCount + ' de ' + totalPosts + ' postagen' + (totalPosts !== 1 ? 's' : '') +
+        ' para "<span class="highlight-term">' + escapedQuery + '</span>"</span>';
+      resultsEl.style.display = 'flex';
+    }
+
+    // Highlight search matches in text
+    function highlightSearchMatches(text) {
+      if (!currentSearchQuery || currentSearchQuery.trim() === '' || !text) {
+        return escapeHtml(text);
+      }
+
+      const escapedText = escapeHtml(text);
+      const queryWords = currentSearchQuery.toLowerCase().trim().split(/\s+/).filter(function(word) { return word.length > 0; });
+
+      let result = escapedText;
+      queryWords.forEach(function(word) {
+        if (word.length < 2) return; // Skip very short words
+        const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // Use negative lookbehind/lookahead to avoid matching inside HTML entities like &amp; &lt; &gt; etc
+        // Match the word only if NOT preceded by & or followed by ; (part of HTML entity)
+        const regex = new RegExp('(?<!&[a-z]*)(' + escapedWord + ')(?![a-z]*;)', 'gi');
+        result = result.replace(regex, '<span class="search-highlight">$1</span>');
+      });
+
+      return result;
     }
 
     // Collect all images from posts for gallery view
     let postsGalleryImages = [];
 
-    function collectAllPostsImages() {
+    function collectAllPostsImages(filteredPosts) {
       postsGalleryImages = [];
+      const postsToProcess = filteredPosts || postsCache;
 
-      postsCache.forEach(function(post) {
+      postsToProcess.forEach(function(post) {
         let images = [];
         if (post.imageURLs && Array.isArray(post.imageURLs) && post.imageURLs.length > 0) {
           images = post.imageURLs;
@@ -6361,15 +7071,23 @@
     }
 
     // Render posts gallery (grid view of all images)
-    function renderPostsGallery() {
+    function renderPostsGallery(filteredPosts) {
       const grid = document.getElementById('postsGalleryGrid');
       const countEl = document.getElementById('postsGalleryCount');
 
-      collectAllPostsImages();
+      collectAllPostsImages(filteredPosts);
 
       if (postsGalleryImages.length === 0) {
-        countEl.innerHTML = '<i class="fas fa-images"></i><span>Nenhuma foto nas postagens</span>';
-        grid.innerHTML = '<div class="posts-empty" style="grid-column: 1 / -1;"><i class="fas fa-images"></i><p>Nenhuma postagem com fotos ainda.<br>Compartilhe uma foto!</p></div>';
+        if (currentSearchQuery && currentSearchQuery.trim() !== '') {
+          countEl.innerHTML = '<i class="fas fa-images"></i><span>Nenhuma foto encontrada</span>';
+          grid.innerHTML = '<div class="posts-no-results" style="grid-column: 1 / -1;">' +
+            '<i class="fas fa-search"></i>' +
+            '<p>Nenhuma foto encontrada para<br>"<span class="search-term">' + escapeHtml(currentSearchQuery) + '</span>"</p>' +
+          '</div>';
+        } else {
+          countEl.innerHTML = '<i class="fas fa-images"></i><span>Nenhuma foto nas postagens</span>';
+          grid.innerHTML = '<div class="posts-empty" style="grid-column: 1 / -1;"><i class="fas fa-images"></i><p>Nenhuma postagem com fotos ainda.<br>Compartilhe uma foto!</p></div>';
+        }
         return;
       }
 
@@ -6511,6 +7229,7 @@
 
         input.value = '';
         removeAllPostImages();
+        hideNewPostCard();
         showToast('Postagem publicada!');
       } catch (error) {
         console.error('Error creating post:', JSON.stringify(error));
@@ -7041,6 +7760,45 @@
       closeSidebar();
       showPage('absences');
       loadAllUsersWithAbsences();
+    }
+
+    // ========================
+    // Notifications Functions
+    // ========================
+
+    function openNotificationsPage() {
+      closeSidebar();
+      showPage('notifications');
+    }
+
+    function filterNotifications(filter) {
+      const filterBtns = document.querySelectorAll('.notification-filter-btn');
+      filterBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.filter === filter) {
+          btn.classList.add('active');
+        }
+      });
+      // A lógica de filtragem real seria implementada aqui
+      // quando o sistema de notificações for conectado ao backend
+    }
+
+    function markAllNotificationsAsRead() {
+      // A lógica para marcar todas como lidas seria implementada aqui
+      // quando o sistema de notificações for conectado ao backend
+      const badge = document.getElementById('notificationBadge');
+      badge.classList.add('hidden');
+      badge.textContent = '0';
+    }
+
+    function updateNotificationBadge(count) {
+      const badge = document.getElementById('notificationBadge');
+      if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
     }
 
     function showPage(pageName) {
