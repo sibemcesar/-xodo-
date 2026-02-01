@@ -8408,13 +8408,14 @@
     // Variáveis para armazenar notificações recebidas
     let receivedNotifications = [];
     let currentNotificationFilter = 'all';
-    let notificationsUnsubscribe = null;
+    let notificationsQueryRef = null;
+    let notificationsListenerActive = false;
 
     function openNotificationsPage() {
       closeSidebar();
       showPage('notifications');
       // Carregar notificações quando abrir a página
-      if (currentUser && !notificationsUnsubscribe) {
+      if (currentUser && !notificationsListenerActive) {
         setupNotificationsListener();
       }
     }
@@ -8424,51 +8425,72 @@
       if (!currentUser) return;
 
       // Cancelar listener anterior se existir
-      if (notificationsUnsubscribe) {
-        notificationsUnsubscribe();
+      if (notificationsQueryRef) {
+        notificationsQueryRef.off();
+        notificationsQueryRef = null;
       }
+      notificationsListenerActive = false;
 
-      // Mostrar estado de loading
+      // Mostrar estado de loading apenas se estiver na página de notificações
       const listContainer = document.getElementById('notificationsList');
       const emptyState = document.getElementById('notificationsEmpty');
-      listContainer.innerHTML = '<div class="notifications-loading"><i class="fas fa-spinner"></i><span>Carregando notificações...</span></div>';
-      emptyState.style.display = 'none';
+      if (listContainer) {
+        listContainer.innerHTML = '<div class="notifications-loading"><i class="fas fa-spinner"></i><span>Carregando notificações...</span></div>';
+      }
+      if (emptyState) {
+        emptyState.style.display = 'none';
+      }
 
-      // Listener para notificações do usuário atual
-      const notifRef = rtdb.ref('notifications/users/' + currentUser.uid);
+      // Criar a query para notificações do usuário
+      notificationsQueryRef = rtdb.ref('notifications/users/' + currentUser.uid);
 
-      notificationsUnsubscribe = notifRef.orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
+      // Registrar o listener na query
+      notificationsQueryRef.on('value', (snapshot) => {
+        notificationsListenerActive = true;
         receivedNotifications = [];
 
         if (snapshot.exists()) {
           snapshot.forEach(child => {
             const notif = child.val();
+            // Garantir que createdAt é um número válido
+            const createdAtValue = notif.createdAt;
+            const createdAtTimestamp = typeof createdAtValue === 'number' ? createdAtValue : Date.now();
+
             receivedNotifications.push({
               id: child.key,
               title: notif.title || 'Notificação',
               message: notif.message || '',
               type: notif.type || 'system',
               senderName: notif.senderName || 'Sistema',
-              senderPhoto: notif.senderPhoto || null,
+              senderPhoto: notif.senderPhotoURL || notif.senderPhoto || null,
               senderId: notif.senderId || null,
-              createdAt: new Date(notif.createdAt || Date.now()),
-              read: notif.read || false
+              createdAt: createdAtTimestamp,
+              read: notif.read === true
             });
           });
 
-          // Ordenar por mais recente primeiro
+          // Ordenar por mais recente primeiro (usando timestamp numérico)
           receivedNotifications.sort((a, b) => b.createdAt - a.createdAt);
+
+          // Limitar a 50 notificações
+          if (receivedNotifications.length > 50) {
+            receivedNotifications = receivedNotifications.slice(0, 50);
+          }
         }
 
         // Atualizar badge de notificações
         const unreadCount = receivedNotifications.filter(n => !n.read).length;
         updateNotificationBadge(unreadCount);
 
-        // Renderizar notificações
+        // Renderizar notificações apenas se a lista existir
         renderReceivedNotifications();
       }, (error) => {
         console.error('Erro ao carregar notificações:', JSON.stringify(error));
-        listContainer.innerHTML = '<div class="notifications-empty"><div class="notifications-empty-icon"><i class="fas fa-exclamation-triangle"></i></div><h3>Erro ao carregar</h3><p>Não foi possível carregar as notificações.</p></div>';
+        notificationsListenerActive = false;
+        const listContainerErr = document.getElementById('notificationsList');
+        if (listContainerErr) {
+          listContainerErr.innerHTML = '<div class="notifications-empty"><div class="notifications-empty-icon"><i class="fas fa-exclamation-triangle"></i></div><h3>Erro ao carregar</h3><p>Não foi possível carregar as notificações. Verifique as permissões do Firebase.</p></div>';
+        }
       });
     }
 
@@ -8477,6 +8499,9 @@
       const listContainer = document.getElementById('notificationsList');
       const emptyState = document.getElementById('notificationsEmpty');
       const markAllBtn = document.getElementById('markAllReadBtn');
+
+      // Se os elementos não existem (página não está aberta), não renderizar
+      if (!listContainer) return;
 
       // Filtrar notificações baseado no filtro atual
       let filteredNotifications = receivedNotifications;
@@ -8491,13 +8516,19 @@
       }
 
       if (filteredNotifications.length === 0) {
-        emptyState.style.display = 'flex';
-        listContainer.innerHTML = '';
-        listContainer.appendChild(emptyState);
+        if (emptyState) {
+          emptyState.style.display = 'flex';
+          listContainer.innerHTML = '';
+          listContainer.appendChild(emptyState);
+        } else {
+          listContainer.innerHTML = '<div class="notifications-empty"><div class="notifications-empty-icon"><i class="fas fa-bell-slash"></i></div><h3>Nenhuma notificação</h3><p>Você não tem notificações no momento.</p></div>';
+        }
         return;
       }
 
-      emptyState.style.display = 'none';
+      if (emptyState) {
+        emptyState.style.display = 'none';
+      }
 
       const typeIcons = {
         system: 'fa-cog',
@@ -8516,7 +8547,9 @@
       };
 
       listContainer.innerHTML = filteredNotifications.map(notif => {
-        const timeAgo = formatTimeAgo(notif.createdAt);
+        // Converter timestamp para Date para formatTimeAgo
+        const notifDate = new Date(notif.createdAt);
+        const timeAgo = formatTimeAgo(notifDate);
         const unreadClass = notif.read ? '' : 'unread';
         const initials = (notif.senderName || 'S').substring(0, 2).toUpperCase();
         const avatarContent = notif.senderPhoto
@@ -8634,10 +8667,11 @@
 
     // Limpar listener de notificações ao fazer logout
     function cleanupNotificationsListener() {
-      if (notificationsUnsubscribe) {
-        rtdb.ref('notifications/users/' + (currentUser ? currentUser.uid : '')).off('value', notificationsUnsubscribe);
-        notificationsUnsubscribe = null;
+      if (notificationsQueryRef) {
+        notificationsQueryRef.off();
+        notificationsQueryRef = null;
       }
+      notificationsListenerActive = false;
       receivedNotifications = [];
       currentNotificationFilter = 'all';
     }
