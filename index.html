@@ -5069,6 +5069,24 @@
       color: var(--text-secondary);
     }
 
+    /* Clickable Links */
+    .clickable-link {
+      color: var(--primary);
+      text-decoration: underline;
+      cursor: pointer;
+      word-break: break-all;
+      transition: opacity 0.2s;
+    }
+
+    .clickable-link:hover,
+    .clickable-link:active {
+      opacity: 0.8;
+    }
+
+    .chat-message.sent .clickable-link {
+      color: #0a5c36;
+    }
+
   </style>
 </head>
 <body>
@@ -6996,7 +7014,7 @@
           ? '<img class="chat-message-image" src="' + escapeHtml(msg.imageURL) + '" alt="Imagem" onclick="openChatImage(\'' + escapeHtml(msg.imageURL) + '\')">'
           : '';
         const textHtml = msg.text
-          ? '<div class="chat-text">' + escapeHtml(msg.text) + '</div>'
+          ? '<div class="chat-text">' + linkifyText(msg.text) + '</div>'
           : '';
 
         return '<div class="chat-message ' + (isSent ? 'sent' : '') + '" data-message-id="' + msg.id + '">' +
@@ -7211,7 +7229,7 @@
               '</div>';
             }
 
-            const postContent = post.content ? escapeHtml(post.content) : '';
+            const postContent = post.content ? linkifyText(post.content) : '';
             const postTime = post.createdAt ? timeAgo(post.createdAt) : '';
             const postLikes = post.likes || 0;
 
@@ -7659,22 +7677,24 @@
       resultsEl.style.display = 'flex';
     }
 
-    // Highlight search matches in text
+    // Highlight search matches in text (also applies linkify for URLs)
     function highlightSearchMatches(text) {
       if (!currentSearchQuery || currentSearchQuery.trim() === '' || !text) {
-        return escapeHtml(text);
+        return linkifyText(text);
       }
 
-      const escapedText = escapeHtml(text);
+      // First apply linkify to get clickable URLs
+      const linkedText = linkifyText(text);
       const queryWords = currentSearchQuery.toLowerCase().trim().split(/\s+/).filter(function(word) { return word.length > 0; });
 
-      let result = escapedText;
+      let result = linkedText;
       queryWords.forEach(function(word) {
         if (word.length < 2) return; // Skip very short words
         const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // Use negative lookbehind/lookahead to avoid matching inside HTML entities like &amp; &lt; &gt; etc
+        // Use negative lookbehind/lookahead to avoid matching inside HTML entities and tags
         // Match the word only if NOT preceded by & or followed by ; (part of HTML entity)
-        const regex = new RegExp('(?<!&[a-z]*)(' + escapedWord + ')(?![a-z]*;)', 'gi');
+        // Also avoid matching inside HTML tags
+        const regex = new RegExp('(?<!&[a-z]*)(?<!["\'])(' + escapedWord + ')(?![a-z]*;)(?![^<]*>)', 'gi');
         result = result.replace(regex, '<span class="search-highlight">$1</span>');
       });
 
@@ -7817,6 +7837,38 @@
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
+    }
+
+    // Detect and convert URLs to clickable links
+    function linkifyText(text) {
+      if (!text) return '';
+      // First escape HTML to prevent XSS
+      const escapedText = escapeHtml(text);
+      // URL regex pattern - matches http, https, and www URLs
+      const urlPattern = /(https?:\/\/[^\s<>"{}|\\^`\[\]]+|www\.[^\s<>"{}|\\^`\[\]]+)/gi;
+      // Replace URLs with clickable links
+      return escapedText.replace(urlPattern, function(url) {
+        // Add http:// prefix for www links
+        const href = url.startsWith('www.') ? 'https://' + url : url;
+        return '<span class="clickable-link" onclick="openExternalLink(\'' + escapeHtml(href).replace(/'/g, "\\'") + '\')" data-url="' + escapeHtml(href) + '">' + url + '</span>';
+      });
+    }
+
+    // Open external link using Android interface or fallback to window.open
+    function openExternalLink(url) {
+      if (!url) return;
+      try {
+        // Try to call Android interface
+        if (typeof Android !== 'undefined' && Android.openApp) {
+          Android.openApp(url);
+        } else {
+          // Fallback: open in new tab/window
+          window.open(url, '_blank');
+        }
+      } catch (e) {
+        // Fallback: open in new tab/window
+        window.open(url, '_blank');
+      }
     }
 
     // Create new post
@@ -8354,7 +8406,7 @@
             imagesHtml += '</div>';
           }
 
-          const postContent = post.content ? escapeHtml(post.content) : '';
+          const postContent = post.content ? linkifyText(post.content) : '';
           const postTime = post.createdAt ? timeAgo(post.createdAt) : '';
           const postLikes = post.likes || 0;
 
