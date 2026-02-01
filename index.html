@@ -4557,6 +4557,518 @@
       font-size: 20px;
     }
 
+    /* ===================== */
+    /* Send Notifications Section */
+    /* ===================== */
+
+    .notifications-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+    }
+
+    .notification-tab-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .notification-tab-btn:hover,
+    .notification-tab-btn:active {
+      background: var(--bg-elevated);
+      border-color: var(--primary);
+    }
+
+    .notification-tab-btn.active {
+      background: rgba(212, 168, 83, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .notification-tab-btn i {
+      font-size: 16px;
+    }
+
+    .notification-tab-content {
+      display: none;
+    }
+
+    .notification-tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Send Notification Form */
+    .send-notification-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .send-notification-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .send-notification-title i {
+      color: var(--primary);
+    }
+
+    .notification-recipient-type {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .recipient-type-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .recipient-type-btn:hover,
+    .recipient-type-btn:active {
+      background: rgba(212, 168, 83, 0.1);
+      border-color: var(--primary);
+    }
+
+    .recipient-type-btn.active {
+      background: rgba(212, 168, 83, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .recipient-type-btn i {
+      font-size: 16px;
+    }
+
+    .notification-user-select {
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .notification-user-select.active {
+      display: block;
+    }
+
+    .notification-user-select label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .user-select-dropdown {
+      position: relative;
+    }
+
+    .user-select-input {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .user-select-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .user-select-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .user-dropdown-list {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      z-index: 100;
+      display: none;
+    }
+
+    .user-dropdown-list.active {
+      display: block;
+    }
+
+    .user-dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .user-dropdown-item:hover,
+    .user-dropdown-item:active {
+      background: var(--bg-elevated);
+    }
+
+    .user-dropdown-item.selected {
+      background: rgba(212, 168, 83, 0.15);
+    }
+
+    .user-dropdown-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      color: #0D0D0D;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .user-dropdown-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-dropdown-info {
+      flex: 1;
+    }
+
+    .user-dropdown-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .user-dropdown-email {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .notification-form-group {
+      margin-bottom: 16px;
+    }
+
+    .notification-form-group label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .notification-input,
+    .notification-textarea {
+      width: 100%;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+
+    .notification-input:focus,
+    .notification-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .notification-input::placeholder,
+    .notification-textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .notification-textarea {
+      resize: none;
+      min-height: 100px;
+    }
+
+    .notification-type-select {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .notification-type-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 14px;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .notification-type-option:hover,
+    .notification-type-option:active {
+      background: rgba(212, 168, 83, 0.1);
+      border-color: var(--primary);
+    }
+
+    .notification-type-option.active {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .notification-type-option.type-system.active {
+      border-color: var(--primary);
+      background: rgba(212, 168, 83, 0.15);
+    }
+
+    .notification-type-option.type-info.active {
+      border-color: #3B82F6;
+      background: rgba(59, 130, 246, 0.15);
+      color: #3B82F6;
+    }
+
+    .notification-type-option.type-success.active {
+      border-color: #22C55E;
+      background: rgba(34, 197, 94, 0.15);
+      color: #22C55E;
+    }
+
+    .notification-type-option.type-warning.active {
+      border-color: #F59E0B;
+      background: rgba(245, 158, 11, 0.15);
+      color: #F59E0B;
+    }
+
+    .notification-type-option.type-danger.active {
+      border-color: #EF4444;
+      background: rgba(239, 68, 68, 0.15);
+      color: #EF4444;
+    }
+
+    .notification-type-option i {
+      font-size: 14px;
+    }
+
+    .send-notification-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #0D0D0D;
+      border: none;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .send-notification-btn:active {
+      transform: scale(0.98);
+    }
+
+    .send-notification-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .send-notification-btn .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 0, 0, 0.2);
+      border-top-color: #0D0D0D;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .send-notification-btn.loading .btn-text {
+      display: none;
+    }
+
+    .send-notification-btn.loading .spinner {
+      display: block;
+    }
+
+    /* Sent Notifications List */
+    .sent-notifications-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .sent-notifications-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .sent-notifications-title i {
+      color: var(--primary);
+    }
+
+    .clear-sent-notifications-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .clear-sent-notifications-btn:hover,
+    .clear-sent-notifications-btn:active {
+      background: rgba(248, 113, 113, 0.15);
+      color: var(--danger);
+    }
+
+    .sent-notification-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .sent-notification-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sent-notification-recipient {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .sent-notification-recipient i {
+      color: var(--primary);
+    }
+
+    .sent-notification-time {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .sent-notification-content {
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding: 12px;
+      background: var(--bg-elevated);
+      border-radius: 10px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .sent-notification-content.type-info {
+      border-left-color: #3B82F6;
+    }
+
+    .sent-notification-content.type-success {
+      border-left-color: #22C55E;
+    }
+
+    .sent-notification-content.type-warning {
+      border-left-color: #F59E0B;
+    }
+
+    .sent-notification-content.type-danger {
+      border-left-color: #EF4444;
+    }
+
+    .sent-notification-title-text {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .sent-notification-message {
+      color: var(--text-secondary);
+    }
+
+    .sent-notifications-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .sent-notifications-empty i {
+      font-size: 40px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .sent-notifications-empty p {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
   </style>
 </head>
 <body>
@@ -4998,30 +5510,144 @@
               <i class="fas fa-bell"></i>
               Notificações
             </div>
-            <button class="notifications-mark-all" id="markAllReadBtn" onclick="markAllNotificationsAsRead()">
-              Marcar todas como lidas
+          </div>
+
+          <!-- Tabs -->
+          <div class="notifications-tabs">
+            <button class="notification-tab-btn active" data-tab="received" onclick="switchNotificationTab('received')">
+              <i class="fas fa-inbox"></i>
+              <span>Recebidas</span>
+            </button>
+            <button class="notification-tab-btn" data-tab="send" onclick="switchNotificationTab('send')">
+              <i class="fas fa-paper-plane"></i>
+              <span>Enviar</span>
             </button>
           </div>
 
-          <div class="notifications-filters">
-            <button class="notification-filter-btn active" data-filter="all" onclick="filterNotifications('all')">
-              <i class="fas fa-layer-group"></i>
-              <span>Todas</span>
-            </button>
-            <button class="notification-filter-btn" data-filter="unread" onclick="filterNotifications('unread')">
-              <i class="fas fa-circle"></i>
-              <span>Não lidas</span>
-            </button>
-          </div>
+          <!-- Tab Content: Received Notifications -->
+          <div class="notification-tab-content active" id="receivedNotificationsTab">
+            <div class="notifications-filters">
+              <button class="notification-filter-btn active" data-filter="all" onclick="filterNotifications('all')">
+                <i class="fas fa-layer-group"></i>
+                <span>Todas</span>
+              </button>
+              <button class="notification-filter-btn" data-filter="unread" onclick="filterNotifications('unread')">
+                <i class="fas fa-circle"></i>
+                <span>Não lidas</span>
+              </button>
+              <button class="notifications-mark-all" id="markAllReadBtn" onclick="markAllNotificationsAsRead()">
+                Marcar todas como lidas
+              </button>
+            </div>
 
-          <div class="notifications-list" id="notificationsList">
-            <!-- Notifications Empty State -->
-            <div class="notifications-empty" id="notificationsEmpty">
-              <div class="notifications-empty-icon">
-                <i class="fas fa-bell-slash"></i>
+            <div class="notifications-list" id="notificationsList">
+              <!-- Notifications Empty State -->
+              <div class="notifications-empty" id="notificationsEmpty">
+                <div class="notifications-empty-icon">
+                  <i class="fas fa-bell-slash"></i>
+                </div>
+                <h3>Nenhuma notificação</h3>
+                <p>Quando você receber curtidas, comentários ou menções, elas aparecerão aqui.</p>
               </div>
-              <h3>Nenhuma notificação</h3>
-              <p>Quando você receber curtidas, comentários ou menções, elas aparecerão aqui.</p>
+            </div>
+          </div>
+
+          <!-- Tab Content: Send Notifications -->
+          <div class="notification-tab-content" id="sendNotificationsTab">
+            <!-- Send Notification Form -->
+            <div class="send-notification-section">
+              <div class="send-notification-title">
+                <i class="fas fa-bullhorn"></i>
+                Enviar Notificação
+              </div>
+
+              <!-- Recipient Type -->
+              <div class="notification-recipient-type">
+                <button class="recipient-type-btn active" data-type="all" onclick="setRecipientType('all')">
+                  <i class="fas fa-users"></i>
+                  <span>Todos</span>
+                </button>
+                <button class="recipient-type-btn" data-type="specific" onclick="setRecipientType('specific')">
+                  <i class="fas fa-user"></i>
+                  <span>Específico</span>
+                </button>
+              </div>
+
+              <!-- User Selection (hidden by default) -->
+              <div class="notification-user-select" id="userSelectSection">
+                <label>Selecionar Usuário</label>
+                <div class="user-select-dropdown">
+                  <input type="text" class="user-select-input" id="userSelectInput" placeholder="Clique para selecionar um usuário..." readonly onclick="toggleUserDropdown()">
+                  <div class="user-dropdown-list" id="userDropdownList">
+                    <!-- Users will be populated here -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Notification Title -->
+              <div class="notification-form-group">
+                <label>Título</label>
+                <input type="text" class="notification-input" id="notificationTitle" placeholder="Ex: Aviso Importante">
+              </div>
+
+              <!-- Notification Message -->
+              <div class="notification-form-group">
+                <label>Mensagem</label>
+                <textarea class="notification-textarea" id="notificationMessage" placeholder="Digite a mensagem da notificação..."></textarea>
+              </div>
+
+              <!-- Notification Type -->
+              <div class="notification-form-group">
+                <label>Tipo de Notificação</label>
+                <div class="notification-type-select">
+                  <button class="notification-type-option type-system active" data-type="system" onclick="setNotificationType('system')">
+                    <i class="fas fa-cog"></i>
+                    <span>Sistema</span>
+                  </button>
+                  <button class="notification-type-option type-info" data-type="info" onclick="setNotificationType('info')">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Info</span>
+                  </button>
+                  <button class="notification-type-option type-success" data-type="success" onclick="setNotificationType('success')">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Sucesso</span>
+                  </button>
+                  <button class="notification-type-option type-warning" data-type="warning" onclick="setNotificationType('warning')">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Aviso</span>
+                  </button>
+                  <button class="notification-type-option type-danger" data-type="danger" onclick="setNotificationType('danger')">
+                    <i class="fas fa-times-circle"></i>
+                    <span>Urgente</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Send Button -->
+              <button class="send-notification-btn" id="sendNotificationBtn" onclick="sendNotification()">
+                <span class="btn-text"><i class="fas fa-paper-plane"></i> Enviar Notificação</span>
+                <div class="spinner"></div>
+              </button>
+            </div>
+
+            <!-- Sent Notifications History -->
+            <div class="sent-notifications-section">
+              <div class="sent-notifications-header">
+                <div class="sent-notifications-title">
+                  <i class="fas fa-history"></i>
+                  <span>Histórico de Envios</span>
+                </div>
+                <button class="clear-sent-notifications-btn" onclick="clearSentNotifications()">
+                  <i class="fas fa-trash-alt"></i> Limpar
+                </button>
+              </div>
+
+              <div id="sentNotificationsList">
+                <div class="sent-notifications-empty" id="sentNotificationsEmpty">
+                  <i class="fas fa-paper-plane"></i>
+                  <p>Nenhuma notificação enviada ainda.</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -5994,6 +6620,13 @@
           console.error('Error unsubscribing from presence:', unsubErr);
         }
 
+        // Cleanup notifications listener
+        try {
+          cleanupNotificationsListener();
+        } catch (notifErr) {
+          console.error('Error cleaning up notifications:', notifErr);
+        }
+
         // Safely unsubscribe from all listeners
         try {
           if (postsUnsubscribe) {
@@ -6143,10 +6776,16 @@
         // Setup presence system
         setupPresence(user);
         subscribeToPresence();
+
+        // Setup notifications listener
+        setupNotificationsListener();
       } else {
         // Remove presence before logging out
         removePresence();
         unsubscribeFromPresence();
+
+        // Cleanup notifications listener
+        cleanupNotificationsListener();
 
         // Deactivate birthday mode on logout
         deactivateBirthdayMode();
@@ -7766,12 +8405,148 @@
     // Notifications Functions
     // ========================
 
+    // Variáveis para armazenar notificações recebidas
+    let receivedNotifications = [];
+    let currentNotificationFilter = 'all';
+    let notificationsUnsubscribe = null;
+
     function openNotificationsPage() {
       closeSidebar();
       showPage('notifications');
+      // Carregar notificações quando abrir a página
+      if (currentUser && !notificationsUnsubscribe) {
+        setupNotificationsListener();
+      }
+    }
+
+    // Configurar listener em tempo real do Firebase para notificações recebidas
+    function setupNotificationsListener() {
+      if (!currentUser) return;
+
+      // Cancelar listener anterior se existir
+      if (notificationsUnsubscribe) {
+        notificationsUnsubscribe();
+      }
+
+      // Mostrar estado de loading
+      const listContainer = document.getElementById('notificationsList');
+      const emptyState = document.getElementById('notificationsEmpty');
+      listContainer.innerHTML = '<div class="notifications-loading"><i class="fas fa-spinner"></i><span>Carregando notificações...</span></div>';
+      emptyState.style.display = 'none';
+
+      // Listener para notificações do usuário atual
+      const notifRef = rtdb.ref('notifications/users/' + currentUser.uid);
+
+      notificationsUnsubscribe = notifRef.orderByChild('createdAt').limitToLast(50).on('value', (snapshot) => {
+        receivedNotifications = [];
+
+        if (snapshot.exists()) {
+          snapshot.forEach(child => {
+            const notif = child.val();
+            receivedNotifications.push({
+              id: child.key,
+              title: notif.title || 'Notificação',
+              message: notif.message || '',
+              type: notif.type || 'system',
+              senderName: notif.senderName || 'Sistema',
+              senderPhoto: notif.senderPhoto || null,
+              senderId: notif.senderId || null,
+              createdAt: new Date(notif.createdAt || Date.now()),
+              read: notif.read || false
+            });
+          });
+
+          // Ordenar por mais recente primeiro
+          receivedNotifications.sort((a, b) => b.createdAt - a.createdAt);
+        }
+
+        // Atualizar badge de notificações
+        const unreadCount = receivedNotifications.filter(n => !n.read).length;
+        updateNotificationBadge(unreadCount);
+
+        // Renderizar notificações
+        renderReceivedNotifications();
+      }, (error) => {
+        console.error('Erro ao carregar notificações:', JSON.stringify(error));
+        listContainer.innerHTML = '<div class="notifications-empty"><div class="notifications-empty-icon"><i class="fas fa-exclamation-triangle"></i></div><h3>Erro ao carregar</h3><p>Não foi possível carregar as notificações.</p></div>';
+      });
+    }
+
+    // Renderizar notificações recebidas
+    function renderReceivedNotifications() {
+      const listContainer = document.getElementById('notificationsList');
+      const emptyState = document.getElementById('notificationsEmpty');
+      const markAllBtn = document.getElementById('markAllReadBtn');
+
+      // Filtrar notificações baseado no filtro atual
+      let filteredNotifications = receivedNotifications;
+      if (currentNotificationFilter === 'unread') {
+        filteredNotifications = receivedNotifications.filter(n => !n.read);
+      }
+
+      // Verificar se há notificações não lidas para habilitar/desabilitar botão
+      const hasUnread = receivedNotifications.some(n => !n.read);
+      if (markAllBtn) {
+        markAllBtn.disabled = !hasUnread;
+      }
+
+      if (filteredNotifications.length === 0) {
+        emptyState.style.display = 'flex';
+        listContainer.innerHTML = '';
+        listContainer.appendChild(emptyState);
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      const typeIcons = {
+        system: 'fa-cog',
+        info: 'fa-info-circle',
+        success: 'fa-check-circle',
+        warning: 'fa-exclamation-triangle',
+        danger: 'fa-times-circle'
+      };
+
+      const typeClasses = {
+        system: 'type-system',
+        info: 'type-mention',
+        success: 'type-mention',
+        warning: 'type-like',
+        danger: 'type-like'
+      };
+
+      listContainer.innerHTML = filteredNotifications.map(notif => {
+        const timeAgo = formatTimeAgo(notif.createdAt);
+        const unreadClass = notif.read ? '' : 'unread';
+        const initials = (notif.senderName || 'S').substring(0, 2).toUpperCase();
+        const avatarContent = notif.senderPhoto
+          ? '<img src="' + notif.senderPhoto + '" alt="Avatar">'
+          : initials;
+
+        return '<div class="notification-card ' + unreadClass + '" onclick="markNotificationAsRead(\'' + notif.id + '\')">' +
+          '<div class="notification-avatar ' + (typeClasses[notif.type] || 'type-system') + '">' +
+            avatarContent +
+            '<div class="notification-type-icon ' + notif.type + '">' +
+              '<i class="fas ' + (typeIcons[notif.type] || 'fa-bell') + '"></i>' +
+            '</div>' +
+          '</div>' +
+          '<div class="notification-content">' +
+            '<div class="notification-text">' +
+              '<strong>' + notif.title + '</strong>' +
+            '</div>' +
+            '<div class="notification-preview">' + notif.message + '</div>' +
+            '<div class="notification-time">' +
+              '<i class="fas fa-clock"></i> ' + timeAgo +
+              ' • <i class="fas fa-user"></i> ' + notif.senderName +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
     }
 
     function filterNotifications(filter) {
+      currentNotificationFilter = filter;
+
       const filterBtns = document.querySelectorAll('.notification-filter-btn');
       filterBtns.forEach(btn => {
         btn.classList.remove('active');
@@ -7779,16 +8554,72 @@
           btn.classList.add('active');
         }
       });
-      // A lógica de filtragem real seria implementada aqui
-      // quando o sistema de notificações for conectado ao backend
+
+      // Re-renderizar com o novo filtro
+      renderReceivedNotifications();
     }
 
-    function markAllNotificationsAsRead() {
-      // A lógica para marcar todas como lidas seria implementada aqui
-      // quando o sistema de notificações for conectado ao backend
-      const badge = document.getElementById('notificationBadge');
-      badge.classList.add('hidden');
-      badge.textContent = '0';
+    // Marcar notificação individual como lida
+    async function markNotificationAsRead(notificationId) {
+      if (!currentUser || !notificationId) return;
+
+      // Encontrar a notificação
+      const notif = receivedNotifications.find(n => n.id === notificationId);
+      if (!notif || notif.read) return;
+
+      try {
+        // Atualizar no Firebase
+        await rtdb.ref('notifications/users/' + currentUser.uid + '/' + notificationId).update({
+          read: true
+        });
+
+        // Atualizar localmente (o listener também vai atualizar)
+        notif.read = true;
+
+        // Atualizar badge
+        const unreadCount = receivedNotifications.filter(n => !n.read).length;
+        updateNotificationBadge(unreadCount);
+
+        // Re-renderizar
+        renderReceivedNotifications();
+      } catch (error) {
+        console.error('Erro ao marcar notificação como lida:', JSON.stringify(error));
+      }
+    }
+
+    // Marcar todas as notificações como lidas
+    async function markAllNotificationsAsRead() {
+      if (!currentUser) return;
+
+      const unreadNotifications = receivedNotifications.filter(n => !n.read);
+      if (unreadNotifications.length === 0) {
+        showToast('Todas as notificações já estão lidas', 'info');
+        return;
+      }
+
+      try {
+        // Atualizar todas no Firebase
+        const updates = {};
+        unreadNotifications.forEach(notif => {
+          updates['notifications/users/' + currentUser.uid + '/' + notif.id + '/read'] = true;
+        });
+
+        await rtdb.ref().update(updates);
+
+        // Atualizar localmente
+        receivedNotifications.forEach(n => n.read = true);
+
+        // Atualizar badge
+        updateNotificationBadge(0);
+
+        // Re-renderizar
+        renderReceivedNotifications();
+
+        showToast('Todas as notificações foram marcadas como lidas');
+      } catch (error) {
+        console.error('Erro ao marcar notificações como lidas:', JSON.stringify(error));
+        showToast('Erro ao marcar notificações como lidas', 'error');
+      }
     }
 
     function updateNotificationBadge(count) {
@@ -7798,6 +8629,412 @@
         badge.classList.remove('hidden');
       } else {
         badge.classList.add('hidden');
+      }
+    }
+
+    // Limpar listener de notificações ao fazer logout
+    function cleanupNotificationsListener() {
+      if (notificationsUnsubscribe) {
+        rtdb.ref('notifications/users/' + (currentUser ? currentUser.uid : '')).off('value', notificationsUnsubscribe);
+        notificationsUnsubscribe = null;
+      }
+      receivedNotifications = [];
+      currentNotificationFilter = 'all';
+    }
+
+    // ========================
+    // Send Notifications System
+    // ========================
+
+    let selectedRecipientType = 'all';
+    let selectedUserId = null;
+    let selectedUserName = null;
+    let selectedNotificationType = 'system';
+    let sentNotifications = [];
+
+    // Switch between tabs
+    function switchNotificationTab(tab) {
+      const tabBtns = document.querySelectorAll('.notification-tab-btn');
+      const tabContents = document.querySelectorAll('.notification-tab-content');
+
+      tabBtns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tab === tab) {
+          btn.classList.add('active');
+        }
+      });
+
+      tabContents.forEach(content => content.classList.remove('active'));
+
+      if (tab === 'received') {
+        document.getElementById('receivedNotificationsTab').classList.add('active');
+      } else {
+        document.getElementById('sendNotificationsTab').classList.add('active');
+        loadUsersForNotification();
+        loadSentNotificationsFromFirebase();
+      }
+    }
+
+    // Load sent notifications from Firebase
+    async function loadSentNotificationsFromFirebase() {
+      if (!currentUser) return;
+
+      try {
+        const snapshot = await rtdb.ref('notifications/sent/' + currentUser.uid)
+          .orderByChild('sentAt')
+          .limitToLast(50)
+          .once('value');
+
+        if (snapshot.exists()) {
+          const notifications = [];
+          snapshot.forEach(child => {
+            const notif = child.val();
+            notifications.push({
+              id: child.key,
+              recipientType: notif.recipientType,
+              recipientId: notif.recipientId,
+              recipientName: notif.recipientName,
+              title: notif.title,
+              message: notif.message,
+              type: notif.type,
+              sentAt: new Date(notif.sentAt || notif.createdAt)
+            });
+          });
+          // Sort by newest first
+          notifications.sort((a, b) => b.sentAt - a.sentAt);
+          sentNotifications = notifications;
+          renderSentNotifications();
+        }
+      } catch (error) {
+        console.error('Erro ao carregar notificações enviadas:', JSON.stringify(error));
+      }
+    }
+
+    // Set recipient type (all or specific)
+    function setRecipientType(type) {
+      selectedRecipientType = type;
+      const btns = document.querySelectorAll('.recipient-type-btn');
+      btns.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.type === type) {
+          btn.classList.add('active');
+        }
+      });
+
+      const userSelectSection = document.getElementById('userSelectSection');
+      if (type === 'specific') {
+        userSelectSection.classList.add('active');
+        loadUsersForNotification();
+      } else {
+        userSelectSection.classList.remove('active');
+        selectedUserId = null;
+        selectedUserName = null;
+        document.getElementById('userSelectInput').value = '';
+      }
+    }
+
+    // Load users for dropdown
+    async function loadUsersForNotification() {
+      const dropdownList = document.getElementById('userDropdownList');
+
+      // Use allUsersCache if available, otherwise load from Firestore
+      let users = allUsersCache;
+      if (!users || users.length === 0) {
+        try {
+          const snapshot = await db.collection('users').get();
+          users = [];
+          snapshot.forEach(doc => {
+            users.push({ id: doc.id, ...doc.data() });
+          });
+          users.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        } catch (error) {
+          console.error('Error loading users:', JSON.stringify(error));
+          users = [];
+        }
+      }
+
+      dropdownList.innerHTML = users.map(user => {
+        const initials = (user.name || 'U').substring(0, 2).toUpperCase();
+        const avatarHtml = user.photoURL
+          ? '<img src="' + user.photoURL + '" alt="Avatar">'
+          : initials;
+
+        return '<div class="user-dropdown-item" onclick="selectUserForNotification(\'' + user.id + '\', \'' + (user.name || 'Usuário').replace(/'/g, "\\'") + '\', \'' + (user.photoURL || '').replace(/'/g, "\\'") + '\')">' +
+          '<div class="user-dropdown-avatar">' + avatarHtml + '</div>' +
+          '<div class="user-dropdown-info">' +
+            '<div class="user-dropdown-name">' + (user.name || 'Usuário') + '</div>' +
+            '<div class="user-dropdown-email">' + (user.email || '') + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Toggle user dropdown
+    function toggleUserDropdown() {
+      const dropdown = document.getElementById('userDropdownList');
+      dropdown.classList.toggle('active');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const dropdown = document.getElementById('userDropdownList');
+      const input = document.getElementById('userSelectInput');
+      if (dropdown && input && !dropdown.contains(e.target) && e.target !== input) {
+        dropdown.classList.remove('active');
+      }
+    });
+
+    // Select user for notification
+    function selectUserForNotification(userId, userName, photoURL) {
+      selectedUserId = userId;
+      selectedUserName = userName;
+      document.getElementById('userSelectInput').value = userName;
+      document.getElementById('userDropdownList').classList.remove('active');
+
+      // Mark selected user
+      const items = document.querySelectorAll('.user-dropdown-item');
+      items.forEach(item => item.classList.remove('selected'));
+      event.currentTarget.classList.add('selected');
+    }
+
+    // Set notification type
+    function setNotificationType(type) {
+      selectedNotificationType = type;
+      const options = document.querySelectorAll('.notification-type-option');
+      options.forEach(opt => {
+        opt.classList.remove('active');
+        if (opt.dataset.type === type) {
+          opt.classList.add('active');
+        }
+      });
+    }
+
+    // Send notification to Firebase Realtime Database
+    async function sendNotification() {
+      const title = document.getElementById('notificationTitle').value.trim();
+      const message = document.getElementById('notificationMessage').value.trim();
+
+      // Validation
+      if (!title) {
+        showToast('Digite um título para a notificação', 'error');
+        return;
+      }
+
+      if (!message) {
+        showToast('Digite uma mensagem para a notificação', 'error');
+        return;
+      }
+
+      if (selectedRecipientType === 'specific' && !selectedUserId) {
+        showToast('Selecione um usuário destinatário', 'error');
+        return;
+      }
+
+      if (!currentUser) {
+        showToast('Você precisa estar logado para enviar notificações', 'error');
+        return;
+      }
+
+      const btn = document.getElementById('sendNotificationBtn');
+      btn.classList.add('loading');
+      btn.disabled = true;
+
+      try {
+        const notificationData = {
+          title: title,
+          message: message,
+          type: selectedNotificationType,
+          recipientType: selectedRecipientType,
+          recipientId: selectedRecipientType === 'specific' ? selectedUserId : null,
+          recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
+          senderId: currentUser.uid,
+          senderName: currentUserData?.name || 'Usuário',
+          senderPhotoURL: currentUserData?.photoURL || null,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+          read: false
+        };
+
+        // Save notification to Firebase Realtime Database
+        if (selectedRecipientType === 'all') {
+          // For all users, save to a global notifications node
+          const notifRef = rtdb.ref('notifications/global').push();
+          await notifRef.set(notificationData);
+
+          // Also save to each user's personal notifications
+          const usersSnapshot = await db.collection('users').get();
+          const promises = [];
+          usersSnapshot.forEach(doc => {
+            if (doc.id !== currentUser.uid) { // Don't notify the sender
+              const userNotifRef = rtdb.ref('notifications/users/' + doc.id).push();
+              promises.push(userNotifRef.set({
+                ...notificationData,
+                notificationId: notifRef.key
+              }));
+            }
+          });
+          await Promise.all(promises);
+        } else {
+          // For specific user, save to their personal notifications
+          const userNotifRef = rtdb.ref('notifications/users/' + selectedUserId).push();
+          await userNotifRef.set(notificationData);
+        }
+
+        // Save to sent notifications history (local + Firebase for persistence)
+        const sentNotifRef = rtdb.ref('notifications/sent/' + currentUser.uid).push();
+        await sentNotifRef.set({
+          ...notificationData,
+          sentAt: firebase.database.ServerValue.TIMESTAMP
+        });
+
+        const notification = {
+          id: Date.now(),
+          recipientType: selectedRecipientType,
+          recipientId: selectedUserId,
+          recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
+          title: title,
+          message: message,
+          type: selectedNotificationType,
+          sentAt: new Date()
+        };
+
+        sentNotifications.unshift(notification);
+        renderSentNotifications();
+
+        // Reset form
+        document.getElementById('notificationTitle').value = '';
+        document.getElementById('notificationMessage').value = '';
+        setRecipientType('all');
+        setNotificationType('system');
+
+        btn.classList.remove('loading');
+        btn.disabled = false;
+
+        showToast('Notificação enviada com sucesso!');
+      } catch (error) {
+        console.error('Erro ao enviar notificação:', JSON.stringify(error));
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        showToast('Erro ao enviar notificação. Tente novamente.', 'error');
+      }
+    }
+
+    // Render sent notifications
+    function renderSentNotifications() {
+      const container = document.getElementById('sentNotificationsList');
+      const emptyState = document.getElementById('sentNotificationsEmpty');
+
+      if (sentNotifications.length === 0) {
+        emptyState.style.display = 'flex';
+        container.innerHTML = '';
+        container.appendChild(emptyState);
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      const typeIcons = {
+        system: 'fa-cog',
+        info: 'fa-info-circle',
+        success: 'fa-check-circle',
+        warning: 'fa-exclamation-triangle',
+        danger: 'fa-times-circle'
+      };
+
+      container.innerHTML = sentNotifications.map(notif => {
+        const timeAgo = formatTimeAgo(notif.sentAt);
+        const recipientIcon = notif.recipientType === 'all' ? 'fa-users' : 'fa-user';
+
+        return '<div class="sent-notification-card">' +
+          '<div class="sent-notification-header">' +
+            '<div class="sent-notification-recipient">' +
+              '<i class="fas ' + recipientIcon + '"></i>' +
+              '<span>' + notif.recipientName + '</span>' +
+            '</div>' +
+            '<div class="sent-notification-time">' + timeAgo + '</div>' +
+          '</div>' +
+          '<div class="sent-notification-content type-' + notif.type + '">' +
+            '<div class="sent-notification-title-text">' +
+              '<i class="fas ' + typeIcons[notif.type] + '"></i> ' + notif.title +
+            '</div>' +
+            '<div class="sent-notification-message">' + notif.message + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Format time ago
+    function formatTimeAgo(date) {
+      const now = new Date();
+      const diff = Math.floor((now - date) / 1000);
+
+      if (diff < 60) return 'Agora mesmo';
+      if (diff < 3600) return Math.floor(diff / 60) + ' min atrás';
+      if (diff < 86400) return Math.floor(diff / 3600) + 'h atrás';
+      if (diff < 604800) return Math.floor(diff / 86400) + 'd atrás';
+
+      return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+    }
+
+    // Clear sent notifications
+    async function clearSentNotifications() {
+      if (sentNotifications.length === 0) {
+        showToast('Não há notificações para limpar', 'error');
+        return;
+      }
+
+      showConfirmModal(
+        'Limpar Histórico',
+        'Tem certeza que deseja limpar todo o histórico de notificações enviadas?',
+        async () => {
+          try {
+            // Clear from Firebase
+            if (currentUser) {
+              await rtdb.ref('notifications/sent/' + currentUser.uid).remove();
+            }
+            sentNotifications = [];
+            renderSentNotifications();
+            showToast('Histórico limpo com sucesso!');
+          } catch (error) {
+            console.error('Erro ao limpar histórico:', JSON.stringify(error));
+            showToast('Erro ao limpar histórico. Tente novamente.', 'error');
+          }
+        }
+      );
+    }
+
+    // Custom confirm modal for notifications
+    function showConfirmModal(title, message, onConfirm) {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay active';
+      modal.id = 'confirmModalOverlay';
+      modal.innerHTML =
+        '<div class="modal">' +
+          '<div class="modal-title">' + title + '</div>' +
+          '<p class="modal-text" style="display: block;">' + message + '</p>' +
+          '<div class="modal-actions">' +
+            '<button class="modal-btn cancel" onclick="closeConfirmModal()">Cancelar</button>' +
+            '<button class="modal-btn danger" id="confirmModalBtn">Confirmar</button>' +
+          '</div>' +
+        '</div>';
+
+      document.body.appendChild(modal);
+
+      document.getElementById('confirmModalBtn').onclick = function() {
+        closeConfirmModal();
+        onConfirm();
+      };
+
+      modal.addEventListener('click', function(e) {
+        if (e.target.id === 'confirmModalOverlay') {
+          closeConfirmModal();
+        }
+      });
+    }
+
+    function closeConfirmModal() {
+      const modal = document.getElementById('confirmModalOverlay');
+      if (modal) {
+        modal.remove();
       }
     }
 
