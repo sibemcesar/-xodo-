@@ -8844,18 +8844,31 @@
     }
 
     // Send notification to Firebase Realtime Database
+    // Seguindo as regras do RTDB:
+    // - notifications/global: title, message, type, recipientType, senderId, senderName, createdAt, read (obrigatórios)
+    // - notifications/users/$uid: title, message, type, senderId, senderName, createdAt, read (obrigatórios)
+    // - notifications/sent/$uid: title, message, type, recipientType, senderId, senderName, createdAt, read, sentAt (obrigatórios)
     async function sendNotification() {
       const title = document.getElementById('notificationTitle').value.trim();
       const message = document.getElementById('notificationMessage').value.trim();
 
-      // Validation
+      // Validation - título máximo 200 caracteres
       if (!title) {
         showToast('Digite um título para a notificação', 'error');
         return;
       }
+      if (title.length > 200) {
+        showToast('O título deve ter no máximo 200 caracteres', 'error');
+        return;
+      }
 
+      // Validation - mensagem máximo 2000 caracteres
       if (!message) {
         showToast('Digite uma mensagem para a notificação', 'error');
+        return;
+      }
+      if (message.length > 2000) {
+        showToast('A mensagem deve ter no máximo 2000 caracteres', 'error');
         return;
       }
 
@@ -8874,7 +8887,43 @@
       btn.disabled = true;
 
       try {
-        const notificationData = {
+        const now = Date.now();
+        const senderName = currentUserData?.name || 'Usuário';
+        const senderPhotoURL = currentUserData?.photoURL || null;
+
+        // Dados para notifications/global (campos obrigatórios conforme regras)
+        const globalNotificationData = {
+          title: title,
+          message: message,
+          type: selectedNotificationType, // system, info, success, warning, danger
+          recipientType: selectedRecipientType, // all ou specific
+          recipientId: selectedRecipientType === 'specific' ? selectedUserId : null,
+          recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
+          senderId: currentUser.uid,
+          senderName: senderName,
+          senderPhotoURL: senderPhotoURL,
+          createdAt: now,
+          read: false
+        };
+
+        // Dados para notifications/users/$uid (campos obrigatórios conforme regras)
+        const userNotificationData = {
+          title: title,
+          message: message,
+          type: selectedNotificationType,
+          senderId: currentUser.uid,
+          senderName: senderName,
+          senderPhotoURL: senderPhotoURL,
+          createdAt: now,
+          read: false,
+          // Campos opcionais
+          recipientType: selectedRecipientType,
+          recipientId: selectedRecipientType === 'specific' ? selectedUserId : null,
+          recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName
+        };
+
+        // Dados para notifications/sent/$uid (campos obrigatórios conforme regras)
+        const sentNotificationData = {
           title: title,
           message: message,
           type: selectedNotificationType,
@@ -8882,17 +8931,21 @@
           recipientId: selectedRecipientType === 'specific' ? selectedUserId : null,
           recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
           senderId: currentUser.uid,
-          senderName: currentUserData?.name || 'Usuário',
-          senderPhotoURL: currentUserData?.photoURL || null,
-          createdAt: firebase.database.ServerValue.TIMESTAMP,
-          read: false
+          senderName: senderName,
+          senderPhotoURL: senderPhotoURL,
+          createdAt: now,
+          read: false,
+          sentAt: now // Campo obrigatório para sent
         };
+
+        let globalNotifKey = null;
 
         // Save notification to Firebase Realtime Database
         if (selectedRecipientType === 'all') {
           // For all users, save to a global notifications node
           const notifRef = rtdb.ref('notifications/global').push();
-          await notifRef.set(notificationData);
+          await notifRef.set(globalNotificationData);
+          globalNotifKey = notifRef.key;
 
           // Also save to each user's personal notifications
           const usersSnapshot = await db.collection('users').get();
@@ -8901,8 +8954,8 @@
             if (doc.id !== currentUser.uid) { // Don't notify the sender
               const userNotifRef = rtdb.ref('notifications/users/' + doc.id).push();
               promises.push(userNotifRef.set({
-                ...notificationData,
-                notificationId: notifRef.key
+                ...userNotificationData,
+                notificationId: globalNotifKey
               }));
             }
           });
@@ -8910,25 +8963,22 @@
         } else {
           // For specific user, save to their personal notifications
           const userNotifRef = rtdb.ref('notifications/users/' + selectedUserId).push();
-          await userNotifRef.set(notificationData);
+          await userNotifRef.set(userNotificationData);
         }
 
-        // Save to sent notifications history (local + Firebase for persistence)
+        // Save to sent notifications history
         const sentNotifRef = rtdb.ref('notifications/sent/' + currentUser.uid).push();
-        await sentNotifRef.set({
-          ...notificationData,
-          sentAt: firebase.database.ServerValue.TIMESTAMP
-        });
+        await sentNotifRef.set(sentNotificationData);
 
         const notification = {
-          id: Date.now(),
+          id: sentNotifRef.key,
           recipientType: selectedRecipientType,
           recipientId: selectedUserId,
           recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
           title: title,
           message: message,
           type: selectedNotificationType,
-          sentAt: new Date()
+          sentAt: new Date(now)
         };
 
         sentNotifications.unshift(notification);
@@ -10250,6 +10300,7 @@
   </script>
 </body>
 </html>
+
 
 
 
