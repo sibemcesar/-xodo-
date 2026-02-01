@@ -8844,7 +8844,7 @@
     }
 
     // Send notification to Firebase Realtime Database
-    // Seguindo as regras do RTDB:
+    // IMPORTANTE: As regras do RTDB devem permitir exclusão com !newData.exists()
     // - notifications/global: title, message, type, recipientType, senderId, senderName, createdAt, read (obrigatórios)
     // - notifications/users/$uid: title, message, type, senderId, senderName, createdAt, read (obrigatórios)
     // - notifications/sent/$uid: title, message, type, recipientType, senderId, senderName, createdAt, read, sentAt (obrigatórios)
@@ -8891,32 +8891,21 @@
         const senderName = currentUserData?.name || 'Usuário';
         const senderPhotoURL = currentUserData?.photoURL || null;
 
-        // Dados para notifications/global (campos obrigatórios conforme regras)
-        const globalNotificationData = {
-          title: title,
-          message: message,
-          type: selectedNotificationType, // system, info, success, warning, danger
-          recipientType: selectedRecipientType, // all ou specific
-          recipientId: selectedRecipientType === 'specific' ? selectedUserId : null,
-          recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
-          senderId: currentUser.uid,
-          senderName: senderName,
-          senderPhotoURL: senderPhotoURL,
-          createdAt: now,
-          read: false
-        };
+        console.log('[Notification] Iniciando envio de notificação...');
+        console.log('[Notification] Tipo de destinatário:', selectedRecipientType);
+        console.log('[Notification] Usuário atual:', currentUser.uid);
 
         // Dados para notifications/users/$uid (campos obrigatórios conforme regras)
+        // NOTA: senderId NÃO deve validar auth.uid para permitir que outros usuários escrevam
         const userNotificationData = {
           title: title,
           message: message,
           type: selectedNotificationType,
           senderId: currentUser.uid,
           senderName: senderName,
-          senderPhotoURL: senderPhotoURL,
+          senderPhotoURL: senderPhotoURL || null,
           createdAt: now,
           read: false,
-          // Campos opcionais
           recipientType: selectedRecipientType,
           recipientId: selectedRecipientType === 'specific' ? selectedUserId : null,
           recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName
@@ -8932,43 +8921,73 @@
           recipientName: selectedRecipientType === 'all' ? 'Todos os usuários' : selectedUserName,
           senderId: currentUser.uid,
           senderName: senderName,
-          senderPhotoURL: senderPhotoURL,
+          senderPhotoURL: senderPhotoURL || null,
           createdAt: now,
           read: false,
-          sentAt: now // Campo obrigatório para sent
+          sentAt: now
         };
-
-        let globalNotifKey = null;
 
         // Save notification to Firebase Realtime Database
         if (selectedRecipientType === 'all') {
-          // For all users, save to a global notifications node
+          // For all users, save to a global notifications node (opcional)
+          const globalNotificationData = {
+            title: title,
+            message: message,
+            type: selectedNotificationType,
+            recipientType: 'all',
+            recipientId: null,
+            recipientName: 'Todos os usuários',
+            senderId: currentUser.uid,
+            senderName: senderName,
+            senderPhotoURL: senderPhotoURL || null,
+            createdAt: now,
+            read: false
+          };
+
+          console.log('[Notification] Salvando em notifications/global...');
           const notifRef = rtdb.ref('notifications/global').push();
           await notifRef.set(globalNotificationData);
-          globalNotifKey = notifRef.key;
+          const globalNotifKey = notifRef.key;
+          console.log('[Notification] Salvo em global com key:', globalNotifKey);
 
           // Also save to each user's personal notifications
+          console.log('[Notification] Buscando usuários do Firestore...');
           const usersSnapshot = await db.collection('users').get();
           const promises = [];
+          let userCount = 0;
+
           usersSnapshot.forEach(doc => {
-            if (doc.id !== currentUser.uid) { // Don't notify the sender
+            if (doc.id !== currentUser.uid) {
+              userCount++;
               const userNotifRef = rtdb.ref('notifications/users/' + doc.id).push();
-              promises.push(userNotifRef.set({
-                ...userNotificationData,
-                notificationId: globalNotifKey
-              }));
+              promises.push(
+                userNotifRef.set({
+                  ...userNotificationData,
+                  notificationId: globalNotifKey
+                }).catch(err => {
+                  console.error('[Notification] Erro ao notificar usuário ' + doc.id + ':', JSON.stringify(err));
+                  return null; // Continue mesmo com erro
+                })
+              );
             }
           });
+
+          console.log('[Notification] Enviando para ' + userCount + ' usuários...');
           await Promise.all(promises);
+          console.log('[Notification] Notificações enviadas para todos os usuários');
         } else {
           // For specific user, save to their personal notifications
+          console.log('[Notification] Enviando para usuário específico:', selectedUserId);
           const userNotifRef = rtdb.ref('notifications/users/' + selectedUserId).push();
           await userNotifRef.set(userNotificationData);
+          console.log('[Notification] Notificação enviada para:', selectedUserId);
         }
 
         // Save to sent notifications history
+        console.log('[Notification] Salvando em notifications/sent/' + currentUser.uid);
         const sentNotifRef = rtdb.ref('notifications/sent/' + currentUser.uid).push();
         await sentNotifRef.set(sentNotificationData);
+        console.log('[Notification] Salvo no histórico com key:', sentNotifRef.key);
 
         const notification = {
           id: sentNotifRef.key,
@@ -8995,10 +9014,20 @@
 
         showToast('Notificação enviada com sucesso!');
       } catch (error) {
-        console.error('Erro ao enviar notificação:', JSON.stringify(error));
+        console.error('[Notification] Erro ao enviar notificação:', JSON.stringify(error));
+        console.error('[Notification] Error code:', error.code);
+        console.error('[Notification] Error message:', error.message);
         btn.classList.remove('loading');
         btn.disabled = false;
-        showToast('Erro ao enviar notificação. Tente novamente.', 'error');
+
+        // Mensagem de erro mais específica
+        let errorMsg = 'Erro ao enviar notificação.';
+        if (error.code === 'PERMISSION_DENIED') {
+          errorMsg = 'Permissão negada. Verifique as regras do Firebase.';
+        } else if (error.message) {
+          errorMsg = 'Erro: ' + error.message;
+        }
+        showToast(errorMsg, 'error');
       }
     }
 
@@ -9060,9 +9089,10 @@
     }
 
     // Clear sent notifications
+    // IMPORTANTE: As regras do RTDB devem ter !newData.exists() || ... para permitir .remove()
     async function clearSentNotifications() {
       if (sentNotifications.length === 0) {
-        showToast('Não há notificações para limpar', 'error');
+        showToast('Não há notificações para limpar', 'info');
         return;
       }
 
@@ -9071,16 +9101,33 @@
         'Tem certeza que deseja limpar todo o histórico de notificações enviadas?',
         async () => {
           try {
-            // Clear from Firebase
-            if (currentUser) {
-              await rtdb.ref('notifications/sent/' + currentUser.uid).remove();
+            if (!currentUser) {
+              showToast('Você precisa estar logado', 'error');
+              return;
             }
+
+            console.log('[Notification] Limpando histórico de notificações enviadas...');
+            console.log('[Notification] Path: notifications/sent/' + currentUser.uid);
+
+            // Clear from Firebase - usa .remove() que envia null como newData
+            // As regras devem ter: ".validate": "!newData.exists() || ..."
+            await rtdb.ref('notifications/sent/' + currentUser.uid).remove();
+
+            console.log('[Notification] Histórico limpo com sucesso!');
             sentNotifications = [];
             renderSentNotifications();
             showToast('Histórico limpo com sucesso!');
           } catch (error) {
-            console.error('Erro ao limpar histórico:', JSON.stringify(error));
-            showToast('Erro ao limpar histórico. Tente novamente.', 'error');
+            console.error('[Notification] Erro ao limpar histórico:', JSON.stringify(error));
+            console.error('[Notification] Error code:', error.code);
+            console.error('[Notification] Error message:', error.message);
+
+            // Mensagem de erro mais específica
+            let errorMsg = 'Erro ao limpar histórico.';
+            if (error.code === 'PERMISSION_DENIED') {
+              errorMsg = 'Permissão negada. Atualize as regras do Firebase para permitir exclusão.';
+            }
+            showToast(errorMsg, 'error');
           }
         }
       );
@@ -10300,6 +10347,7 @@
   </script>
 </body>
 </html>
+
 
 
 
