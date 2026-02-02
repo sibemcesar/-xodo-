@@ -2607,6 +2607,73 @@
       color: white;
     }
 
+    /* Verification Code Modal */
+    .verification-code-inputs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0;
+    }
+
+    .code-input {
+      width: 45px;
+      height: 55px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      background: var(--bg-elevated);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.2s ease;
+      caret-color: var(--primary);
+    }
+
+    .code-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.2);
+    }
+
+    .code-input.filled {
+      border-color: var(--primary);
+      background: rgba(212, 168, 83, 0.1);
+    }
+
+    .code-input.error {
+      border-color: var(--danger);
+      animation: codeShake 0.5s ease;
+    }
+
+    .code-input.success {
+      border-color: var(--success);
+      background: rgba(74, 222, 128, 0.1);
+    }
+
+    @keyframes codeShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    .verification-error {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--danger);
+      font-size: 14px;
+      margin-top: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* About Modal */
     .about-modal {
       text-align: center;
@@ -5281,7 +5348,16 @@
     <div class="auth-screen active" id="loginScreen">
       <div class="auth-header">
         <div class="auth-logo">
-          <i class="fas fa-fire"></i>
+          <img
+  src="logo.png"
+  alt="Logo do aplicativo"
+  style="
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    border-radius: 20px;
+  "
+>
         </div>
         <h1 class="auth-title">ÊXODO</h1>
         <p class="auth-subtitle">Entre na sua conta</p>
@@ -5320,7 +5396,37 @@
 
         <div class="auth-switch">
           <p>Não tem uma conta?</p>
-          <button onclick="showScreen('register')">Criar conta</button>
+          <button onclick="openVerificationCodeModal()">Criar conta</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verification Code Modal -->
+    <div class="modal-overlay" id="verificationCodeModal">
+      <div class="modal">
+        <div class="modal-title">
+          <i class="fas fa-shield-halved" style="margin-right: 8px; color: var(--primary);"></i>
+          Código de Acesso
+        </div>
+        <p class="modal-text" style="display: block;">Digite o código de 6 dígitos para criar uma conta.</p>
+
+        <div class="verification-code-inputs">
+          <input type="text" maxlength="1" class="code-input" data-index="0" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" maxlength="1" class="code-input" data-index="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" maxlength="1" class="code-input" data-index="2" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" maxlength="1" class="code-input" data-index="3" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" maxlength="1" class="code-input" data-index="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+          <input type="text" maxlength="1" class="code-input" data-index="5" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+        </div>
+
+        <div class="verification-error" id="verificationError" style="display: none;">
+          <i class="fas fa-exclamation-circle"></i>
+          <span>Código incorreto. Tente novamente.</span>
+        </div>
+
+        <div class="modal-actions">
+          <button class="modal-btn cancel" onclick="closeVerificationCodeModal()">Cancelar</button>
+          <button class="modal-btn confirm" onclick="verifyAccessCode()">Verificar</button>
         </div>
       </div>
     </div>
@@ -5329,8 +5435,16 @@
     <div class="auth-screen" id="registerScreen">
       <div class="auth-header">
         <div class="auth-logo">
-          <i class="fas fa-fire"></i>
-        </div>
+        <img
+  src="logo.png"
+  alt="Logo do aplicativo"
+  style="
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    border-radius: 20px;
+  "
+></div>
         <h1 class="auth-title">ÊXODO</h1>
         <p class="auth-subtitle">Crie sua conta</p>
       </div>
@@ -5944,8 +6058,16 @@
       <div class="modal-overlay" id="aboutModalOverlay">
         <div class="modal about-modal">
           <div class="about-modal-logo">
-            <i class="fas fa-cross"></i>
-          </div>
+           <img
+  src="logo.png"
+  alt="Logo do aplicativo"
+  style="
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    border-radius: 20px;
+  "
+></div>
           <div class="modal-title">Sobre o Aplicativo</div>
           <div class="about-modal-content">
             <p class="about-description">
@@ -6315,6 +6437,159 @@
 
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Verification Code Modal
+    const VERIFICATION_CODE = '567890';
+
+    function openVerificationCodeModal() {
+      const modal = document.getElementById('verificationCodeModal');
+      modal.classList.add('active');
+
+      // Reset inputs
+      const inputs = modal.querySelectorAll('.code-input');
+      inputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('filled', 'error', 'success');
+      });
+
+      // Hide error
+      document.getElementById('verificationError').style.display = 'none';
+
+      // Focus first input
+      setTimeout(() => inputs[0].focus(), 100);
+
+      // Setup input listeners
+      setupCodeInputListeners();
+    }
+
+    function closeVerificationCodeModal() {
+      document.getElementById('verificationCodeModal').classList.remove('active');
+    }
+
+    function setupCodeInputListeners() {
+      const inputs = document.querySelectorAll('.code-input');
+
+      inputs.forEach((input, index) => {
+        // Remove existing listeners by cloning
+        const newInput = input.cloneNode(true);
+        input.parentNode.replaceChild(newInput, input);
+      });
+
+      // Get fresh references
+      const freshInputs = document.querySelectorAll('.code-input');
+
+      freshInputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+          const value = e.target.value;
+
+          // Only allow numbers
+          if (!/^\d*$/.test(value)) {
+            e.target.value = '';
+            return;
+          }
+
+          if (value) {
+            e.target.classList.add('filled');
+            e.target.classList.remove('error');
+
+            // Move to next input
+            if (index < 5 && value.length === 1) {
+              freshInputs[index + 1].focus();
+            }
+
+            // Auto-verify when all filled
+            if (index === 5 && value.length === 1) {
+              setTimeout(() => verifyAccessCode(), 100);
+            }
+          } else {
+            e.target.classList.remove('filled');
+          }
+        });
+
+        input.addEventListener('keydown', (e) => {
+          // Handle backspace
+          if (e.key === 'Backspace' && !e.target.value && index > 0) {
+            freshInputs[index - 1].focus();
+          }
+
+          // Handle paste
+          if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            navigator.clipboard.readText().then(text => {
+              const digits = text.replace(/\D/g, '').slice(0, 6);
+              digits.split('').forEach((digit, i) => {
+                if (freshInputs[i]) {
+                  freshInputs[i].value = digit;
+                  freshInputs[i].classList.add('filled');
+                }
+              });
+              if (digits.length === 6) {
+                setTimeout(() => verifyAccessCode(), 100);
+              }
+            }).catch(() => {});
+          }
+
+          // Handle Enter
+          if (e.key === 'Enter') {
+            verifyAccessCode();
+          }
+        });
+
+        // Handle focus
+        input.addEventListener('focus', () => {
+          input.select();
+        });
+      });
+    }
+
+    function verifyAccessCode() {
+      const inputs = document.querySelectorAll('.code-input');
+      let code = '';
+      inputs.forEach(input => code += input.value);
+
+      if (code.length !== 6) {
+        showCodeError();
+        return;
+      }
+
+      if (code === VERIFICATION_CODE) {
+        // Success animation
+        inputs.forEach(input => {
+          input.classList.remove('error');
+          input.classList.add('success');
+        });
+
+        document.getElementById('verificationError').style.display = 'none';
+
+        // Close modal and show register screen
+        setTimeout(() => {
+          closeVerificationCodeModal();
+          showScreen('register');
+          showToast('Código verificado! Crie sua conta.', 'success');
+        }, 500);
+      } else {
+        showCodeError();
+      }
+    }
+
+    function showCodeError() {
+      const inputs = document.querySelectorAll('.code-input');
+      inputs.forEach(input => {
+        input.classList.add('error');
+        input.classList.remove('success');
+      });
+
+      document.getElementById('verificationError').style.display = 'flex';
+
+      // Clear inputs after animation
+      setTimeout(() => {
+        inputs.forEach(input => {
+          input.value = '';
+          input.classList.remove('filled', 'error');
+        });
+        inputs[0].focus();
+      }, 500);
     }
 
     // Screen Management
